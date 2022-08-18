@@ -9,6 +9,8 @@ The API consists of three Annotations
 - **Navigation**: A Destination can define navigations to out Destinations, creating a navigation graph. The provided Desination placeholder will receive a navigation method usable to navigate to another screen.
 - **Parameter**: A Destination can define parameters it wants to have, the parameters will also be generated in the Desitination placeholder and in the navigation method.
 
+The anotation can be split across the app or put together on a single file. Valid targets of the annotations are either object, class or interface.
+
 ## Example
 
 ```Kotlin
@@ -36,3 +38,5 @@ Navigator {
 
 With the Destination **Home** the method **homeScreen** was generated, providing also the **navigateToDetails** method as defined in the Destination.
 The **Details** Destination generated **detailsScreen** with the posibility to access **myParam** of type Int.
+
+A detailed example can be found in the [demo module](demo/src/main/java/io/redandroid/navigator/demo/)
