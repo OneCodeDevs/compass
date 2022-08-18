@@ -44,11 +44,8 @@ android {
 			excludes += "/META-INF/{AL2.0,LGPL2.1}"
 		}
 	}
-}
-
-kotlin {
-	sourceSets {
-		main.kotlin.srcDirs += "build/generated/ksp/debug/kotlin"
+	sourceSets.configureEach {
+		kotlin.srcDir("$buildDir/generated/ksp/$name/kotlin/")
 	}
 }
 
@@ -65,12 +62,6 @@ dependencies {
 
 	implementation(project(":api"))
 	ksp(project(":ksp"))
-
-	testImplementation "junit:junit:4.13.2"
-
-	androidTestImplementation "androidx.test.ext:junit:1.1.3"
-	androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
-	androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
 	debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 	debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
