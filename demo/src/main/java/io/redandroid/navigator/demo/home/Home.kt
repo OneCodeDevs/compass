@@ -1,8 +1,8 @@
-package de.gnarly.navgraph.config.home
+package io.redandroid.navigator.demo.home
 
-import de.gnarly.navgraph.config.details.Details
 import io.redandroid.navigator.api.Destination
 import io.redandroid.navigator.api.Navigation
+import io.redandroid.navigator.demo.details.Details
 
 @Destination(isHome = true)
 @Navigation(to = Details::class)

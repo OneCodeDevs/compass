@@ -13,6 +13,6 @@ dependencyResolutionManagement {
 	}
 }
 rootProject.name = "NavGraph Config Compose"
-include ':app'
+include ':demo'
 include ':api'
 include ':ksp'

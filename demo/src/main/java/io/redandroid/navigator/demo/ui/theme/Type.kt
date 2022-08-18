@@ -1,4 +1,4 @@
-package de.gnarly.navgraph.config.ui.theme
+package io.redandroid.navigator.demo.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

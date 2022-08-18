@@ -1,4 +1,4 @@
-package de.gnarly.navgraph.config.details
+package io.redandroid.navigator.demo.details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
