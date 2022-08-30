@@ -43,7 +43,7 @@ fun CodeGenerator.generateCode(destinations: List<DestinationDescription>, depen
 		.addType(createScreenBuilder(destinations))
 		.apply {
 			destinations.forEach { destination ->
-				addType(destination.toContextClass())
+				addType(createContextClass(destination))
 			}
 		}.build()
 
@@ -99,10 +99,10 @@ private fun createScreenBuilder(destinations: List<DestinationDescription>): Typ
 		}
 		.build()
 
-private fun DestinationDescription.toContextClass(): TypeSpec {
+private fun createContextClass(destination: DestinationDescription): TypeSpec {
 	val navControllerParam = "navHostController"
 	val navBackStackEntryParam = "navBackStackEntry"
-	return TypeSpec.classBuilder(contextName)
+	return TypeSpec.classBuilder(destination.contextName)
 		.primaryConstructor(
 			FunSpec.constructorBuilder()
 				.addParameter(navControllerParam, navHostControllerClass)
@@ -112,43 +112,45 @@ private fun DestinationDescription.toContextClass(): TypeSpec {
 		.addProperty(PropertySpec.builder(navControllerParam, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParam).build())
 		.addProperty(PropertySpec.builder(navBackStackEntryParam, navBackStackEntryClass, KModifier.PRIVATE).initializer(navBackStackEntryParam).build())
 		.apply {
-			parameters.forEach { parameter ->
-				addProperty(
-					PropertySpec.builder(parameter.name, ClassName("", parameter.type))
-						.mutable(mutable = false)
-						.getter(
-							FunSpec.getterBuilder()
-								.addStatement(
-									"return %L.arguments?.getString(%S)?.to${parameter.type.typeString()}OrNull() ?: error(%S)",
-									navBackStackEntryParam,
-									parameter.name,
-									"Required parameter ${parameter.name} not provided"
-								)
-								.build()
-						)
-						.build()
-				)
+			destination.parameters.forEach { parameter ->
+				addProperty(parameter.toParameterProperty(navBackStackEntryParam))
 			}
 
-			navigationTargets.forEach { navigationTarget ->
-				val paramsRoute = navigationTarget.parameters.joinToString(separator = "/") { "\${${it.name}}" }
-				val paramsRouteWithSlash = if (paramsRoute.isNotBlank()) "/$paramsRoute" else ""
+			destination.navigationTargets.forEach { navigationTarget ->
+				addFunction(navigationTarget.toNavigationFunction(navControllerParam))
+			}
+		}
+		.build()
+}
 
-				addFunction(
-					FunSpec.builder("navigateTo${navigationTarget.name}")
-						.apply {
-							navigationTarget.parameters.forEach { navigationParameter ->
-								val parameterType = ClassName("", navigationParameter.type)
-								addParameter(
-									ParameterSpec.builder(navigationParameter.name, parameterType).build()
-								)
-							}
-						}
-						.addStatement("%L.navigate(%P)", navControllerParam, "${navigationTarget.name}$paramsRouteWithSlash")
-						.build()
+private fun ParameterDescription.toParameterProperty(navBackStackEntryParam: String): PropertySpec =
+	PropertySpec.builder(name, ClassName("", type))
+		.mutable(mutable = false)
+		.getter(
+			FunSpec.getterBuilder()
+				.addStatement(
+					"return %L.arguments?.getString(%S)?.to${type.typeString()}OrNull() ?: error(%S)",
+					navBackStackEntryParam,
+					name,
+					"Required parameter $name not provided"
+				)
+				.build()
+		)
+		.build()
+
+private fun NavigationTarget.toNavigationFunction(navControllerParam: String): FunSpec {
+	val paramsRoute = parameters.joinToString(separator = "/") { "\${${it.name}}" }
+	val paramsRouteWithSlash = if (paramsRoute.isNotBlank()) "/$paramsRoute" else ""
+	return FunSpec.builder("navigateTo${name}")
+		.apply {
+			this@toNavigationFunction.parameters.forEach { navigationParameter ->
+				val parameterType = ClassName("", navigationParameter.type)
+				addParameter(
+					ParameterSpec.builder(navigationParameter.name, parameterType).build()
 				)
 			}
 		}
+		.addStatement("%L.navigate(%P)", navControllerParam, "${name}$paramsRouteWithSlash")
 		.build()
 }
 
