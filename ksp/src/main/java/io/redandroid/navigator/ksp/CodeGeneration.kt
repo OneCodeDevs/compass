@@ -2,102 +2,167 @@ package io.redandroid.navigator.ksp
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
+import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.LambdaTypeName
+import com.squareup.kotlinpoet.MemberName
+import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.UNIT
+import com.squareup.kotlinpoet.ksp.writeTo
 import io.redandroid.navigator.api.Destination
 import java.util.*
 
 private const val PACKAGE = "io.redandroid.navigator"
 private const val NAVIGATOR_COMPOSABLE_NAME = "Navigator"
+private const val SCREEN_BUILDER = "ScreenBuilder"
+private const val START_DESTINATION = "startDestination"
+
+private val screenBuilderClass = ClassName(PACKAGE, SCREEN_BUILDER)
+private val composableClass = ClassName("androidx.compose.runtime", "Composable")
+private val composeAnnotation = AnnotationSpec.builder(composableClass).build()
+private val navHostControllerClass = ClassName("androidx.navigation", "NavHostController")
+private val navBackStackEntryClass = ClassName("androidx.navigation", "NavBackStackEntry")
+private val rememberNavControllerName = MemberName("androidx.navigation.compose", "rememberNavController")
 
 fun CodeGenerator.generateCode(destinations: List<DestinationDescription>, dependencies: Dependencies) {
+
 	val home = destinations.firstOrNull { it.isHome }?.name ?: error("Couldn't find a ${Destination::class.simpleName} marked as home")
 
-	createNewFile(
-		dependencies = dependencies,
-		packageName = PACKAGE,
-		fileName = NAVIGATOR_COMPOSABLE_NAME
-	).use { navigatorFile ->
-		navigatorFile += """
-package $PACKAGE
+	val startDestinationProperty = PropertySpec.builder(START_DESTINATION, String::class).addModifiers(KModifier.PRIVATE).initializer("%S", home).mutable(mutable = false).build()
 
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.NavHostController
+	val fileSpec = FileSpec.builder(PACKAGE, NAVIGATOR_COMPOSABLE_NAME)
+		.addImport("androidx.navigation.compose", "NavHost", "composable")
+		.addProperty(startDestinationProperty)
+		.addFunction(createNavigatorComposable(destinations))
+		.addType(createScreenBuilder(destinations))
+		.apply {
+			destinations.forEach { destination ->
+				addType(destination.toContextClass())
+			}
+		}.build()
 
-private val startDestination: String = "$home"
+	fileSpec.writeTo(codeGenerator = this, dependencies)
+}
 
-@Composable
-fun $NAVIGATOR_COMPOSABLE_NAME(
-	navHostController: NavHostController = rememberNavController(),
-	builder: ScreenBuilder.() -> Unit
-) {
-	NavHost(navController = navHostController, startDestination = startDestination) {
-		val screenBuilder = ScreenBuilder()
-		screenBuilder.builder()
-		
-${
-			destinations.joinToString(separator = "\n") { destination ->
-				val params = destination.parameters.joinToString("/") { "{${it.name}}" }
-				val paramSuffix = if (params.isNotBlank()) "/$params" else ""
-				val destinationScreenName = destination.name.replaceFirstChar { it.lowercase(Locale.getDefault()) }
+private fun createNavigatorComposable(destinations: List<DestinationDescription>): FunSpec {
+	val navHostControllerParam = ParameterSpec.builder("navHostController", navHostControllerClass)
+		.defaultValue("%M()", rememberNavControllerName)
+		.build()
 
-				listOf(
-					"\t\tcomposable(route = \"${destination.name}$paramSuffix\") {",
-					"\t\t\tscreenBuilder.${destinationScreenName}Composable?.invoke(${destination.name}Context(navHostController, it))",
-					"\t\t}"
-				).joinToString(separator = "\n")
+	val screenBuilderLambda = LambdaTypeName.get(receiver = screenBuilderClass, returnType = UNIT)
+	val screenBuilderParam = ParameterSpec.builder("builder", screenBuilderLambda).build()
+
+	return FunSpec.builder(NAVIGATOR_COMPOSABLE_NAME)
+		.addAnnotation(composeAnnotation)
+		.addParameter(navHostControllerParam)
+		.addParameter(screenBuilderParam)
+		.beginControlFlow("NavHost(navController = %L, startDestination = %L)", navHostControllerParam.name, START_DESTINATION)
+		.addStatement("val screenBuilder = %L()", SCREEN_BUILDER)
+		.addStatement("screenBuilder.builder()")
+		.apply {
+			destinations.forEach { destination ->
+				addCode(destination.toNavigationComposableCodeBlock())
 			}
 		}
-	}
+		.endControlFlow()
+		.build()
 }
-		
-class ScreenBuilder {
-${
-			destinations.joinToString(separator = "\n") { destination ->
+
+private fun createScreenBuilder(destinations: List<DestinationDescription>): TypeSpec =
+	TypeSpec.classBuilder(SCREEN_BUILDER)
+		.apply {
+			destinations.forEach { destination ->
 				val destinationScreenName = destination.name.replaceFirstChar { it.lowercase(Locale.getDefault()) }
 				val composableProperty = "${destinationScreenName}Composable"
-				listOf(
-					"\tinternal var $composableProperty: (@Composable ${destination.name}Context.() -> Unit)? = null",
-					"\tfun ${destinationScreenName}Screen(composable: @Composable ${destination.name}Context.() -> Unit) {",
-					"\t\t$composableProperty = composable",
-					"\t}"
-				).joinToString(separator = "\n")
+				val destinationContextClass = ClassName(PACKAGE, destination.contextName)
+				val destinationContextLambda = LambdaTypeName.get(receiver = destinationContextClass, returnType = UNIT).copy(annotations = listOf(composeAnnotation))
+
+				addProperty(
+					PropertySpec.builder(composableProperty, destinationContextLambda.copy(nullable = true), KModifier.INTERNAL)
+						.initializer("null")
+						.mutable(mutable = true)
+						.build()
+				)
+				addFunction(
+					FunSpec.builder("${destinationScreenName}Screen")
+						.addParameter(ParameterSpec.builder("composable", destinationContextLambda).build())
+						.addStatement("%L = composable", composableProperty)
+						.build()
+				)
 			}
 		}
-}
-		
-${
-			destinations.joinToString(separator = "\n") { destination ->
-				val params = destination.parameters.joinToString(separator = "\n") { parameter ->
-					listOf(
-						"\tval ${parameter.name}: ${parameter.type}",
-						"\t\tget() = navBackStackEntry.arguments?.getString(\"${parameter.name}\")?.to${parameter.type.typeString()}OrNull() ?: error(\"Required parameter ${parameter.name} not provided\")"
-					).joinToString(separator = "\n")
-				}
+		.build()
 
-				val navigations = destination.navigationTargets.joinToString(separator = "\n") { navigation ->
-					val parameterDefinition = navigation.parameters.joinToString { "${it.name}: ${it.type}" }
-					val paramsRoute = navigation.parameters.joinToString(separator = "/") { "\${${it.name}}" }
-					val paramsRouteWithSlash = if (paramsRoute.isNotBlank()) "/$paramsRoute" else ""
+private fun DestinationDescription.toContextClass(): TypeSpec {
+	val navControllerParam = "navHostController"
+	val navBackStackEntryParam = "navBackStackEntry"
+	return TypeSpec.classBuilder(contextName)
+		.primaryConstructor(
+			FunSpec.constructorBuilder()
+				.addParameter(navControllerParam, navHostControllerClass)
+				.addParameter(navBackStackEntryParam, navBackStackEntryClass)
+				.build()
+		)
+		.addProperty(PropertySpec.builder(navControllerParam, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParam).build())
+		.addProperty(PropertySpec.builder(navBackStackEntryParam, navBackStackEntryClass, KModifier.PRIVATE).initializer(navBackStackEntryParam).build())
+		.apply {
+			parameters.forEach { parameter ->
+				addProperty(
+					PropertySpec.builder(parameter.name, ClassName("", parameter.type))
+						.mutable(mutable = false)
+						.getter(
+							FunSpec.getterBuilder()
+								.addStatement(
+									"return %L.arguments?.getString(%S)?.to${parameter.type.typeString()}OrNull() ?: error(%S)",
+									navBackStackEntryParam,
+									parameter.name,
+									"Required parameter ${parameter.name} not provided"
+								)
+								.build()
+						)
+						.build()
+				)
+			}
 
-					listOf(
-						"\tfun navigateTo${navigation.name}($parameterDefinition) {",
-						"\t\tnavHostController.navigate(\"${navigation.name}$paramsRouteWithSlash\")",
-						"\t}"
-					).joinToString(separator = "\n")
-				}
+			navigationTargets.forEach { navigationTarget ->
+				val paramsRoute = navigationTarget.parameters.joinToString(separator = "/") { "\${${it.name}}" }
+				val paramsRouteWithSlash = if (paramsRoute.isNotBlank()) "/$paramsRoute" else ""
 
-
-				listOf(
-					"class ${destination.name}Context(private val navHostController: NavHostController, private val navBackStackEntry: NavBackStackEntry) {",
-					params,
-					navigations,
-					"}"
-				).joinToString(separator = "\n")
+				addFunction(
+					FunSpec.builder("navigateTo${navigationTarget.name}")
+						.apply {
+							navigationTarget.parameters.forEach { navigationParameter ->
+								val parameterType = ClassName("", navigationParameter.type)
+								addParameter(
+									ParameterSpec.builder(navigationParameter.name, parameterType).build()
+								)
+							}
+						}
+						.addStatement("%L.navigate(%P)", navControllerParam, "${navigationTarget.name}$paramsRouteWithSlash")
+						.build()
+				)
 			}
 		}
-	""".trimIndent()
-	}
+		.build()
 }
+
+private fun DestinationDescription.toNavigationComposableCodeBlock(): CodeBlock {
+	val params = parameters.joinToString("/") { "{${it.name}}" }
+	val paramSuffix = if (params.isNotBlank()) "/$params" else ""
+	val destinationScreenName = name.replaceFirstChar { it.lowercase(Locale.getDefault()) }
+
+	return CodeBlock.builder()
+		.beginControlFlow("composable(route = %S)", name + paramSuffix)
+		.addStatement("screenBuilder.%LComposable?.invoke(%L(navHostController, it))", destinationScreenName, contextName)
+		.endControlFlow()
+		.build()
+}
+
+private val DestinationDescription.contextName: String
+	get() = "${name}Context"
