@@ -4,4 +4,5 @@ import kotlin.reflect.KClass
 
 @Repeatable
 @Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.SOURCE)
 annotation class Navigation(val to: KClass<*>)

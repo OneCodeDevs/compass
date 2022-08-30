@@ -4,6 +4,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import io.redandroid.navigator.api.Destination
+import io.redandroid.navigator.api.Home
 import io.redandroid.navigator.api.Navigation
 import io.redandroid.navigator.api.Parameter
 
@@ -16,10 +17,7 @@ class DestinationVisitor : KSVisitorVoid() {
 	override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
 		val classAnnotations = classDeclaration.annotations.toList()
 
-		val destination = classAnnotations.filterAnnotation(Destination::class).firstOrNull()
-			?: error("Something went wrong, could not find ${Destination::class.simpleName} annotation on ${classDeclaration.className}")
-
-		val isHome = destination.getParameterValue<Boolean>(Destination::isHome.name, classDeclaration)
+		val isHome = classAnnotations.filterAnnotation(Home::class).isNotEmpty()
 
 		val navTargets = classAnnotations.filterAnnotation(Navigation::class)
 			.map { navigationAnnotation ->
