@@ -33,13 +33,15 @@ fun Main() {
 			HomeScreen(
 				onRandom = {
 					navigateToDetails(it)
-
 				}
 			)
 		}
 
 		detailsScreen {
-			DetailsScreen(number = myParam)
+			DetailsScreen(
+				number = myParam,
+				onBack = ::popBackStack
+			)
 		}
 	}
 }

@@ -22,6 +22,7 @@ private const val PACKAGE = "io.redandroid.navigator"
 private const val NAVIGATOR_COMPOSABLE_NAME = "Navigator"
 private const val SCREEN_BUILDER = "ScreenBuilder"
 private const val START_DESTINATION = "startDestination"
+private const val COMMON_CONTEXT = "CommonContext"
 
 private val screenBuilderClass = ClassName(PACKAGE, SCREEN_BUILDER)
 private val composableClass = ClassName("androidx.compose.runtime", "Composable")
@@ -41,6 +42,7 @@ fun CodeGenerator.generateCode(destinations: List<DestinationDescription>, depen
 		.addProperty(startDestinationProperty)
 		.addFunction(createNavigatorComposable(destinations))
 		.addType(createScreenBuilder(destinations))
+		.addType(createCommonContext())
 		.apply {
 			destinations.forEach { destination ->
 				addType(createContextClass(destination))
@@ -99,10 +101,34 @@ private fun createScreenBuilder(destinations: List<DestinationDescription>): Typ
 		}
 		.build()
 
+private fun createCommonContext(): TypeSpec {
+	val navControllerParam = "navHostController"
+
+	return TypeSpec.classBuilder(COMMON_CONTEXT)
+		.addModifiers(KModifier.ABSTRACT)
+		.primaryConstructor(
+			FunSpec.constructorBuilder()
+				.addParameter(navControllerParam, navHostControllerClass)
+				.build()
+		)
+		.addProperty(PropertySpec.builder(navControllerParam, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParam).build())
+		.addFunction(
+			FunSpec.builder("popBackStack")
+				.addStatement("%L.popBackStack()", navControllerParam)
+				.build()
+		)
+		.build()
+}
+
 private fun createContextClass(destination: DestinationDescription): TypeSpec {
 	val navControllerParam = "navHostController"
 	val navBackStackEntryParam = "navBackStackEntry"
+
+	val commonContext = ClassName(PACKAGE, COMMON_CONTEXT)
+
 	return TypeSpec.classBuilder(destination.contextName)
+		.superclass(commonContext)
+		.addSuperclassConstructorParameter(navControllerParam)
 		.primaryConstructor(
 			FunSpec.constructorBuilder()
 				.addParameter(navControllerParam, navHostControllerClass)
