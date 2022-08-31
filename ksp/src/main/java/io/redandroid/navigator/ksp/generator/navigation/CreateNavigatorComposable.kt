@@ -6,7 +6,7 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.UNIT
 import io.redandroid.navigator.ksp.descriptions.DestinationDescription
 import io.redandroid.navigator.ksp.generator.NAVIGATOR_COMPOSABLE_NAME
-import io.redandroid.navigator.ksp.generator.NAV_HOST_CONTROLLER_LOCAL
+import io.redandroid.navigator.ksp.generator.LOCAL_NAV_HOST_CONTROLLER
 import io.redandroid.navigator.ksp.generator.composeAnnotation
 import io.redandroid.navigator.ksp.generator.navGraphBuilderClass
 import io.redandroid.navigator.ksp.generator.navHostControllerClass
@@ -28,8 +28,8 @@ internal fun createNavigatorComposable(destinations: List<DestinationDescription
 		.addAnnotation(composeAnnotation)
 		.addParameter(navHostControllerParam)
 		.addParameter(screenBuilderParam)
-		.addStatement("%L = compositionLocalOf { navHostController }", NAV_HOST_CONTROLLER_LOCAL)
-		.beginControlFlow("CompositionLocalProvider(%L provides navHostController)", NAV_HOST_CONTROLLER_LOCAL)
+		.addStatement("%L = compositionLocalOf { navHostController }", LOCAL_NAV_HOST_CONTROLLER)
+		.beginControlFlow("CompositionLocalProvider(%L provides navHostController)", LOCAL_NAV_HOST_CONTROLLER)
 		.beginControlFlow("NavHost(startDestination = %S, navController = navHostController)", home)
 		.addComposablesBody(destinations, screenBuilderClass)
 		.endControlFlow()

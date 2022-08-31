@@ -8,7 +8,7 @@ internal const val PACKAGE = "io.redandroid.navigator"
 internal const val NAVIGATOR_COMPOSABLE_NAME = "Navigator"
 internal const val SCREEN_BUILDER = "ScreenBuilder"
 internal const val COMMON_CONTEXT = "CommonContext"
-internal const val NAV_HOST_CONTROLLER_LOCAL = "NavHostControllerLocal"
+internal const val LOCAL_NAV_HOST_CONTROLLER = "LocalNavHostController"
 
 internal val screenBuilderClass = ClassName(PACKAGE, SCREEN_BUILDER)
 internal val composableClass = ClassName("androidx.compose.runtime", "Composable")

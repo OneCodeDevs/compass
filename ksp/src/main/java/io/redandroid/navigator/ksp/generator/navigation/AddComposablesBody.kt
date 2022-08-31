@@ -5,7 +5,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import io.redandroid.navigator.ksp.decapitalize
 import io.redandroid.navigator.ksp.descriptions.DestinationDescription
-import io.redandroid.navigator.ksp.generator.NAV_HOST_CONTROLLER_LOCAL
+import io.redandroid.navigator.ksp.generator.LOCAL_NAV_HOST_CONTROLLER
 import io.redandroid.navigator.ksp.generator.contextName
 import io.redandroid.navigator.ksp.route
 
@@ -23,7 +23,7 @@ private fun DestinationDescription.toNavigationComposableCodeBlock(): CodeBlock 
 
 	return CodeBlock.builder()
 		.beginControlFlow("composable(route = %S)", route)
-		.addStatement("screenBuilder.%LComposable?.invoke(%L(%L.current, it))", destinationScreenName, contextName, NAV_HOST_CONTROLLER_LOCAL)
+		.addStatement("screenBuilder.%LComposable?.invoke(%L(%L.current, it))", destinationScreenName, contextName, LOCAL_NAV_HOST_CONTROLLER)
 		.endControlFlow()
 		.build()
 }

@@ -27,7 +27,7 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 	val fileSpec = FileSpec.builder(PACKAGE, NAVIGATOR_COMPOSABLE_NAME + fileSuffix)
 		.addImport("androidx.navigation.compose", *composeNavigationImports)
 		.addImport("androidx.compose.runtime", "CompositionLocalProvider", "compositionLocalOf")
-		.addImport("io.redandroid.navigator.runtime", NAV_HOST_CONTROLLER_LOCAL)
+		.addImport("io.redandroid.navigator.runtime", LOCAL_NAV_HOST_CONTROLLER)
 		.apply {
 			if (destinations.isNotEmpty()) {
 				addFunction(createNavigatorComposable(destinations))
