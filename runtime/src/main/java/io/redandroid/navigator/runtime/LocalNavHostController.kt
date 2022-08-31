@@ -1,0 +1,6 @@
+package io.redandroid.navigator.runtime
+
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.navigation.NavHostController
+
+lateinit var LocalNavHostController: ProvidableCompositionLocal<NavHostController>
