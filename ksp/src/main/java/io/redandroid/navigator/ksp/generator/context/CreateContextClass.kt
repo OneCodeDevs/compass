@@ -21,6 +21,7 @@ internal fun createContextClass(destination: DestinationDescription, parentName:
 
 	val commonContext = ClassName(PACKAGE, parentName)
 
+
 	return TypeSpec.classBuilder(destination.contextName)
 		.superclass(commonContext)
 		.addSuperclassConstructorParameter(navControllerParam)
@@ -44,13 +45,20 @@ internal fun createContextClass(destination: DestinationDescription, parentName:
 		.build()
 }
 
-private fun ParameterDescription.toParameterProperty(navBackStackEntryParam: String): PropertySpec =
-	PropertySpec.builder(name, ClassName("", type))
+private fun ParameterDescription.toParameterProperty(navBackStackEntryParam: String): PropertySpec {
+	val typeString = type.typeString()
+	val typeConverter = if (typeString == String::class.simpleName) {
+		""
+	} else {
+		"?.to${typeString}OrNull()"
+	}
+
+	return PropertySpec.builder(name, ClassName("", type))
 		.mutable(mutable = false)
 		.getter(
 			FunSpec.getterBuilder()
 				.addStatement(
-					"return %L.arguments?.getString(%S)?.to${type.typeString()}OrNull() ?: error(%S)",
+					"return %L.arguments?.getString(%S)$typeConverter ?: error(%S)",
 					navBackStackEntryParam,
 					name,
 					"Required parameter $name not provided"
@@ -58,6 +66,7 @@ private fun ParameterDescription.toParameterProperty(navBackStackEntryParam: Str
 				.build()
 		)
 		.build()
+}
 
 private fun NavigationTarget.toNavigationFunction(navControllerParam: String): FunSpec {
 	val paramsRoute = parameters.joinToString(separator = "/") { "\${${it.name}}" }
