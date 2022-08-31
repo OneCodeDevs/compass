@@ -1,4 +1,4 @@
-package io.redandroid.navigator.ksp
+package io.redandroid.navigator.ksp.discovery
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
@@ -8,6 +8,16 @@ import io.redandroid.navigator.api.Home
 import io.redandroid.navigator.api.Navigation
 import io.redandroid.navigator.api.Parameter
 import io.redandroid.navigator.api.SubGraph
+import io.redandroid.navigator.ksp.descriptions.DestinationDescription
+import io.redandroid.navigator.ksp.descriptions.NavigationTarget
+import io.redandroid.navigator.ksp.asClassDeclaration
+import io.redandroid.navigator.ksp.className
+import io.redandroid.navigator.ksp.filterAnnotations
+import io.redandroid.navigator.ksp.getDestinationName
+import io.redandroid.navigator.ksp.getParameterValue
+import io.redandroid.navigator.ksp.getSubGraphName
+import io.redandroid.navigator.ksp.isNavigable
+import io.redandroid.navigator.ksp.toParameterDescription
 
 class DestinationVisitor : KSVisitorVoid() {
 

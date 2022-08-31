@@ -6,13 +6,13 @@ import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import io.redandroid.navigator.api.Destination
 import io.redandroid.navigator.api.SubGraph
-import java.io.OutputStream
+import io.redandroid.navigator.ksp.descriptions.DestinationDescription
+import io.redandroid.navigator.ksp.descriptions.ParameterDescription
+import io.redandroid.navigator.ksp.descriptions.SubGraphDescription
+import io.redandroid.navigator.ksp.generator.SCREEN_BUILDER
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
-
-operator fun OutputStream.plusAssign(str: String) {
-	write("$str\n".toByteArray())
-}
 
 fun String.typeString(): String =
 	substring(lastIndexOf(".") + 1)
@@ -64,3 +64,12 @@ fun KSAnnotation.getDestinationName(classDeclaration: KSClassDeclaration): Strin
 
 fun KSAnnotation.getSubGraphName(classDeclaration: KSClassDeclaration): String =
 	getDesiredName(SubGraph::name, classDeclaration)
+
+fun String.decapitalize(): String =
+	replaceFirstChar { it.lowercase(Locale.getDefault()) }
+
+val SubGraphDescription.screenBuilderName: String
+	get() = "$name$SCREEN_BUILDER"
+
+fun List<DestinationDescription>.getNameOfHome(): String =
+	firstOrNull { it.isHome }?.name ?: error("Couldn't find a ${Destination::class.simpleName} marked as home")

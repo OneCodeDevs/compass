@@ -7,6 +7,10 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import io.redandroid.navigator.api.Destination
 import io.redandroid.navigator.api.SubGraph
+import io.redandroid.navigator.ksp.descriptions.DestinationDescription
+import io.redandroid.navigator.ksp.discovery.DestinationVisitor
+import io.redandroid.navigator.ksp.discovery.GraphVisitor
+import io.redandroid.navigator.ksp.generator.generateCode
 
 class GraphSymbolProcessor(
 	private val codeGenerator: CodeGenerator
@@ -24,15 +28,6 @@ class GraphSymbolProcessor(
 		}
 
 		val destinations = destinationVisitor.destinations
-		val home = destinations.filter { it.isHome }
-
-		val homeAmount = home.size
-		if (homeAmount > 1) {
-			val homeNames = home.joinToString { it.name }
-			error("Only one ${Destination::class.simpleName} is allowed to be marked as home. Found ${home.size}: $homeNames")
-		} else if (homeAmount == 0) {
-			error("No ${Destination::class.simpleName} was marked as home")
-		}
 
 		val subGraphSymbols = resolver.getSymbolsWithAnnotation(SubGraph::class.java.canonicalName)
 		val graphVisitor = GraphVisitor(destinations)
@@ -40,11 +35,28 @@ class GraphSymbolProcessor(
 			it.accept(graphVisitor, Unit)
 		}
 
+		val graph = graphVisitor.graph
+		graph.destinations.assertOneHome()
+		graph.subGraphs.forEach {
+			it.destinations.assertOneHome()
+		}
+
 		codeGenerator.generateCode(
-			graph = graphVisitor.graph,
+			graph = graph,
 			dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray())
 		)
 
 		return emptyList()
+	}
+
+	private fun List<DestinationDescription>.assertOneHome() {
+		val home = filter { it.isHome }
+		val homeAmount = home.size
+		if (homeAmount > 1) {
+			val homeNames = home.joinToString { it.name }
+			error("Only one ${Destination::class.simpleName} is allowed to be marked as home within a graph or sub graph. Found ${home.size}: $homeNames")
+		} else if (homeAmount == 0) {
+			error("No ${Destination::class.simpleName} was marked as home")
+		}
 	}
 }

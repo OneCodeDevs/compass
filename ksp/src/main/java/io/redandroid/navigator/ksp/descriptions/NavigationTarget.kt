@@ -1,4 +1,4 @@
-package io.redandroid.navigator.ksp
+package io.redandroid.navigator.ksp.descriptions
 
 data class NavigationTarget(
 	val name: String,
