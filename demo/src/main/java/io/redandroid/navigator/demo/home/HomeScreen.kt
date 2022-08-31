@@ -10,7 +10,7 @@ import kotlin.random.Random
 @Composable
 fun HomeScreen(
 	onRandom: (Int) -> Unit,
-	onWizard: () -> Unit
+	onWizard: (String) -> Unit
 ) {
 	Column(verticalArrangement = Arrangement.SpaceBetween) {
 		Button(
@@ -21,7 +21,7 @@ fun HomeScreen(
 		) {
 			Text(text = "Random")
 		}
-		Button(onClick = { onWizard() }) {
+		Button(onClick = { onWizard("Call the Wizard") }) {
 			Text(text = "Wizard")
 		}
 	}

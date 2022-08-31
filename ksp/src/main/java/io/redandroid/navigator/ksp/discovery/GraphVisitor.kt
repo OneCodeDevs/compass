@@ -41,7 +41,6 @@ class GraphVisitor(private val destinationDescriptions: List<DestinationDescript
 
 		subGraphs += SubGraphDescription(
 			name = subGraphName,
-			parameters = emptyList(), // TODO support parameters,
 			destinations = destinationsInSubGraph
 		)
 	}

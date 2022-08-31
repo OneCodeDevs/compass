@@ -7,6 +7,7 @@ import io.redandroid.navigator.ksp.decapitalize
 import io.redandroid.navigator.ksp.descriptions.DestinationDescription
 import io.redandroid.navigator.ksp.generator.NAV_HOST_CONTROLLER_LOCAL
 import io.redandroid.navigator.ksp.generator.contextName
+import io.redandroid.navigator.ksp.route
 
 internal fun FunSpec.Builder.addComposablesBody(destinations: List<DestinationDescription>, screenBuilderClass: ClassName): FunSpec.Builder {
 	addStatement("val screenBuilder = %L()", screenBuilderClass.simpleName)
@@ -18,12 +19,10 @@ internal fun FunSpec.Builder.addComposablesBody(destinations: List<DestinationDe
 }
 
 private fun DestinationDescription.toNavigationComposableCodeBlock(): CodeBlock {
-	val params = parameters.joinToString("/") { "{${it.name}}" }
-	val paramSuffix = if (params.isNotBlank()) "/$params" else ""
 	val destinationScreenName = name.decapitalize()
 
 	return CodeBlock.builder()
-		.beginControlFlow("composable(route = %S)", name + paramSuffix)
+		.beginControlFlow("composable(route = %S)", route)
 		.addStatement("screenBuilder.%LComposable?.invoke(%L(%L.current, it))", destinationScreenName, contextName, NAV_HOST_CONTROLLER_LOCAL)
 		.endControlFlow()
 		.build()

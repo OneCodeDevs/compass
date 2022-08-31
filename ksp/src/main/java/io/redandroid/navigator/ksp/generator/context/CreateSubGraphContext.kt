@@ -9,10 +9,16 @@ import io.redandroid.navigator.ksp.descriptions.SubGraphDescription
 import io.redandroid.navigator.ksp.generator.COMMON_CONTEXT
 import io.redandroid.navigator.ksp.generator.PACKAGE
 import io.redandroid.navigator.ksp.generator.navHostControllerClass
+import io.redandroid.navigator.ksp.getHome
+import io.redandroid.navigator.ksp.routeParameterSuffix
 
-fun createSubGraphContext(subGraphDescription: SubGraphDescription): TypeSpec {
+fun createSubGraphContext(subGraph: SubGraphDescription): TypeSpec {
 	val navControllerParam = "navHostController"
-	return TypeSpec.classBuilder("${subGraphDescription.name}$COMMON_CONTEXT")
+
+	val destinations = subGraph.destinations
+	val subGraphHome = destinations.getHome()
+
+	return TypeSpec.classBuilder("${subGraph.name}$COMMON_CONTEXT")
 		.superclass(ClassName(PACKAGE, COMMON_CONTEXT))
 		.addSuperclassConstructorParameter(navControllerParam)
 		.addModifiers(KModifier.ABSTRACT)
@@ -24,7 +30,7 @@ fun createSubGraphContext(subGraphDescription: SubGraphDescription): TypeSpec {
 		.addProperty(PropertySpec.builder(navControllerParam, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParam).build())
 		.addFunction(
 			FunSpec.builder("leaveSubGraph")
-				.addStatement("%L.popBackStack(route = %S, inclusive = true)", navControllerParam, subGraphDescription.name)
+				.addStatement("%L.popBackStack(route = %S, inclusive = true)", navControllerParam, subGraph.name + subGraphHome.routeParameterSuffix)
 				.build()
 		)
 		.build()

@@ -55,6 +55,7 @@ private fun NavGraphBuilder.attachWizardSubGraph() {
 	wizardSubGraph {
 		wizardScreen1Screen {
 			WizardScreen1(
+				wizardInput = input,
 				onToScreen2 = ::navigateToWizardScreen2
 			)
 		}
