@@ -33,6 +33,11 @@ jobs:
         with:
           name: navigator-api
           path: api/build/libs/api.jar
+      - name: Upload Runtime
+        uses: actions/upload-artifact@v1
+        with:
+          name: navigator-runtime
+          path: runtime/build/outputs/aar/runtime-release.aar
       - name: Upload KSP
         uses: actions/upload-artifact@v1
         with:
