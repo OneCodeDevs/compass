@@ -55,7 +55,7 @@ class GraphSymbolProcessor(
 		if (homeAmount > 1) {
 			val homeNames = home.joinToString { it.name }
 			error("Only one ${Destination::class.simpleName} is allowed to be marked as home within a graph or sub graph. Found ${home.size}: $homeNames")
-		} else if (homeAmount == 0) {
+		} else if (homeAmount == 0 && isNotEmpty()) {
 			error("No ${Destination::class.simpleName} was marked as home")
 		}
 	}
