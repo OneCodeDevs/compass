@@ -31,7 +31,8 @@ private val navHostControllerClass = ClassName("androidx.navigation", "NavHostCo
 private val navBackStackEntryClass = ClassName("androidx.navigation", "NavBackStackEntry")
 private val rememberNavControllerName = MemberName("androidx.navigation.compose", "rememberNavController")
 
-fun CodeGenerator.generateCode(destinations: List<DestinationDescription>, dependencies: Dependencies) {
+fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependencies) {
+	val destinations = graph.destinations
 
 	val home = destinations.firstOrNull { it.isHome }?.name ?: error("Couldn't find a ${Destination::class.simpleName} marked as home")
 

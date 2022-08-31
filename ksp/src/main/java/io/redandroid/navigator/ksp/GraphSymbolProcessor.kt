@@ -6,6 +6,7 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import io.redandroid.navigator.api.Destination
+import io.redandroid.navigator.api.SubGraph
 
 class GraphSymbolProcessor(
 	private val codeGenerator: CodeGenerator
@@ -33,8 +34,14 @@ class GraphSymbolProcessor(
 			error("No ${Destination::class.simpleName} was marked as home")
 		}
 
+		val subGraphSymbols = resolver.getSymbolsWithAnnotation(SubGraph::class.java.canonicalName)
+		val graphVisitor = GraphVisitor(destinations)
+		subGraphSymbols.forEach {
+			it.accept(graphVisitor, Unit)
+		}
+
 		codeGenerator.generateCode(
-			destinations = destinations,
+			graph = graphVisitor.graph,
 			dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray())
 		)
 

@@ -31,9 +31,8 @@ fun Main() {
 	Navigator {
 		homeScreen {
 			HomeScreen(
-				onRandom = {
-					navigateToDetails(it)
-				}
+				onRandom = ::navigateToDetails,
+				onWizard = ::navigateToWizard
 			)
 		}
 

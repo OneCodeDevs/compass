@@ -1,6 +1,5 @@
 package io.redandroid.navigator.ksp
 
-import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
@@ -8,6 +7,7 @@ import io.redandroid.navigator.api.Destination
 import io.redandroid.navigator.api.Home
 import io.redandroid.navigator.api.Navigation
 import io.redandroid.navigator.api.Parameter
+import io.redandroid.navigator.api.SubGraph
 
 class DestinationVisitor : KSVisitorVoid() {
 
@@ -16,51 +16,39 @@ class DestinationVisitor : KSVisitorVoid() {
 		get() = _destinations.toList()
 
 	override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-		val classAnnotations = classDeclaration.annotations.toList()
-
-		val destination = classAnnotations.filterAnnotation(Destination::class).firstOrNull()
+		val destination = classDeclaration.filterAnnotations(Destination::class).firstOrNull()
 			?: error("Could not find annotation ${Destination::name} on ${classDeclaration.className}")
-		val isHome = classAnnotations.filterAnnotation(Home::class).isNotEmpty()
+		val isHome = classDeclaration.filterAnnotations(Home::class).iterator().hasNext()
 		val destinationName = destination.getDestinationName(classDeclaration)
 
-		val navTargets = classAnnotations.filterAnnotation(Navigation::class)
+		val navTargets = classDeclaration.filterAnnotations(Navigation::class)
 			.map { navigationAnnotation ->
 				val target = navigationAnnotation.getParameterValue<KSType>(Navigation::to.name, classDeclaration)
-				if (!target.isDestination) {
-					error("Navigation target $target is not annotated with ${Destination::class.qualifiedName}")
+				if (!target.isNavigable) {
+					error("Navigation target $target is not navigable. It has to be annotated with ${Destination::class.qualifiedName} or ${SubGraph::class.qualifiedName}")
 				}
-				val targetClassDeclaration = target.declaration as? KSClassDeclaration
-					?: error("Navigation target has to be a class, an interface or an object")
-
-				val targetParameters = target.declaration.annotations.filterAnnotation(Parameter::class)
-
-				val targetDestination = target.declaration.annotations.filterAnnotation(Destination::class).firstOrNull()
+				val targetClassDeclaration = target.asClassDeclaration()
+				val targetParameters = target.filterAnnotations(Parameter::class)
+				val targetName = target.filterAnnotations(Destination::class).firstOrNull()?.getDestinationName(targetClassDeclaration)
+					?: target.filterAnnotations(SubGraph::class).firstOrNull()?.getSubGraphName(targetClassDeclaration)
 					?: error("Navigation target has to be annotated with ${Destination::name}")
 
 				NavigationTarget(
-					name = targetDestination.getDestinationName(targetClassDeclaration),
+					name = targetName,
 					parameters = targetParameters.map { it.toParameterDescription(classDeclaration) }.toList()
 				)
 			}
 
-		val parameters = classAnnotations.filterAnnotation(Parameter::class)
+		val parameters = classDeclaration.filterAnnotations(Parameter::class)
 			.map { parameterAnnotation ->
 				parameterAnnotation.toParameterDescription(classDeclaration)
 			}
 
 		_destinations += DestinationDescription(
 			name = destinationName,
-			parameters = parameters,
-			navigationTargets = navTargets,
+			parameters = parameters.toList(),
+			navigationTargets = navTargets.toList(),
 			isHome = isHome
 		)
-	}
-
-	private fun KSAnnotation.getDestinationName(classDeclaration: KSClassDeclaration): String {
-		val annotatedDestinationName = getParameterValue<String>(Destination::name.name, classDeclaration)
-
-		return annotatedDestinationName.ifEmpty {
-			classDeclaration.className
-		}
 	}
 }
