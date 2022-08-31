@@ -5,7 +5,6 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 import io.redandroid.navigator.ksp.descriptions.GraphDescription
-import io.redandroid.navigator.ksp.generator.context.createCommonContext
 import io.redandroid.navigator.ksp.generator.context.createContextClass
 import io.redandroid.navigator.ksp.generator.context.createSubGraphContext
 import io.redandroid.navigator.ksp.generator.navigation.createNavigatorComposable
@@ -27,7 +26,7 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 	val fileSpec = FileSpec.builder(PACKAGE, NAVIGATOR_COMPOSABLE_NAME + fileSuffix)
 		.addImport("androidx.navigation.compose", *composeNavigationImports)
 		.addImport("androidx.compose.runtime", "CompositionLocalProvider", "compositionLocalOf")
-		.addImport("io.redandroid.navigator.runtime", LOCAL_NAV_HOST_CONTROLLER)
+		.addImport("io.redandroid.navigator.runtime", LOCAL_NAV_HOST_CONTROLLER, COMMON_CONTEXT)
 		.apply {
 			if (destinations.isNotEmpty()) {
 				addFunction(createNavigatorComposable(destinations))
@@ -46,7 +45,6 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 				}
 			}
 		}
-		.addType(createCommonContext())
 		.build()
 
 	fileSpec.writeTo(codeGenerator = this, dependencies)
