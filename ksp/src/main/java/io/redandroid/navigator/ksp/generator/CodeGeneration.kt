@@ -11,6 +11,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import io.redandroid.navigator.ksp.descriptions.GraphDescription
 import io.redandroid.navigator.ksp.generator.context.createCommonContext
 import io.redandroid.navigator.ksp.generator.context.createContextClass
+import io.redandroid.navigator.ksp.generator.context.createSubGraphContext
 import io.redandroid.navigator.ksp.generator.navigation.createNavigatorComposable
 import io.redandroid.navigator.ksp.generator.navigation.createSubGraphFunction
 import io.redandroid.navigator.ksp.generator.screenbuilder.createScreenBuilder
@@ -57,8 +58,14 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 		}
 		.addType(createCommonContext())
 		.apply {
-			(destinations + subGraphs.flatMap { it.destinations }).forEach { destination ->
-				addType(createContextClass(destination))
+			destinations.forEach { destination ->
+				addType(createContextClass(destination, COMMON_CONTEXT))
+			}
+			subGraphs.forEach { subGraph ->
+				addType(createSubGraphContext(subGraph))
+				subGraph.destinations.forEach { subGraphDestination ->
+					addType(createContextClass(subGraphDestination, "${subGraph.name}$COMMON_CONTEXT"))
+				}
 			}
 		}.build()
 

@@ -9,18 +9,17 @@ import com.squareup.kotlinpoet.TypeSpec
 import io.redandroid.navigator.ksp.descriptions.DestinationDescription
 import io.redandroid.navigator.ksp.descriptions.NavigationTarget
 import io.redandroid.navigator.ksp.descriptions.ParameterDescription
-import io.redandroid.navigator.ksp.generator.COMMON_CONTEXT
 import io.redandroid.navigator.ksp.generator.PACKAGE
 import io.redandroid.navigator.ksp.generator.contextName
 import io.redandroid.navigator.ksp.generator.navBackStackEntryClass
 import io.redandroid.navigator.ksp.generator.navHostControllerClass
 import io.redandroid.navigator.ksp.typeString
 
-internal fun createContextClass(destination: DestinationDescription): TypeSpec {
+internal fun createContextClass(destination: DestinationDescription, parentName: String): TypeSpec {
 	val navControllerParam = "navHostController"
 	val navBackStackEntryParam = "navBackStackEntry"
 
-	val commonContext = ClassName(PACKAGE, COMMON_CONTEXT)
+	val commonContext = ClassName(PACKAGE, parentName)
 
 	return TypeSpec.classBuilder(destination.contextName)
 		.superclass(commonContext)

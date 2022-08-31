@@ -59,9 +59,9 @@ private fun NavGraphBuilder.attachWizardSubGraph() {
 			)
 		}
 		wizardScreen2Screen {
-			WizardScreen2 {
-				// TODO add leave
-			}
+			WizardScreen2(
+				onLeave = ::leaveSubGraph
+			)
 		}
 	}
 }
