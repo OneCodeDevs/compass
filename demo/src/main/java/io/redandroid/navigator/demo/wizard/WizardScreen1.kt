@@ -7,9 +7,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun WizardScreen1(onToScreen2: () -> Unit) {
+fun WizardScreen1(wizardInput: String, onToScreen2: () -> Unit) {
 	Column(verticalArrangement = Arrangement.SpaceEvenly) {
 		Text(text = "Screen 1")
+		Text(text = wizardInput)
 		Button(onClick = { onToScreen2() }) {
 			Text(text = "To screen 2")
 		}

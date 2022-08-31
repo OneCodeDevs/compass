@@ -9,7 +9,9 @@ import io.redandroid.navigator.ksp.decapitalize
 import io.redandroid.navigator.ksp.descriptions.SubGraphDescription
 import io.redandroid.navigator.ksp.generator.PACKAGE
 import io.redandroid.navigator.ksp.generator.navGraphBuilderClass
-import io.redandroid.navigator.ksp.getNameOfHome
+import io.redandroid.navigator.ksp.getHome
+import io.redandroid.navigator.ksp.route
+import io.redandroid.navigator.ksp.routeParameterSuffix
 import io.redandroid.navigator.ksp.screenBuilderName
 
 internal fun createSubGraphFunction(subGraph: SubGraphDescription): FunSpec {
@@ -19,12 +21,12 @@ internal fun createSubGraphFunction(subGraph: SubGraphDescription): FunSpec {
 	val screenBuilderParam = ParameterSpec.builder("builder", screenBuilderLambda).build()
 
 	val destinations = subGraph.destinations
-	val subGraphHome = destinations.getNameOfHome()
+	val subGraphHome = destinations.getHome()
 
 	return FunSpec.builder("${subGraph.name.decapitalize()}SubGraph")
 		.receiver(navGraphBuilderClass)
 		.addParameter(screenBuilderParam)
-		.beginControlFlow("navigation(startDestination = %S, route = %S)", subGraphHome, subGraph.name)
+		.beginControlFlow("navigation(startDestination = %S, route = %S)", subGraphHome.route, subGraph.name + subGraphHome.routeParameterSuffix)
 		.addComposablesBody(destinations, subGraphScreenBuilderClass)
 		.endControlFlow()
 		.build()

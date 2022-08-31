@@ -71,5 +71,17 @@ fun String.decapitalize(): String =
 val SubGraphDescription.screenBuilderName: String
 	get() = "$name$SCREEN_BUILDER"
 
+fun List<DestinationDescription>.getHome(): DestinationDescription  =
+	firstOrNull { it.isHome } ?: error("Couldn't find a ${Destination::class.simpleName} marked as home")
+
 fun List<DestinationDescription>.getNameOfHome(): String =
-	firstOrNull { it.isHome }?.name ?: error("Couldn't find a ${Destination::class.simpleName} marked as home")
+	getHome().name
+
+val DestinationDescription.route: String
+	get() = name + routeParameterSuffix
+
+val DestinationDescription.routeParameterSuffix: String
+	get() {
+		val params = parameters.joinToString("/") { "{${it.name}}" }
+		return if (params.isNotBlank()) "/$params" else ""
+	}
