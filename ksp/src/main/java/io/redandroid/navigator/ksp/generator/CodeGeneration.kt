@@ -2,11 +2,7 @@ package io.redandroid.navigator.ksp.generator
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.ksp.writeTo
 import io.redandroid.navigator.ksp.descriptions.GraphDescription
 import io.redandroid.navigator.ksp.generator.context.createCommonContext
@@ -16,22 +12,10 @@ import io.redandroid.navigator.ksp.generator.navigation.createNavigatorComposabl
 import io.redandroid.navigator.ksp.generator.navigation.createSubGraphFunction
 import io.redandroid.navigator.ksp.generator.screenbuilder.createScreenBuilder
 import io.redandroid.navigator.ksp.generator.screenbuilder.createSubGraphBuilder
-import io.redandroid.navigator.ksp.getNameOfHome
 
 fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependencies) {
 	val destinations = graph.destinations
 	val subGraphs = graph.subGraphs
-
-	val home = destinations.getNameOfHome()
-
-	val startDestinationProperty = PropertySpec.builder(START_DESTINATION, String::class).addModifiers(KModifier.PRIVATE).initializer("%S", home).mutable(mutable = false).build()
-	val navHostControllerLocalProperty = PropertySpec.builder(
-		NAV_HOST_CONTROLLER_LOCAL,
-		ClassName("androidx.compose.runtime", "ProvidableCompositionLocal").parameterizedBy(navHostControllerClass),
-		KModifier.LATEINIT, KModifier.PRIVATE
-	)
-		.mutable(mutable = true)
-		.build()
 
 	val composeNavigationImports = listOfNotNull(
 		"NavHost",
@@ -39,35 +23,31 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 		if (subGraphs.isNotEmpty()) "navigation" else null
 	).toTypedArray()
 
-	val fileSpec = FileSpec.builder(PACKAGE, NAVIGATOR_COMPOSABLE_NAME)
+	val fileSuffix = (destinations + subGraphs.map { it.destinations }).hashCode().toString()
+	val fileSpec = FileSpec.builder(PACKAGE, NAVIGATOR_COMPOSABLE_NAME + fileSuffix)
 		.addImport("androidx.navigation.compose", *composeNavigationImports)
 		.addImport("androidx.compose.runtime", "CompositionLocalProvider", "compositionLocalOf")
-		.addProperty(startDestinationProperty)
-		.addProperty(navHostControllerLocalProperty)
-		.addFunction(createNavigatorComposable(destinations))
+		.addImport("io.redandroid.navigator.runtime", NAV_HOST_CONTROLLER_LOCAL)
 		.apply {
-			subGraphs.forEach { subGraph ->
-				addFunction(createSubGraphFunction(subGraph))
+			if (destinations.isNotEmpty()) {
+				addFunction(createNavigatorComposable(destinations))
+				addType(createScreenBuilder(destinations))
 			}
-		}
-		.addType(createScreenBuilder(destinations))
-		.apply {
-			subGraphs.forEach { subGraph ->
-				addType(createSubGraphBuilder(subGraph))
-			}
-		}
-		.addType(createCommonContext())
-		.apply {
+
 			destinations.forEach { destination ->
 				addType(createContextClass(destination, COMMON_CONTEXT))
 			}
 			subGraphs.forEach { subGraph ->
+				addFunction(createSubGraphFunction(subGraph))
+				addType(createSubGraphBuilder(subGraph))
 				addType(createSubGraphContext(subGraph))
 				subGraph.destinations.forEach { subGraphDestination ->
 					addType(createContextClass(subGraphDestination, "${subGraph.name}$COMMON_CONTEXT"))
 				}
 			}
-		}.build()
+		}
+		.addType(createCommonContext())
+		.build()
 
 	fileSpec.writeTo(codeGenerator = this, dependencies)
 }

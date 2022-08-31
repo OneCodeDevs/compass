@@ -1,5 +1,5 @@
 package io.redandroid.navigator.api
 
 @Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.BINARY)
 annotation class Home
