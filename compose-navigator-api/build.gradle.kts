@@ -54,7 +54,7 @@ publishing {
 
 			groupId = "de.onecode"
 			artifactId = "compose-navigator-api"
-			version = "1.0.0"
+			version = libs.versions.compose.navigator.get()
 
 			from(components["kotlin"])
 			artifact(tasks["sourcesJar"])

@@ -95,7 +95,7 @@ publishing {
 
 			groupId = "de.onecode"
 			artifactId = "compose-navigator-runtime"
-			version = "1.0.0"
+			version = libs.versions.compose.navigator.get()
 
 			artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
 			artifact(sourcesJar)

@@ -1,10 +1,13 @@
 [versions]
+compose-navigator = "1.0.0"
+
 java = "11"
 kotlin = "1.8.21"
 
 android-plugin = "7.4.2"
 compose-bom = "2023.05.01"
 compose-navigation = "2.5.3"
+compose-compiler = "1.4.7"
 android-core = "1.10.1"
 android-lifecycle-runtime = "2.6.1"
 android-activity-compose = "1.7.1"

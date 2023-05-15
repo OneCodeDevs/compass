@@ -33,7 +33,7 @@ android {
 		compose = true
 	}
 	composeOptions {
-		kotlinCompilerExtensionVersion = "1.4.7"
+		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
 	}
 	sourceSets.configureEach {
 		kotlin.srcDir("$buildDir/generated/ksp/$name/kotlin/")
