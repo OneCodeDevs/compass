@@ -1,0 +1,37 @@
+[versions]
+java = "11"
+kotlin = "1.8.21"
+
+android-plugin = "7.4.2"
+compose-bom = "2023.05.01"
+compose-navigation = "2.5.3"
+android-core = "1.10.1"
+android-lifecycle-runtime = "2.6.1"
+android-activity-compose = "1.7.1"
+
+ksp = "1.8.21-1.0.11"
+kotlinpoet = "1.13.2"
+
+[libraries]
+android-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "android-core" }
+android-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "android-lifecycle-runtime" }
+android-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "android-activity-compose" }
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+ksp-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
+kotlinpoet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoet" }
+
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
