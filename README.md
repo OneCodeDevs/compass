@@ -1,6 +1,20 @@
-# Navigator
+# Compose Navigator
 
 This navigator library offers a KSP API to generate needed boiler plate code for Jetpack Compose Navigation, when going full Compose with your app.
+
+## Setup
+
+You can get the Compose Navigator from Maven Central
+
+Latest version: **1.0.0**
+
+```Gradle.kts
+implementation("de.onecode:compose-navigator-api:$compose_navigator_version")
+implementation("de.onecode:compose-navigator-runtime:$compose_navigator_version")
+ksp("de.onecode:compose-navigator-ksp:$compose_navigator_version")
+```
+
+Supported KSP version for 1.0.0: **1.8.21-1.0.11**
 
 ## API
 
