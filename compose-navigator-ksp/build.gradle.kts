@@ -9,7 +9,10 @@ plugins {
 }
 
 val properties = Properties()
-properties.load(project.rootProject.file("local.properties").inputStream())
+val localProperties = project.rootProject.file("local.properties")
+if (localProperties.exists()) {
+	properties.load(localProperties.inputStream())
+}
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_11
