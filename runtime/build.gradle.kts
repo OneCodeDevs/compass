@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-	namespace = "io.redandroid.navigator.runtime"
+	namespace = "de.oencode.navigator.runtime"
 	compileSdk = 33
 
 	defaultConfig {

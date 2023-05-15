@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-	namespace = "io.redandroid.navigator.demo"
+	namespace = "de.onecode.navigator.demo"
 	compileSdk = 33
 
 	defaultConfig {
-		applicationId = "io.redandroid.navigator.demo"
+		applicationId = "de.onecode.navigator.demo"
 		minSdk = 21
 		targetSdk = 33
 		versionCode = 1

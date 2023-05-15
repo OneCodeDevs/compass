@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-	namespace = "io.redandroid.navigator.demo.wizard"
+	namespace = "de.onecode.navigator.demo.wizard"
 	compileSdk = 33
 
 	defaultConfig {
