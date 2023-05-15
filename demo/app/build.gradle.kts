@@ -64,9 +64,9 @@ dependencies {
 	implementation(libs.compose.navigation)
 
 	implementation(project(":demo:wizard"))
-	implementation(project(":api"))
-	implementation(project(":runtime"))
-	ksp(project(":ksp"))
+	implementation(project(":compose-navigator-api"))
+	implementation(project(":compose-navigator-runtime"))
+	ksp(project(":compose-navigator-ksp"))
 
 	debugImplementation(libs.compose.ui.tooling)
 	debugImplementation(libs.compose.ui.test.manifest)

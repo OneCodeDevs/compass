@@ -47,7 +47,7 @@ dependencies {
 	implementation(libs.compose.material3)
 	implementation(libs.compose.navigation)
 
-	implementation(project(":api"))
-	implementation(project(":runtime"))
-	ksp(project(":ksp"))
+	implementation(project(":compose-navigator-api"))
+	implementation(project(":compose-navigator-runtime"))
+	ksp(project(":compose-navigator-ksp"))
 }

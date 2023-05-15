@@ -3,6 +3,7 @@ pluginManagement {
 		gradlePluginPortal()
 		google()
 		mavenCentral()
+		mavenLocal()
 	}
 }
 dependencyResolutionManagement {
@@ -10,11 +11,12 @@ dependencyResolutionManagement {
 	repositories {
 		google()
 		mavenCentral()
+		mavenLocal()
 	}
 }
 rootProject.name = "Compose Navigator"
 include ':demo:app'
-include ':api'
-include ':ksp'
 include ':demo:wizard'
-include ':runtime'
+include ':compose-navigator-api'
+include ':compose-navigator-ksp'
+include ':compose-navigator-runtime'
