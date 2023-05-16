@@ -5,14 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.redandroid.navigator.Navigator
 import de.onecode.navigator.demo.details.DetailsScreen
 import de.onecode.navigator.demo.home.HomeScreen
 import de.onecode.navigator.demo.ui.theme.NavGraphConfigComposeTheme
 import de.onecode.navigator.demo.wizard.attachWizardSubGraph
+import io.redandroid.navigator.Navigator
 
 class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,21 +30,25 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Main() {
-	Navigator {
-		homeScreen {
-			HomeScreen(
-				onRandom = ::navigateToDetails,
-				onWizard = ::navigateToWizard
-			)
-		}
+	Scaffold { scaffoldPadding ->
+		Navigator(
+			modifier = Modifier.padding(scaffoldPadding)
+		) { navGraphBuilder ->
+			homeScreen {
+				HomeScreen(
+					onRandom = ::navigateToDetails,
+					onWizard = ::navigateToWizard
+				)
+			}
 
-		detailsScreen {
-			DetailsScreen(
-				number = myParam,
-				onBack = ::popBackStack
-			)
-		}
+			detailsScreen {
+				DetailsScreen(
+					number = myParam,
+					onBack = ::popBackStack
+				)
+			}
 
-		it.attachWizardSubGraph()
+			navGraphBuilder.attachWizardSubGraph()
+		}
 	}
 }

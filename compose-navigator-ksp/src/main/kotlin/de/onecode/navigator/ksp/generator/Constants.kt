@@ -13,6 +13,7 @@ internal const val LOCAL_NAV_HOST_CONTROLLER = "LocalNavHostController"
 internal val screenBuilderClass = ClassName(PACKAGE, SCREEN_BUILDER)
 internal val composableClass = ClassName("androidx.compose.runtime", "Composable")
 internal val composeAnnotation = AnnotationSpec.builder(composableClass).build()
+internal val composeModifier = ClassName("androidx.compose.ui", "Modifier")
 internal val navHostControllerClass = ClassName("androidx.navigation", "NavHostController")
 internal val navBackStackEntryClass = ClassName("androidx.navigation", "NavBackStackEntry")
 internal val navGraphBuilderClass = ClassName("androidx.navigation", "NavGraphBuilder")
