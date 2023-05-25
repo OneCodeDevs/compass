@@ -10,6 +10,7 @@ import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeSpec
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.generator.REGISTER_CURRENT_DESTINATION_LISTENER
+import de.onecode.navigator.ksp.generator.common.toNavigationFunction
 import de.onecode.navigator.ksp.generator.composeAnnotation
 import de.onecode.navigator.ksp.generator.derivedStateOfName
 import de.onecode.navigator.ksp.generator.disposableEffectName
@@ -54,6 +55,15 @@ fun createNavigatorController(destinations: List<DestinationDescription>): TypeS
 		.apply {
 			destinations.topDestinations.forEach { topDestination ->
 				addFunction(createCurrentDestinationFunction(topDestination, mutableCurrentDestinationState))
+				addFunction(topDestination.toNavigationFunction(navController) {
+					beginControlFlow("popUpTo(%S)", destinations.getNameOfHome())
+						.apply {
+							if (topDestination.isHome) {
+								addStatement("inclusive = true")
+							}
+						}
+					endControlFlow()
+				})
 			}
 		}
 		.build()
