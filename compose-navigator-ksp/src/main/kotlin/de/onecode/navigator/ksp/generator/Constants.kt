@@ -25,3 +25,4 @@ internal val rememberNavControllerName = MemberName("androidx.navigation.compose
 internal val mutableStateClass = ClassName("androidx.compose.runtime", "MutableState")
 internal val stateClass = ClassName("androidx.compose.runtime", "State")
 internal val mutableStateOfName = MemberName("androidx.compose.runtime", "mutableStateOf")
+internal val derivedStateOfName = MemberName("androidx.compose.runtime", "derivedStateOf")

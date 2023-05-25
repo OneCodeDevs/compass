@@ -14,6 +14,7 @@ import de.onecode.navigator.ksp.generator.contextName
 import de.onecode.navigator.ksp.generator.navBackStackEntryClass
 import de.onecode.navigator.ksp.generator.navHostControllerClass
 import de.onecode.navigator.ksp.typeString
+import java.util.Locale
 
 internal fun createContextClass(destination: DestinationDescription, parentName: String): TypeSpec {
 	val navControllerParam = "navHostController"
@@ -71,7 +72,8 @@ private fun ParameterDescription.toParameterProperty(navBackStackEntryParam: Str
 private fun NavigationTarget.toNavigationFunction(navControllerParam: String): FunSpec {
 	val paramsRoute = parameters.joinToString(separator = "/") { "\${${it.name}}" }
 	val paramsRouteWithSlash = if (paramsRoute.isNotBlank()) "/$paramsRoute" else ""
-	return FunSpec.builder("navigateTo${name}")
+	val nameCapitalized = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+	return FunSpec.builder("navigateTo$nameCapitalized")
 		.apply {
 			this@toNavigationFunction.parameters.forEach { navigationParameter ->
 				val parameterType = ClassName("", navigationParameter.type)
