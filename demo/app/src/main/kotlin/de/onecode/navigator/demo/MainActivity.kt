@@ -16,13 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import de.onecode.navigator.Navigator
 import de.onecode.navigator.demo.details.DetailsScreen
 import de.onecode.navigator.demo.home.HomeScreen
 import de.onecode.navigator.demo.home.SubHomeScreen
 import de.onecode.navigator.demo.ui.theme.NavGraphConfigComposeTheme
 import de.onecode.navigator.demo.wizard.attachWizardSubGraph
-import io.redandroid.navigator.Navigator
-import io.redandroid.navigator.rememberNavigatorController
+import de.onecode.navigator.rememberNavigatorController
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {

@@ -4,7 +4,7 @@ import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.MemberName
 
-internal const val PACKAGE = "io.redandroid.navigator"
+internal const val PACKAGE = "de.onecode.navigator"
 internal const val NAVIGATOR_COMPOSABLE_NAME = "Navigator"
 internal const val NAVIGATOR_CONTROLLER_COMPOSABLE_NAME = "NavigatorController"
 internal const val REGISTER_CURRENT_DESTINATION_LISTENER = "RegisterCurrentDestinationListener"
