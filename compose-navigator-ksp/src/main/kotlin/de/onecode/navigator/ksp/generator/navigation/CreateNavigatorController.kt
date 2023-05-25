@@ -9,12 +9,15 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeSpec
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
+import de.onecode.navigator.ksp.generator.REGISTER_CURRENT_DESTINATION_LISTENER
 import de.onecode.navigator.ksp.generator.composeAnnotation
 import de.onecode.navigator.ksp.generator.derivedStateOfName
+import de.onecode.navigator.ksp.generator.disposableEffectName
 import de.onecode.navigator.ksp.generator.mutableStateClass
 import de.onecode.navigator.ksp.generator.mutableStateOfName
 import de.onecode.navigator.ksp.generator.navHostControllerClass
 import de.onecode.navigator.ksp.generator.navigatorControllerClass
+import de.onecode.navigator.ksp.generator.onDestinationChangedListenerClass
 import de.onecode.navigator.ksp.generator.rememberName
 import de.onecode.navigator.ksp.generator.stateClass
 import de.onecode.navigator.ksp.getNameOfHome
@@ -22,6 +25,7 @@ import java.util.Locale
 
 fun createNavigatorController(destinations: List<DestinationDescription>): TypeSpec {
 	val navControllerParameterName = "navController"
+	val navController = PropertySpec.builder(navControllerParameterName, navHostControllerClass, KModifier.INTERNAL).initializer(navControllerParameterName).build()
 
 	val nullableString = STRING.copy(nullable = true)
 	val mutableCurrentDestinationState = PropertySpec.builder("_currentDestinationName", mutableStateClass.parameterizedBy(nullableString), KModifier.PRIVATE)
@@ -36,20 +40,42 @@ fun createNavigatorController(destinations: List<DestinationDescription>): TypeS
 		.initializer("%N", mutableCurrentDestinationState)
 		.build()
 
+
 	return TypeSpec.classBuilder(navigatorControllerClass)
 		.primaryConstructor(
 			FunSpec.constructorBuilder()
 				.addParameter(navControllerParameterName, navHostControllerClass)
 				.build()
 		)
-		.addProperty(PropertySpec.builder(navControllerParameterName, navHostControllerClass, KModifier.INTERNAL).initializer(navControllerParameterName).build())
+		.addProperty(navController)
 		.addProperty(mutableCurrentDestinationState)
 		.addProperty(currentDestinationState)
+		.addFunction(createRegisterCurrentDestinationListenerFunction(navController, mutableCurrentDestinationState))
 		.apply {
 			destinations.topDestinations.forEach { topDestination ->
 				addFunction(createCurrentDestinationFunction(topDestination, mutableCurrentDestinationState))
 			}
 		}
+		.build()
+}
+
+private fun createRegisterCurrentDestinationListenerFunction(navController: PropertySpec, mutableCurrentDestinationState: PropertySpec): FunSpec {
+	val listenerVariableName = "listener"
+	return FunSpec.builder(REGISTER_CURRENT_DESTINATION_LISTENER)
+		.addAnnotation(composeAnnotation)
+		.beginControlFlow("%M(key1 = %N)", disposableEffectName, navController)
+		.addCode(
+			CodeBlock.builder()
+				.addStatement("val %L = %T { _, destination, _ ->", listenerVariableName, onDestinationChangedListenerClass)
+				.addStatement("	%N.value = destination.route", mutableCurrentDestinationState)
+				.addStatement("}")
+				.build()
+		)
+		.addStatement("%N.addOnDestinationChangedListener(%N)", navController, listenerVariableName)
+		.beginControlFlow("onDispose")
+		.addStatement("%N.removeOnDestinationChangedListener(%N)", navController, listenerVariableName)
+		.endControlFlow()
+		.endControlFlow()
 		.build()
 }
 

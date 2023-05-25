@@ -7,6 +7,7 @@ import com.squareup.kotlinpoet.UNIT
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.generator.LOCAL_NAV_HOST_CONTROLLER
 import de.onecode.navigator.ksp.generator.NAVIGATOR_COMPOSABLE_NAME
+import de.onecode.navigator.ksp.generator.REGISTER_CURRENT_DESTINATION_LISTENER
 import de.onecode.navigator.ksp.generator.REMEMBER_NAVIGATOR_CONTROLLER_NAME
 import de.onecode.navigator.ksp.generator.composeAnnotation
 import de.onecode.navigator.ksp.generator.composeModifierClass
@@ -36,6 +37,7 @@ internal fun createNavigatorComposable(destinations: List<DestinationDescription
 		.addParameter(modifier)
 		.addParameter(navigatorController)
 		.addParameter(screenBuilderParam)
+		.addStatement("%N.%L()", navigatorController, REGISTER_CURRENT_DESTINATION_LISTENER)
 		.addStatement("val %L = %N.%L", navControllerVariable, navigatorController, navControllerVariable)
 		.addStatement("%L = compositionLocalOf { %L }", LOCAL_NAV_HOST_CONTROLLER, navControllerVariable)
 		.beginControlFlow("CompositionLocalProvider(%L provides %L)", LOCAL_NAV_HOST_CONTROLLER, navControllerVariable)
