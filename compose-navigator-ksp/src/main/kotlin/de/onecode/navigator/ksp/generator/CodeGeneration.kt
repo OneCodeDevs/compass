@@ -9,6 +9,8 @@ import de.onecode.navigator.ksp.generator.context.createContextClass
 import de.onecode.navigator.ksp.generator.context.createSubGraphContext
 import de.onecode.navigator.ksp.generator.navigation.createNavigatorComposable
 import de.onecode.navigator.ksp.generator.navigation.createSubGraphFunction
+import de.onecode.navigator.ksp.generator.navigation.createNavigatorController
+import de.onecode.navigator.ksp.generator.navigation.createRememberNavigatorController
 import de.onecode.navigator.ksp.generator.screenbuilder.createScreenBuilder
 import de.onecode.navigator.ksp.generator.screenbuilder.createSubGraphBuilder
 
@@ -29,6 +31,8 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 		.addImport("de.onecode.navigator.runtime", LOCAL_NAV_HOST_CONTROLLER, COMMON_CONTEXT)
 		.apply {
 			if (destinations.isNotEmpty()) {
+				addType(createNavigatorController(destinations))
+				addFunction(createRememberNavigatorController())
 				addFunction(createNavigatorComposable(destinations))
 				addType(createScreenBuilder(destinations))
 			}

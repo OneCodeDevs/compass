@@ -7,21 +7,21 @@ import com.squareup.kotlinpoet.UNIT
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.generator.LOCAL_NAV_HOST_CONTROLLER
 import de.onecode.navigator.ksp.generator.NAVIGATOR_COMPOSABLE_NAME
+import de.onecode.navigator.ksp.generator.REMEMBER_NAVIGATOR_CONTROLLER_NAME
 import de.onecode.navigator.ksp.generator.composeAnnotation
-import de.onecode.navigator.ksp.generator.composeModifier
+import de.onecode.navigator.ksp.generator.composeModifierClass
 import de.onecode.navigator.ksp.generator.navGraphBuilderClass
-import de.onecode.navigator.ksp.generator.navHostControllerClass
-import de.onecode.navigator.ksp.generator.rememberNavControllerName
+import de.onecode.navigator.ksp.generator.navigatorControllerClass
 import de.onecode.navigator.ksp.generator.screenBuilderClass
 import de.onecode.navigator.ksp.getNameOfHome
 
 internal fun createNavigatorComposable(destinations: List<DestinationDescription>): FunSpec {
-	val modifier = ParameterSpec.builder("modifier", composeModifier)
-		.defaultValue("%T", composeModifier)
+	val modifier = ParameterSpec.builder("modifier", composeModifierClass)
+		.defaultValue("%T", composeModifierClass)
 		.build()
 
-	val navHostControllerParam = ParameterSpec.builder("navHostController", navHostControllerClass)
-		.defaultValue("%M()", rememberNavControllerName)
+	val navigatorController = ParameterSpec.builder("navigatorController", navigatorControllerClass)
+		.defaultValue("%L()", REMEMBER_NAVIGATOR_CONTROLLER_NAME)
 		.build()
 
 	val screenBuilderLambda = LambdaTypeName.get(receiver = screenBuilderClass, returnType = UNIT, parameters = arrayOf(navGraphBuilderClass))
@@ -29,14 +29,17 @@ internal fun createNavigatorComposable(destinations: List<DestinationDescription
 
 	val home = destinations.getNameOfHome()
 
+	val navControllerVariable = "navController"
+
 	return FunSpec.builder(NAVIGATOR_COMPOSABLE_NAME)
 		.addAnnotation(composeAnnotation)
 		.addParameter(modifier)
-		.addParameter(navHostControllerParam)
+		.addParameter(navigatorController)
 		.addParameter(screenBuilderParam)
-		.addStatement("%L = compositionLocalOf { navHostController }", LOCAL_NAV_HOST_CONTROLLER)
-		.beginControlFlow("CompositionLocalProvider(%L provides navHostController)", LOCAL_NAV_HOST_CONTROLLER)
-		.beginControlFlow("NavHost(modifier = %N, startDestination = %S, navController = navHostController)", modifier, home)
+		.addStatement("val %L = %N.%L", navControllerVariable, navigatorController, navControllerVariable)
+		.addStatement("%L = compositionLocalOf { %L }", LOCAL_NAV_HOST_CONTROLLER, navControllerVariable)
+		.beginControlFlow("CompositionLocalProvider(%L provides %L)", LOCAL_NAV_HOST_CONTROLLER, navControllerVariable)
+		.beginControlFlow("NavHost(modifier = %N, startDestination = %S, navController = %L)", modifier, home, navControllerVariable)
 		.addComposablesBody(destinations, screenBuilderClass)
 		.endControlFlow()
 		.endControlFlow()
