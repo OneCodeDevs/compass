@@ -14,7 +14,18 @@ import de.onecode.navigator.ksp.generator.PACKAGE
 import de.onecode.navigator.ksp.generator.composeAnnotation
 import de.onecode.navigator.ksp.generator.contextName
 
-internal fun TypeSpec.Builder.addDestinationsToScreenBuilder(destinations: List<DestinationDescription>): TypeSpec.Builder {
+internal fun TypeSpec.Builder.addAbstractDestinationFunctions(destinations: List<DestinationDescription>): TypeSpec.Builder {
+	destinations.forEach { destination ->
+		addFunction(
+			createDestinationFunctionBuilder(destination)
+				.addModifiers(KModifier.ABSTRACT)
+				.build()
+		)
+	}
+	return this
+}
+
+internal fun TypeSpec.Builder.addDestinationPropertiesAndFunctions(destinations: List<DestinationDescription>): TypeSpec.Builder {
 	destinations.forEach { destination ->
 		val destinationScreenName = destination.name.decapitalize()
 		val composableProperty = "${destinationScreenName}Composable"
@@ -28,11 +39,20 @@ internal fun TypeSpec.Builder.addDestinationsToScreenBuilder(destinations: List<
 				.build()
 		)
 		addFunction(
-			FunSpec.builder("${destinationScreenName}Screen")
-				.addParameter(ParameterSpec.builder("composable", destinationContextLambda).build())
+			createDestinationFunctionBuilder(destination)
+				.addModifiers(KModifier.OVERRIDE)
 				.addStatement("%L = composable", composableProperty)
 				.build()
 		)
 	}
 	return this
+}
+
+private fun createDestinationFunctionBuilder(destination: DestinationDescription): FunSpec.Builder {
+	val destinationScreenName = destination.name.decapitalize()
+	val destinationContextClass = ClassName(PACKAGE, destination.contextName)
+	val destinationContextLambda = LambdaTypeName.get(receiver = destinationContextClass, returnType = UNIT).copy(annotations = listOf(composeAnnotation))
+
+	return FunSpec.builder("${destinationScreenName}Screen")
+		.addParameter(ParameterSpec.builder("composable", destinationContextLambda).build())
 }

@@ -14,6 +14,7 @@ import de.onecode.navigator.ksp.generator.composeModifierClass
 import de.onecode.navigator.ksp.generator.navGraphBuilderClass
 import de.onecode.navigator.ksp.generator.navigatorControllerClass
 import de.onecode.navigator.ksp.generator.screenBuilderClass
+import de.onecode.navigator.ksp.generator.screenBuilderImplClass
 import de.onecode.navigator.ksp.getNameOfHome
 
 internal fun createNavigatorComposable(destinations: List<DestinationDescription>): FunSpec {
@@ -42,7 +43,7 @@ internal fun createNavigatorComposable(destinations: List<DestinationDescription
 		.addStatement("%L = compositionLocalOf { %L }", LOCAL_NAV_HOST_CONTROLLER, navControllerVariable)
 		.beginControlFlow("CompositionLocalProvider(%L provides %L)", LOCAL_NAV_HOST_CONTROLLER, navControllerVariable)
 		.beginControlFlow("NavHost(modifier = %N, startDestination = %S, navController = %L)", modifier, home, navControllerVariable)
-		.addComposablesBody(destinations, screenBuilderClass)
+		.addComposablesBody(destinations, screenBuilderImplClass)
 		.endControlFlow()
 		.endControlFlow()
 		.build()

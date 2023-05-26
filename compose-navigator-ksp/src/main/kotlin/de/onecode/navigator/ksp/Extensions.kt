@@ -10,7 +10,7 @@ import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.descriptions.ParameterDescription
 import de.onecode.navigator.ksp.descriptions.SubGraphDescription
 import de.onecode.navigator.ksp.generator.SCREEN_BUILDER
-import java.util.*
+import java.util.Locale
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 
@@ -68,8 +68,11 @@ fun KSAnnotation.getSubGraphName(classDeclaration: KSClassDeclaration): String =
 fun String.decapitalize(): String =
 	replaceFirstChar { it.lowercase(Locale.getDefault()) }
 
-val SubGraphDescription.screenBuilderName: String
+val SubGraphDescription.screenBuilderInterfaceName: String
 	get() = "$name$SCREEN_BUILDER"
+
+val SubGraphDescription.screenBuilderImplementationName: String
+	get() = "$name${SCREEN_BUILDER}Impl"
 
 fun List<DestinationDescription>.getHome(): DestinationDescription =
 	firstOrNull { it.isHome } ?: error("Couldn't find a ${Destination::class.simpleName} marked as home")

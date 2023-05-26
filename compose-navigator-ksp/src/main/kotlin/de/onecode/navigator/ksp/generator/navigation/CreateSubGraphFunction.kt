@@ -12,10 +12,12 @@ import de.onecode.navigator.ksp.generator.navGraphBuilderClass
 import de.onecode.navigator.ksp.getHome
 import de.onecode.navigator.ksp.route
 import de.onecode.navigator.ksp.routeParameterSuffix
-import de.onecode.navigator.ksp.screenBuilderName
+import de.onecode.navigator.ksp.screenBuilderImplementationName
+import de.onecode.navigator.ksp.screenBuilderInterfaceName
 
 internal fun createSubGraphFunction(subGraph: SubGraphDescription): FunSpec {
-	val subGraphScreenBuilderClass = ClassName(PACKAGE, subGraph.screenBuilderName)
+	val subGraphScreenBuilderClass = ClassName(PACKAGE, subGraph.screenBuilderInterfaceName)
+	val subGraphScreenBuilderImplementationClass = ClassName(PACKAGE, subGraph.screenBuilderImplementationName)
 
 	val screenBuilderLambda = LambdaTypeName.get(receiver = subGraphScreenBuilderClass, returnType = UNIT, parameters = arrayOf(navGraphBuilderClass))
 	val screenBuilderParam = ParameterSpec.builder("builder", screenBuilderLambda).build()
@@ -27,7 +29,7 @@ internal fun createSubGraphFunction(subGraph: SubGraphDescription): FunSpec {
 		.receiver(navGraphBuilderClass)
 		.addParameter(screenBuilderParam)
 		.beginControlFlow("navigation(startDestination = %S, route = %S)", subGraphHome.route, subGraph.name + subGraphHome.routeParameterSuffix)
-		.addComposablesBody(destinations, subGraphScreenBuilderClass)
+		.addComposablesBody(destinations, subGraphScreenBuilderImplementationClass)
 		.endControlFlow()
 		.build()
 }
