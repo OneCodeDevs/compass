@@ -104,9 +104,9 @@ Navigator {
 
 ### @Top
 
-`@Top` marks a destination to be navigableable from the root. This can be useful if your app has a bottom navigation in its root screen.
+`@Top` marks a destination to be navigable from the root. This can be useful if your app has a bottom navigation in its root screen.
 Navigation methods for `@Top` destinations are generated in the `NavigatorController`. To access the `NavigatorController` use `rememberNavigatorController()`.
-**Important**: Don't forget to pass it the `Navigator` when using it.
+**Important**: Don't forget to pass it to the `Navigator` again, to make sure the same instance is used by you and the `Navigator`
 
 ### @SubGraph
 
