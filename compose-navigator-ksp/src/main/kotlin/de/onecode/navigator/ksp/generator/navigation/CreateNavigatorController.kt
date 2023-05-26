@@ -56,13 +56,17 @@ fun createNavigatorController(destinations: List<DestinationDescription>): TypeS
 			destinations.topDestinations.forEach { topDestination ->
 				addFunction(createCurrentDestinationFunction(topDestination, mutableCurrentDestinationState))
 				addFunction(topDestination.toNavigationFunction(navController) {
-					beginControlFlow("popUpTo(%S)", destinations.getNameOfHome())
+					CodeBlock.builder()
+						.beginControlFlow("")
+						.beginControlFlow("popUpTo(%S)", destinations.getNameOfHome())
 						.apply {
 							if (topDestination.isHome) {
 								addStatement("inclusive = true")
 							}
 						}
-					endControlFlow()
+						.endControlFlow()
+						.endControlFlow()
+						.build()
 				})
 			}
 		}
