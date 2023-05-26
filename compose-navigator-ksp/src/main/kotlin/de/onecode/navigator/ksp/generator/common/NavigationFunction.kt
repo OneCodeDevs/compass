@@ -14,7 +14,6 @@ fun NamedWithParameters.toNavigationFunction(
 	defaultNavOptionsCodeBlock: () -> CodeBlock = {
 		CodeBlock.builder()
 			.beginControlFlow("")
-			.addStatement("this")
 			.endControlFlow()
 			.build()
 	}
