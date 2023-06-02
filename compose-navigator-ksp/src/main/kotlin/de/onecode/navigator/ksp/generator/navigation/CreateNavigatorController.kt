@@ -8,6 +8,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeSpec
+import de.onecode.navigator.ksp.capitalize
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.generator.REGISTER_CURRENT_DESTINATION_LISTENER
 import de.onecode.navigator.ksp.generator.common.toNavigationFunction
@@ -22,7 +23,6 @@ import de.onecode.navigator.ksp.generator.onDestinationChangedListenerClass
 import de.onecode.navigator.ksp.generator.rememberName
 import de.onecode.navigator.ksp.generator.stateClass
 import de.onecode.navigator.ksp.getNameOfHome
-import java.util.Locale
 
 fun createNavigatorController(destinations: List<DestinationDescription>): TypeSpec {
 	val navControllerParameterName = "navController"
@@ -52,24 +52,7 @@ fun createNavigatorController(destinations: List<DestinationDescription>): TypeS
 		.addProperty(mutableCurrentDestinationState)
 		.addProperty(currentDestinationState)
 		.addFunction(createRegisterCurrentDestinationListenerFunction(navController, mutableCurrentDestinationState))
-		.apply {
-			destinations.topDestinations.forEach { topDestination ->
-				addFunction(createCurrentDestinationFunction(topDestination, mutableCurrentDestinationState))
-				addFunction(topDestination.toNavigationFunction(navController) {
-					CodeBlock.builder()
-						.beginControlFlow("")
-						.beginControlFlow("popUpTo(%S)", destinations.getNameOfHome())
-						.apply {
-							if (topDestination.isHome) {
-								addStatement("inclusive = true")
-							}
-						}
-						.endControlFlow()
-						.endControlFlow()
-						.build()
-				})
-			}
-		}
+		.addTopDestinationFunctions(destinations, mutableCurrentDestinationState, navController)
 		.build()
 }
 
@@ -94,7 +77,7 @@ private fun createRegisterCurrentDestinationListenerFunction(navController: Prop
 }
 
 private fun createCurrentDestinationFunction(topDestination: DestinationDescription, mutableCurrentDestinationState: PropertySpec): FunSpec {
-	val nameCapitalized = topDestination.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+	val nameCapitalized = topDestination.name.capitalize()
 	return FunSpec.builder("currentDestinationIs$nameCapitalized")
 		.addAnnotation(composeAnnotation)
 		.returns(stateClass.parameterizedBy(BOOLEAN))
@@ -104,6 +87,29 @@ private fun createCurrentDestinationFunction(topDestination: DestinationDescript
 		.endControlFlow()
 		.endControlFlow()
 		.build()
+}
+
+private fun TypeSpec.Builder.addTopDestinationFunctions(
+	destinations: List<DestinationDescription>,
+	mutableCurrentDestinationState: PropertySpec,
+	navController: PropertySpec
+): TypeSpec.Builder = apply {
+	destinations.topDestinations.forEach { topDestination ->
+		addFunction(createCurrentDestinationFunction(topDestination, mutableCurrentDestinationState))
+		addFunction(topDestination.toNavigationFunction(navController) {
+			CodeBlock.builder()
+				.beginControlFlow("")
+				.beginControlFlow("popUpTo(%S)", destinations.getNameOfHome())
+				.apply {
+					if (topDestination.isHome) {
+						addStatement("inclusive = true")
+					}
+				}
+				.endControlFlow()
+				.endControlFlow()
+				.build()
+		})
+	}
 }
 
 private val List<DestinationDescription>.topDestinations: List<DestinationDescription>

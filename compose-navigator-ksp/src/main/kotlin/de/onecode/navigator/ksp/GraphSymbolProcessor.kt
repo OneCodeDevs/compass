@@ -38,9 +38,11 @@ class GraphSymbolProcessor(
 
 		val graph = graphVisitor.graph
 		graph.destinations.assertOneHome()
-		graph.subGraphs.forEach {
-			it.destinations.assertOneHome()
-			it.destinations.assertNoTopDestinationsPresent()
+		graph.subGraphs.forEach { subGraph ->
+			subGraph.destinations.apply {
+				assertOneHome()
+				assertNoTopDestinationsPresent()
+			}
 		}
 
 		codeGenerator.generateCode(

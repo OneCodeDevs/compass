@@ -65,6 +65,14 @@ fun KSAnnotation.getDestinationName(classDeclaration: KSClassDeclaration): Strin
 fun KSAnnotation.getSubGraphName(classDeclaration: KSClassDeclaration): String =
 	getDesiredName(SubGraph::name, classDeclaration)
 
+fun String.capitalize(): String = replaceFirstChar { firstChar ->
+	if (firstChar.isLowerCase()) {
+		firstChar.titlecase(Locale.getDefault())
+	} else {
+		firstChar.toString()
+	}
+}
+
 fun String.decapitalize(): String =
 	replaceFirstChar { it.lowercase(Locale.getDefault()) }
 

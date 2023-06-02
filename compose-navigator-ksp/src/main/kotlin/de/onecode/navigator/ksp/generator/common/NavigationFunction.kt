@@ -5,9 +5,9 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
+import de.onecode.navigator.ksp.capitalize
 import de.onecode.navigator.ksp.descriptions.NamedWithParameters
 import de.onecode.navigator.ksp.generator.navOptionsBuilderLambdaName
-import java.util.Locale
 
 fun NamedWithParameters.toNavigationFunction(
 	navController: PropertySpec,
@@ -25,7 +25,7 @@ fun NamedWithParameters.toNavigationFunction(
 		.defaultValue(defaultNavOptionsCodeBlock())
 		.build()
 
-	val nameCapitalized = name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+	val nameCapitalized = name.capitalize()
 	return FunSpec.builder("navigateTo$nameCapitalized")
 		.apply {
 			this@toNavigationFunction.parameters.forEach { navigationParameter ->
