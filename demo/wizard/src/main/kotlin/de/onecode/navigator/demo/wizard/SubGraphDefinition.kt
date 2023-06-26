@@ -1,7 +1,7 @@
 package de.onecode.navigator.demo.wizard
 
 import androidx.navigation.NavGraphBuilder
-import io.redandroid.navigator.wizardSubGraph
+import de.onecode.navigator.wizardSubGraph
 
 fun NavGraphBuilder.attachWizardSubGraph() {
 	wizardSubGraph {

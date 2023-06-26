@@ -55,6 +55,11 @@ publishing {
 						name.set("Alexander Frank")
 						email.set("alexander.frank@onecode.de")
 					}
+					developer {
+						id.set("pynnie")
+						name.set("Sebastian Hecken")
+						email.set("sebastian.hecken@onecode.de")
+					}
 				}
 				scm {
 					connection.set("https://github.com/OneCodeDevs/navigator.git")
@@ -74,7 +79,11 @@ publishing {
 	}
 	repositories {
 		maven {
-			url = URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+			url = if (libs.versions.compose.navigator.get().toUpperCase().endsWith("-SNAPSHOT")) {
+				URI.create("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+			} else {
+				URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+			}
 			credentials {
 				username = properties["maven.username"] as? String
 				password = properties["maven.password"] as? String

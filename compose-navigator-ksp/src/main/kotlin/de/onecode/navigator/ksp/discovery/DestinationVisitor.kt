@@ -9,6 +9,7 @@ import de.onecode.navigator.api.Home
 import de.onecode.navigator.api.Navigation
 import de.onecode.navigator.api.Parameter
 import de.onecode.navigator.api.SubGraph
+import de.onecode.navigator.api.Top
 import de.onecode.navigator.ksp.asClassDeclaration
 import de.onecode.navigator.ksp.className
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
@@ -30,6 +31,7 @@ class DestinationVisitor : KSVisitorVoid() {
 		val destination = classDeclaration.filterAnnotations(Destination::class).firstOrNull()
 			?: error("Could not find annotation ${Destination::name} on ${classDeclaration.className}")
 		val isHome = classDeclaration.filterAnnotations(Home::class).iterator().hasNext()
+		val isTop = classDeclaration.filterAnnotations(Top::class).iterator().hasNext()
 		val destinationName = destination.getDestinationName(classDeclaration)
 
 		val navTargets = classDeclaration.filterAnnotations(Navigation::class)
@@ -72,7 +74,8 @@ class DestinationVisitor : KSVisitorVoid() {
 			name = destinationName,
 			parameters = parameters.toList(),
 			navigationTargets = navTargets.toList(),
-			isHome = isHome
+			isHome = isHome,
+			isTop = isTop
 		)
 	}
 

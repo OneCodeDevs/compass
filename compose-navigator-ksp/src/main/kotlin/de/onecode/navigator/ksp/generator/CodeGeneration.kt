@@ -8,9 +8,13 @@ import de.onecode.navigator.ksp.descriptions.GraphDescription
 import de.onecode.navigator.ksp.generator.context.createContextClass
 import de.onecode.navigator.ksp.generator.context.createSubGraphContext
 import de.onecode.navigator.ksp.generator.navigation.createNavigatorComposable
+import de.onecode.navigator.ksp.generator.navigation.createNavigatorController
+import de.onecode.navigator.ksp.generator.navigation.createRememberNavigatorController
 import de.onecode.navigator.ksp.generator.navigation.createSubGraphFunction
-import de.onecode.navigator.ksp.generator.screenbuilder.createScreenBuilder
-import de.onecode.navigator.ksp.generator.screenbuilder.createSubGraphBuilder
+import de.onecode.navigator.ksp.generator.screenbuilder.createScreenBuilderImplementation
+import de.onecode.navigator.ksp.generator.screenbuilder.createScreenBuilderInterface
+import de.onecode.navigator.ksp.generator.screenbuilder.createSubGraphBuilderImplementation
+import de.onecode.navigator.ksp.generator.screenbuilder.createSubGraphBuilderInterface
 
 fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependencies) {
 	val destinations = graph.destinations
@@ -29,8 +33,11 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 		.addImport("de.onecode.navigator.runtime", LOCAL_NAV_HOST_CONTROLLER, COMMON_CONTEXT)
 		.apply {
 			if (destinations.isNotEmpty()) {
+				addType(createNavigatorController(destinations))
+				addFunction(createRememberNavigatorController())
 				addFunction(createNavigatorComposable(destinations))
-				addType(createScreenBuilder(destinations))
+				addType(createScreenBuilderInterface(destinations))
+				addType(createScreenBuilderImplementation(destinations))
 			}
 
 			destinations.forEach { destination ->
@@ -38,7 +45,8 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 			}
 			subGraphs.forEach { subGraph ->
 				addFunction(createSubGraphFunction(subGraph))
-				addType(createSubGraphBuilder(subGraph))
+				addType(createSubGraphBuilderInterface(subGraph))
+				addType(createSubGraphBuilderImplementation(subGraph))
 				addType(createSubGraphContext(subGraph))
 				subGraph.destinations.forEach { subGraphDestination ->
 					addType(createContextClass(subGraphDestination, "${subGraph.name}$COMMON_CONTEXT"))

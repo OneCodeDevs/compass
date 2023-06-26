@@ -102,6 +102,12 @@ Navigator {
 
 `@Home` marks a destination as the start destination of the navigation graph or the subgraph. It will be the first destination to be in this graph.
 
+### @Top
+
+`@Top` marks a destination to be navigable from the root. This can be useful if your app has a bottom navigation in its root screen.
+Navigation methods for `@Top` destinations are generated in the `NavigatorController`. To access the `NavigatorController` use `rememberNavigatorController()`.
+**Important**: Don't forget to pass it to the `Navigator` again, to make sure the same instance is used by you and the `Navigator`
+
 ### @SubGraph
 
 In addition to a full graph which will generate the `Navigator`, destinations can also be grouped together into a subgraph. The subgraph can be defined independently and later included into an

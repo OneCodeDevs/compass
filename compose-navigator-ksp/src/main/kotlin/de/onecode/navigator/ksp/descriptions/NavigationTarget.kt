@@ -1,6 +1,6 @@
 package de.onecode.navigator.ksp.descriptions
 
 data class NavigationTarget(
-	val name: String,
-	val parameters: List<ParameterDescription>
-)
+	override val name: String,
+	override val parameters: List<ParameterDescription>
+) : NamedWithParameters
