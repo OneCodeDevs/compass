@@ -1,5 +1,5 @@
 [versions]
-compose-navigator = "1.0.1"
+compose-navigator = "1.0.2-SNAPSHOT"
 
 java = "11"
 kotlin = "1.8.21"
