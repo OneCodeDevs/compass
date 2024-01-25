@@ -7,6 +7,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.descriptions.GraphDescription
 import de.onecode.navigator.ksp.descriptions.SubGraphDescription
+import de.onecode.navigator.ksp.generator.common.createParameterExtensionOnSavedStateHandle
 import de.onecode.navigator.ksp.generator.context.createContextClass
 import de.onecode.navigator.ksp.generator.context.createSubGraphContext
 import de.onecode.navigator.ksp.generator.navigation.createNavigatorComposable
@@ -47,11 +48,13 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 				addFunction(createNavigatorComposable(destinations))
 				addType(createScreenBuilderInterface(destinations))
 				addType(createScreenBuilderImplementation(destinations))
+
+				destinations.forEach { destination ->
+					addType(createContextClass(destination, COMMON_CONTEXT))
+					addParameterExtensionsOnSavedStateHandle(destination)
+				}
 			}
 
-			destinations.forEach { destination ->
-				addType(createContextClass(destination, COMMON_CONTEXT))
-			}
 			subGraphs.forEach { subGraph ->
 				addFunction(createSubGraphFunction(subGraph))
 				addType(createSubGraphBuilderInterface(subGraph))
@@ -59,12 +62,21 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 				addType(createSubGraphContext(subGraph))
 				subGraph.destinations.forEach { subGraphDestination ->
 					addType(createContextClass(subGraphDestination, "${subGraph.name}$COMMON_CONTEXT"))
+					addParameterExtensionsOnSavedStateHandle(subGraphDestination)
 				}
 			}
 		}
 		.build()
 
 	fileSpec.writeTo(codeGenerator = this, dependencies)
+}
+
+private fun FileSpec.Builder.addParameterExtensionsOnSavedStateHandle(destination: DestinationDescription) {
+	if (destination.parameters.isNotEmpty()) {
+		destination.parameters.forEach { parameter ->
+			addFunction(createParameterExtensionOnSavedStateHandle(parameter))
+		}
+	}
 }
 
 private fun List<SubGraphDescription>.hasParametrizedDestinations(): Boolean =

@@ -17,6 +17,17 @@ import kotlin.reflect.KProperty1
 fun String.typeString(): String =
 	substring(lastIndexOf(".") + 1)
 
+fun String.type(): KClass<*> =
+	when (this.typeString()) {
+		"String" -> String::class
+		"Byte"   -> Byte::class
+		"Int"    -> Int::class
+		"Long"   -> Long::class
+		"Float"  -> Float::class
+		"Double" -> Double::class
+		else     -> error("Unknown type $this")
+	}
+
 val KSType.isNavigable: Boolean
 	get() = declaration.annotations.any {
 		val shortName = it.shortName.asString()
@@ -25,7 +36,8 @@ val KSType.isNavigable: Boolean
 	}
 
 fun KSType.asClassDeclaration(): KSClassDeclaration =
-	declaration as? KSClassDeclaration ?: error("${declaration.simpleName.asString()} has to be a class, an interface or an object")
+	declaration as? KSClassDeclaration
+		?: error("${declaration.simpleName.asString()} has to be a class, an interface or an object")
 
 fun KSAnnotation.toParameterDescription(classDeclaration: KSClassDeclaration): ParameterDescription {
 	val paramName = getParameterValue<String>(ParameterDescription::name.name, classDeclaration)
@@ -33,7 +45,8 @@ fun KSAnnotation.toParameterDescription(classDeclaration: KSClassDeclaration): P
 
 	return ParameterDescription(
 		name = paramName,
-		type = paramType.declaration.qualifiedName?.asString() ?: error("Can't get qualified name of parameter type")
+		type = paramType.declaration.qualifiedName?.asString()
+			?: error("Can't get qualified name of parameter type")
 	)
 }
 
@@ -83,7 +96,8 @@ val SubGraphDescription.screenBuilderImplementationName: String
 	get() = "$name${SCREEN_BUILDER}Impl"
 
 fun List<DestinationDescription>.getHome(): DestinationDescription =
-	firstOrNull { it.isHome } ?: error("Couldn't find a ${Destination::class.simpleName} marked as home")
+	firstOrNull { it.isHome }
+		?: error("Couldn't find a ${Destination::class.simpleName} marked as home")
 
 fun List<DestinationDescription>.getNameOfHome(): String =
 	getHome().name
