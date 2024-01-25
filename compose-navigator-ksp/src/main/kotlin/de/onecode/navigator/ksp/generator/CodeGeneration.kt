@@ -4,7 +4,9 @@ import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.writeTo
+import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.descriptions.GraphDescription
+import de.onecode.navigator.ksp.descriptions.SubGraphDescription
 import de.onecode.navigator.ksp.generator.context.createContextClass
 import de.onecode.navigator.ksp.generator.context.createSubGraphContext
 import de.onecode.navigator.ksp.generator.navigation.createNavigatorComposable
@@ -26,9 +28,16 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 		if (subGraphs.isNotEmpty()) "navigation" else null
 	).toTypedArray()
 
+	val navigationImports = arrayOf("NavType", "navArgument")
+
 	val fileSuffix = (destinations + subGraphs.map { it.destinations }).hashCode().toString()
 	val fileSpec = FileSpec.builder(PACKAGE, NAVIGATOR_COMPOSABLE_NAME + fileSuffix)
 		.addImport("androidx.navigation.compose", *composeNavigationImports)
+		.apply {
+			if (destinations.containsParameters() || subGraphs.hasParametrizedDestinations()) {
+				addImport("androidx.navigation", *navigationImports)
+			}
+		}
 		.addImport("androidx.compose.runtime", "CompositionLocalProvider", "compositionLocalOf")
 		.addImport("de.onecode.navigator.runtime", LOCAL_NAV_HOST_CONTROLLER, COMMON_CONTEXT)
 		.apply {
@@ -57,3 +66,9 @@ fun CodeGenerator.generateCode(graph: GraphDescription, dependencies: Dependenci
 
 	fileSpec.writeTo(codeGenerator = this, dependencies)
 }
+
+private fun List<SubGraphDescription>.hasParametrizedDestinations(): Boolean =
+	any { subGraph -> subGraph.destinations.any { it.parameters.isNotEmpty() } }
+
+private fun List<DestinationDescription>.containsParameters(): Boolean =
+	any { it.parameters.isNotEmpty() }

@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import de.onecode.navigator.Navigator
 import de.onecode.navigator.demo.details.DetailsScreen
 import de.onecode.navigator.demo.home.HomeScreen
@@ -84,6 +85,7 @@ fun Main() {
 			detailsScreen {
 				DetailsScreen(
 					number = myParam,
+					detailsViewModel = viewModel(),
 					onOpenWizard = ::navigateToWizard,
 					onBack = ::popBackStack
 				)

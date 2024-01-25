@@ -48,18 +48,13 @@ internal fun createContextClass(destination: DestinationDescription, parentName:
 
 private fun ParameterDescription.toParameterProperty(navBackStackEntryParam: String): PropertySpec {
 	val typeString = type.typeString()
-	val typeConverter = if (typeString == String::class.simpleName) {
-		""
-	} else {
-		"?.to${typeString}OrNull()"
-	}
 
 	return PropertySpec.builder(name, ClassName("", type))
 		.mutable(mutable = false)
 		.getter(
 			FunSpec.getterBuilder()
 				.addStatement(
-					"return %L.arguments?.getString(%S)$typeConverter ?: error(%S)",
+					"return %L.arguments?.get${typeString}(%S) ?: error(%S)",
 					navBackStackEntryParam,
 					name,
 					"Required parameter $name not provided"
