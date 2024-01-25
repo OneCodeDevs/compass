@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -59,7 +59,7 @@ fun Main() {
 					label = { Text(text = "Wizard") },
 					onClick = { navigatorController.navigateToDetails(Random.nextInt()) },
 					icon = {
-						Icon(imageVector = Icons.Default.List, contentDescription = "")
+						Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "")
 					}
 				)
 			}

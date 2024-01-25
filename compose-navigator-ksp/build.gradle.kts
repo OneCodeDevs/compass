@@ -15,8 +15,8 @@ if (localProperties.exists()) {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_11
-	targetCompatibility = JavaVersion.VERSION_11
+	sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
+	targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
 	withJavadocJar()
 	withSourcesJar()
 }
@@ -79,7 +79,7 @@ publishing {
 	}
 	repositories {
 		maven {
-			url = if (libs.versions.compose.navigator.get().toUpperCase().endsWith("-SNAPSHOT")) {
+			url = if (libs.versions.compose.navigator.get().uppercase().endsWith("-SNAPSHOT")) {
 				URI.create("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 			} else {
 				URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")

@@ -17,13 +17,15 @@ if (localProperties.exists()) {
 
 android {
 	namespace = "de.oencode.navigator.runtime"
-	compileSdk = 33
+	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {
-		minSdk = 21
-		targetSdk = 33
-
+		minSdk = libs.versions.android.sdk.min.get().toInt()
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+	}
+
+	lint {
+		targetSdk = libs.versions.android.sdk.target.get().toInt()
 	}
 
 	buildTypes {
@@ -33,11 +35,11 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_11
-		targetCompatibility = JavaVersion.VERSION_11
+		sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
+		targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
 	}
 	kotlinOptions {
-		jvmTarget = "11"
+		jvmTarget = libs.versions.java.get()
 	}
 
 }
@@ -105,14 +107,14 @@ publishing {
 			artifactId = "compose-navigator-runtime"
 			version = libs.versions.compose.navigator.get()
 
-			artifact("$buildDir/outputs/aar/${artifactId}-release.aar")
+			artifact("${layout.buildDirectory}/outputs/aar/${artifactId}-release.aar")
 			artifact(sourcesJar)
 			artifact(javadocJar)
 		}
 	}
 	repositories {
 		maven {
-			url = if (libs.versions.compose.navigator.get().toUpperCase().endsWith("-SNAPSHOT")) {
+			url = if (libs.versions.compose.navigator.get().uppercase().endsWith("-SNAPSHOT")) {
 				URI.create("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 			} else {
 				URI.create("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")

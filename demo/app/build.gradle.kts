@@ -7,12 +7,11 @@ plugins {
 
 android {
 	namespace = "de.onecode.navigator.demo"
-	compileSdk = 33
+	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {
 		applicationId = "de.onecode.navigator.demo"
-		minSdk = 21
-		targetSdk = 33
+		minSdk = libs.versions.android.sdk.min.get().toInt()
 		versionCode = 1
 		versionName = "1.0"
 
@@ -20,6 +19,9 @@ android {
 		vectorDrawables {
 			useSupportLibrary = true
 		}
+	}
+	lint {
+		targetSdk = libs.versions.android.sdk.target.get().toInt()
 	}
 
 	buildTypes {
@@ -29,11 +31,11 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_11
-		targetCompatibility = JavaVersion.VERSION_11
+		sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
+		targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
 	}
 	kotlinOptions {
-		jvmTarget = "11"
+		jvmTarget = libs.versions.java.get()
 	}
 	buildFeatures {
 		compose = true
@@ -41,13 +43,13 @@ android {
 	composeOptions {
 		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
 	}
-	packagingOptions {
+	packaging {
 		resources {
 			excludes += "/META-INF/{AL2.0,LGPL2.1}"
 		}
 	}
 	sourceSets.configureEach {
-		kotlin.srcDir("$buildDir/generated/ksp/$name/kotlin/")
+		kotlin.srcDir("${layout.buildDirectory}/generated/ksp/$name/kotlin/")
 	}
 }
 
