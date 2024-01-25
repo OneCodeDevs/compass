@@ -23,6 +23,7 @@ import de.onecode.navigator.ksp.generator.onDestinationChangedListenerClass
 import de.onecode.navigator.ksp.generator.rememberName
 import de.onecode.navigator.ksp.generator.stateClass
 import de.onecode.navigator.ksp.getNameOfHome
+import javax.annotation.processing.Generated
 
 fun createNavigatorController(destinations: List<DestinationDescription>): TypeSpec {
 	val navControllerParameterName = "navController"
@@ -43,6 +44,7 @@ fun createNavigatorController(destinations: List<DestinationDescription>): TypeS
 
 
 	return TypeSpec.classBuilder(navigatorControllerClass)
+		.addAnnotation(Generated::class)
 		.primaryConstructor(
 			FunSpec.constructorBuilder()
 				.addParameter(navControllerParameterName, navHostControllerClass)
@@ -92,7 +94,7 @@ private fun createCurrentDestinationFunction(topDestination: DestinationDescript
 private fun TypeSpec.Builder.addTopDestinationFunctions(
 	destinations: List<DestinationDescription>,
 	mutableCurrentDestinationState: PropertySpec,
-	navController: PropertySpec
+	navController: PropertySpec,
 ): TypeSpec.Builder = apply {
 	destinations.topDestinations.forEach { topDestination ->
 		addFunction(createCurrentDestinationFunction(topDestination, mutableCurrentDestinationState))

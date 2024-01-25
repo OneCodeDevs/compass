@@ -16,6 +16,7 @@ import de.onecode.navigator.ksp.generator.navigatorControllerClass
 import de.onecode.navigator.ksp.generator.screenBuilderClass
 import de.onecode.navigator.ksp.generator.screenBuilderImplClass
 import de.onecode.navigator.ksp.getNameOfHome
+import javax.annotation.processing.Generated
 
 internal fun createNavigatorComposable(destinations: List<DestinationDescription>): FunSpec {
 	val modifier = ParameterSpec.builder("modifier", composeModifierClass)
@@ -34,6 +35,7 @@ internal fun createNavigatorComposable(destinations: List<DestinationDescription
 	val navControllerVariable = "navController"
 
 	return FunSpec.builder(NAVIGATOR_COMPOSABLE_NAME)
+		.addAnnotation(Generated::class)
 		.addAnnotation(composeAnnotation)
 		.addParameter(modifier)
 		.addParameter(navigatorController)

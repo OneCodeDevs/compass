@@ -8,11 +8,13 @@ import de.onecode.navigator.ksp.generator.navHostControllerClass
 import de.onecode.navigator.ksp.generator.navigatorControllerClass
 import de.onecode.navigator.ksp.generator.rememberName
 import de.onecode.navigator.ksp.generator.rememberNavControllerName
+import javax.annotation.processing.Generated
 
 fun createRememberNavigatorController(): FunSpec {
 	val navControllerParameter = ParameterSpec.builder("navController", navHostControllerClass).defaultValue("%M()", rememberNavControllerName).build()
 
 	return FunSpec.builder(REMEMBER_NAVIGATOR_CONTROLLER_NAME)
+		.addAnnotation(Generated::class)
 		.addAnnotation(composableClass)
 		.addParameter(navControllerParameter)
 		.returns(navigatorControllerClass)

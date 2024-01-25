@@ -11,6 +11,7 @@ import de.onecode.navigator.ksp.generator.PACKAGE
 import de.onecode.navigator.ksp.generator.navHostControllerClass
 import de.onecode.navigator.ksp.getHome
 import de.onecode.navigator.ksp.routeParameterSuffix
+import javax.annotation.processing.Generated
 
 fun createSubGraphContext(subGraph: SubGraphDescription): TypeSpec {
 	val navControllerParam = "navHostController"
@@ -19,6 +20,7 @@ fun createSubGraphContext(subGraph: SubGraphDescription): TypeSpec {
 	val subGraphHome = destinations.getHome()
 
 	return TypeSpec.classBuilder("${subGraph.name}$COMMON_CONTEXT")
+		.addAnnotation(Generated::class)
 		.superclass(ClassName(PACKAGE, COMMON_CONTEXT))
 		.addSuperclassConstructorParameter(navControllerParam)
 		.addModifiers(KModifier.ABSTRACT)

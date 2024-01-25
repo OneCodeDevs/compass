@@ -14,6 +14,7 @@ import de.onecode.navigator.ksp.route
 import de.onecode.navigator.ksp.routeParameterSuffix
 import de.onecode.navigator.ksp.screenBuilderImplementationName
 import de.onecode.navigator.ksp.screenBuilderInterfaceName
+import javax.annotation.processing.Generated
 
 internal fun createSubGraphFunction(subGraph: SubGraphDescription): FunSpec {
 	val subGraphScreenBuilderClass = ClassName(PACKAGE, subGraph.screenBuilderInterfaceName)
@@ -26,6 +27,7 @@ internal fun createSubGraphFunction(subGraph: SubGraphDescription): FunSpec {
 	val subGraphHome = destinations.getHome()
 
 	return FunSpec.builder("${subGraph.name.decapitalize()}SubGraph")
+		.addAnnotation(Generated::class)
 		.receiver(navGraphBuilderClass)
 		.addParameter(screenBuilderParam)
 		.beginControlFlow("navigation(startDestination = %S, route = %S)", subGraphHome.route, subGraph.name + subGraphHome.routeParameterSuffix)

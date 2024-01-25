@@ -6,7 +6,7 @@ This navigator library offers a KSP API to generate needed boiler plate code for
 
 You can get the Compose Navigator from Maven Central
 
-Latest version: **1.0.0**
+Latest version: **1.0.1**
 
 ```Gradle.kts
 implementation("de.onecode:compose-navigator-api:$compose_navigator_version")
@@ -14,7 +14,10 @@ implementation("de.onecode:compose-navigator-runtime:$compose_navigator_version"
 ksp("de.onecode:compose-navigator-ksp:$compose_navigator_version")
 ```
 
-Supported KSP version for 1.0.0: **1.8.21-1.0.11**
+Used Kotlin and KSP versions
+
+- 1.0.0: **1.8.21-1.0.11**
+- 1.0.1: **1.8.21-1.0.11**
 
 ## Usage
 

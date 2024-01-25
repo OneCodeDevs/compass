@@ -13,6 +13,7 @@ import de.onecode.navigator.ksp.generator.contextName
 import de.onecode.navigator.ksp.generator.navBackStackEntryClass
 import de.onecode.navigator.ksp.generator.navHostControllerClass
 import de.onecode.navigator.ksp.typeString
+import javax.annotation.processing.Generated
 
 internal fun createContextClass(destination: DestinationDescription, parentName: String): TypeSpec {
 	val navControllerParamName = "navHostController"
@@ -22,6 +23,7 @@ internal fun createContextClass(destination: DestinationDescription, parentName:
 	val navController = PropertySpec.builder(navControllerParamName, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParamName).build()
 
 	return TypeSpec.classBuilder(destination.contextName)
+		.addAnnotation(Generated::class)
 		.superclass(commonContext)
 		.addSuperclassConstructorParameter(navControllerParamName)
 		.primaryConstructor(
