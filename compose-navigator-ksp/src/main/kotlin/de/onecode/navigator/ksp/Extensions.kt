@@ -25,7 +25,7 @@ fun String.type(): KClass<*> =
 		"Long"   -> Long::class
 		"Float"  -> Float::class
 		"Double" -> Double::class
-		else     -> error("Unknown type $this")
+		else     -> error("Type $this is currently not supported")
 	}
 
 val KSType.isNavigable: Boolean
