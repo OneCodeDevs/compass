@@ -5,7 +5,7 @@ import java.util.Properties
 plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.kotlin.android)
-	id("maven-publish")
+	`maven-publish`
 	signing
 }
 
@@ -107,7 +107,7 @@ publishing {
 			artifactId = "compose-navigator-runtime"
 			version = libs.versions.compose.navigator.get()
 
-			artifact("${layout.buildDirectory}/outputs/aar/${artifactId}-release.aar")
+			artifact("${layout.buildDirectory.asFile.get().absolutePath}/outputs/aar/${artifactId}-release.aar")
 			artifact(sourcesJar)
 			artifact(javadocJar)
 		}
@@ -129,4 +129,8 @@ publishing {
 
 signing {
 	sign(publishing.publications["maven"])
+}
+
+tasks.named("signMavenPublication") {
+	dependsOn("bundleReleaseAar")
 }

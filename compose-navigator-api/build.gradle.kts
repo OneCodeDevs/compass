@@ -4,7 +4,7 @@ import java.util.Properties
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
 	alias(libs.plugins.kotlin.jvm)
-	id("maven-publish")
+	`maven-publish`
 	signing
 }
 
