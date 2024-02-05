@@ -12,6 +12,7 @@ android {
 	defaultConfig {
 		applicationId = "de.onecode.navigator.demo"
 		minSdk = libs.versions.android.sdk.min.get().toInt()
+		targetSdk = libs.versions.android.sdk.min.get().toInt()
 		versionCode = 1
 		versionName = "1.0"
 

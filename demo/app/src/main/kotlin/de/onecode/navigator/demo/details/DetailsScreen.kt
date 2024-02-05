@@ -18,8 +18,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DetailsScreen(
 	number: Int,
+	detailsViewModel: DetailsViewModel,
 	onOpenWizard: (String) -> Unit,
-	onBack: () -> Unit
+	onBack: () -> Unit,
 ) {
 
 	var wizardInputValue by rememberSaveable {
@@ -27,8 +28,10 @@ fun DetailsScreen(
 	}
 
 	Column {
-		Text(text = "We got the random parameter")
+		Text(text = "We got the random parameter in the composable")
 		Text(text = number.toString(), fontWeight = FontWeight.Bold)
+		Text(text = "And also from the ViewModel")
+		Text(text = detailsViewModel.parameterInViewModel.toString(), fontWeight = FontWeight.Bold)
 		Spacer(modifier = Modifier.size(16.dp))
 		TextField(
 			value = wizardInputValue,
