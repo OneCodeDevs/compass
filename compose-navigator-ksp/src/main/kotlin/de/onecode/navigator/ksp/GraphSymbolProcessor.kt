@@ -9,12 +9,14 @@ import de.onecode.navigator.api.Destination
 import de.onecode.navigator.api.SubGraph
 import de.onecode.navigator.api.Top
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
+import de.onecode.navigator.ksp.descriptions.GraphDescription
 import de.onecode.navigator.ksp.discovery.DestinationVisitor
 import de.onecode.navigator.ksp.discovery.GraphVisitor
-import de.onecode.navigator.ksp.generator.generateCode
+import de.onecode.navigator.ksp.generator.generateAddDestinationCode
+import de.onecode.navigator.ksp.generator.generateNavigatorCode
 
 class GraphSymbolProcessor(
-	private val codeGenerator: CodeGenerator
+	private val codeGenerator: CodeGenerator,
 ) : SymbolProcessor {
 	override fun process(resolver: Resolver): List<KSAnnotated> {
 		val destinationSymbols = resolver.getSymbolsWithAnnotation(Destination::class.java.canonicalName)
@@ -37,23 +39,50 @@ class GraphSymbolProcessor(
 		}
 
 		val graph = graphVisitor.graph
-		graph.destinations.assertOneHome()
-		graph.subGraphs.forEach { subGraph ->
-			subGraph.destinations.apply {
-				assertOneHome()
-				assertNoTopDestinationsPresent()
+		val state = graph.checkGraphState()
+		when(state) {
+			GraphState.Standard -> codeGenerator.generateNavigatorCode(
+				graph = graph,
+				dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray())
+			)
+			GraphState.NoHome -> codeGenerator.generateAddDestinationCode(
+				graph = graph,
+				dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray())
+			)
+			GraphState.NoDestinations -> {
+				// nothing to do
 			}
 		}
-
-		codeGenerator.generateCode(
-			graph = graph,
-			dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray())
-		)
 
 		return emptyList()
 	}
 
-	private fun List<DestinationDescription>.assertOneHome() {
+	private fun GraphDescription.checkGraphState(): GraphState {
+		if (destinations.isEmpty() && subGraphs.isEmpty()) {
+			return GraphState.NoDestinations
+		}
+
+		subGraphs.forEach { subGraph ->
+			subGraph.destinations.apply {
+				assertOneHomeInSubGraph()
+				assertNoTopDestinationsPresent()
+			}
+		}
+
+		val home = destinations.filter { it.isHome }
+		if (home.size > 1) {
+			val homeNames = home.joinToString { it.name }
+			error("Only one ${Destination::class.simpleName} is allowed to be marked as home within a graph or sub graph. Found ${home.size}: $homeNames")
+		}
+
+		if (destinations.isNotEmpty() && home.isEmpty()) {
+			return GraphState.NoHome
+		}
+
+		return GraphState.Standard
+	}
+
+	private fun List<DestinationDescription>.assertOneHomeInSubGraph() {
 		val home = filter { it.isHome }
 		val homeAmount = home.size
 		if (homeAmount > 1) {
@@ -70,4 +99,8 @@ class GraphSymbolProcessor(
 			error("${Top::class.simpleName} destinations are not supported in sub graphs")
 		}
 	}
+}
+
+enum class GraphState {
+	NoHome, Standard, NoDestinations
 }

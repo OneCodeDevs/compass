@@ -60,6 +60,7 @@ fun createNavigatorController(destinations: List<DestinationDescription>): TypeS
 
 private fun createRegisterCurrentDestinationListenerFunction(navController: PropertySpec, mutableCurrentDestinationState: PropertySpec): FunSpec {
 	val listenerVariableName = "listener"
+	// TODO create interface and make RegisterCurrentDestinationListener only available in the impl
 	return FunSpec.builder(REGISTER_CURRENT_DESTINATION_LISTENER)
 		.addAnnotation(composeAnnotation)
 		.beginControlFlow("%M(key1 = %N)", disposableEffectName, navController)

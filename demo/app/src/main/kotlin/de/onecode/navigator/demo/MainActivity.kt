@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.onecode.navigator.Navigator
+import de.onecode.navigator.demo.destinations.attachFeatureComposable
 import de.onecode.navigator.demo.details.DetailsScreen
 import de.onecode.navigator.demo.home.HomeScreen
 import de.onecode.navigator.demo.home.SubHomeScreen
@@ -74,7 +75,8 @@ fun Main() {
 		) { navGraphBuilder ->
 			homeScreen {
 				HomeScreen(
-					onToSub = ::navigateToSubHome
+					onToSub = ::navigateToSubHome,
+					onToFeature = { navigateToFeatureComposable(Random.nextFloat()) }
 				)
 			}
 
@@ -92,6 +94,8 @@ fun Main() {
 			}
 
 			navGraphBuilder.attachWizardSubGraph()
+
+			navGraphBuilder.attachFeatureComposable()
 		}
 	}
 }

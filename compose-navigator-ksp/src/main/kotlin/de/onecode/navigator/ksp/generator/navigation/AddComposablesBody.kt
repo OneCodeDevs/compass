@@ -20,10 +20,35 @@ internal fun FunSpec.Builder.addComposablesBody(destinations: List<DestinationDe
 	return this
 }
 
+internal fun FunSpec.Builder.addComposableBody(destination: DestinationDescription): FunSpec.Builder {
+	addCode(
+		buildComposableCodeBlock(destination) {
+			addStatement("val current = LocalNavHostController.current")
+			addStatement("val context = %L(current, it)", destination.contextName)
+			addStatement("composable(context)")
+		}
+	)
+	return this
+}
+
 private fun DestinationDescription.toNavigationComposableCodeBlock(): CodeBlock {
 	val destinationScreenName = name.decapitalize()
 
-	val navigationArgumentsBlock = buildCodeBlock {
+	return buildComposableCodeBlock(this) {
+		addStatement("screenBuilder.%LComposable?.invoke(%L(%L.current, it))", destinationScreenName, contextName, LOCAL_NAV_HOST_CONTROLLER)
+	}
+}
+
+private fun buildComposableCodeBlock(destination: DestinationDescription, statements: CodeBlock.Builder.() -> Unit): CodeBlock =
+	buildCodeBlock {
+		beginControlFlow("composable(route = %S, arguments = %L)", destination.route, navigationArgumentsCodeBlock(destination))
+		statements()
+		endControlFlow()
+	}
+
+private fun navigationArgumentsCodeBlock(description: DestinationDescription): CodeBlock {
+	val parameters = description.parameters
+	return buildCodeBlock {
 		if (parameters.isEmpty()) {
 			addStatement("emptyList()")
 		} else {
@@ -39,10 +64,4 @@ private fun DestinationDescription.toNavigationComposableCodeBlock(): CodeBlock 
 			addStatement("listOf(%L)", blocks.joinToString())
 		}
 	}
-
-	return CodeBlock.builder()
-		.beginControlFlow("composable(route = %S, arguments = %L)", route, navigationArgumentsBlock)
-		.addStatement("screenBuilder.%LComposable?.invoke(%L(%L.current, it))", destinationScreenName, contextName, LOCAL_NAV_HOST_CONTROLLER)
-		.endControlFlow()
-		.build()
 }
