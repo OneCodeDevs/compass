@@ -27,6 +27,15 @@ dependencies {
 	implementation(libs.ksp.api)
 	implementation(libs.kotlinpoet)
 	implementation(libs.kotlinpoet.ksp)
+
+	testImplementation(platform(libs.junit.bom))
+	testImplementation(libs.junit.jupiter)
+	testImplementation(libs.google.truth)
+	testRuntimeOnly(libs.junit.platform.launcher)
+}
+
+tasks.named<Test>("test") {
+	useJUnitPlatform()
 }
 
 tasks.withType<PublishToMavenLocal>().configureEach {

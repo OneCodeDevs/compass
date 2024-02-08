@@ -1,9 +1,6 @@
 package de.onecode.navigator.ksp.generator
 
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
 import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.ksp.writeTo
 import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.descriptions.GraphDescription
 import de.onecode.navigator.ksp.descriptions.SubGraphDescription
@@ -20,11 +17,11 @@ import de.onecode.navigator.ksp.generator.screenbuilder.createScreenBuilderInter
 import de.onecode.navigator.ksp.generator.screenbuilder.createSubGraphBuilderImplementation
 import de.onecode.navigator.ksp.generator.screenbuilder.createSubGraphBuilderInterface
 
-fun CodeGenerator.generateNavigatorCode(graph: GraphDescription, dependencies: Dependencies) {
+fun generateNavigatorCode(graph: GraphDescription): FileSpec {
 	val destinations = graph.destinations
 	val subGraphs = graph.subGraphs
 
-	val fileSpec = createFileSpec(graph)
+	return createFileSpec(graph)
 		.addImport("androidx.compose.runtime", "CompositionLocalProvider", "compositionLocalOf")
 		.apply {
 			if (destinations.isNotEmpty()) {
@@ -43,13 +40,11 @@ fun CodeGenerator.generateNavigatorCode(graph: GraphDescription, dependencies: D
 
 		}
 		.build()
-
-	fileSpec.writeTo(codeGenerator = this, dependencies)
 }
 
-fun CodeGenerator.generateAddDestinationCode(graph: GraphDescription, dependencies: Dependencies) {
+fun generateAddDestinationCode(graph: GraphDescription): FileSpec {
 	val destinations = graph.destinations
-	val fileSpec = createFileSpec(graph)
+	return createFileSpec(graph)
 		.apply {
 			if (destinations.isNotEmpty()) {
 				destinations.forEach { destination ->
@@ -62,7 +57,6 @@ fun CodeGenerator.generateAddDestinationCode(graph: GraphDescription, dependenci
 			createSubGraphs(graph.subGraphs)
 		}
 		.build()
-	fileSpec.writeTo(codeGenerator = this, dependencies)
 }
 
 private fun createFileSpec(graph: GraphDescription): FileSpec.Builder {
