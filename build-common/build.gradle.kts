@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "de.onecode"
-version = "1.0.0"
+version = libs.versions.build.common.get()
 
 gradlePlugin {
 	plugins {

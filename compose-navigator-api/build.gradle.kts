@@ -1,6 +1,5 @@
 import de.onecode.build.MavenPublishExtension
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
 	alias(libs.plugins.kotlin.jvm)
 	alias(libs.plugins.publish.jvm)
