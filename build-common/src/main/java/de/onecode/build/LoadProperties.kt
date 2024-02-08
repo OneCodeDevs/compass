@@ -11,9 +11,7 @@ fun Project.loadProperties(): LocalProperties {
 	}
 
 	val username = properties["maven.username"] as? String
-		?: error("No maven.username provided in local.properties")
 	val password = properties["maven.password"] as? String
-		?: error("No maven.password provided in local.properties")
 	return LocalProperties(
 		username = username,
 		password = password,
@@ -21,6 +19,6 @@ fun Project.loadProperties(): LocalProperties {
 }
 
 data class LocalProperties(
-	val username: String,
-	val password: String,
+	val username: String?,
+	val password: String?,
 )
