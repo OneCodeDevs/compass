@@ -1,4 +1,6 @@
 [versions]
+build-common = "1.0.0"
+
 compose-navigator = "1.0.2-SNAPSHOT"
 android-sdk-min = "21"
 android-sdk-target = "34"
@@ -51,3 +53,5 @@ android-library = { id = "com.android.library", version.ref = "android-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+publish-jvm = { id = "de.onecode.publish-jvm", version.ref = "build-common" }
+publish-android = { id = "de.onecode.publish-android", version.ref = "build-common" }

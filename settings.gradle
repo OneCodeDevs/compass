@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 	}
 }
 rootProject.name = "Compose Navigator"
+includeBuild("build-common")
 include ':demo:app'
 include ':demo:wizard'
 include ':compose-navigator-api'
