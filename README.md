@@ -1,3 +1,5 @@
+[![Build](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml)
+
 # Compose Navigator
 
 This navigator library offers a KSP API to generate needed boiler plate code for Jetpack Compose Navigation, when going full Compose with your app.
