@@ -5,7 +5,7 @@ import java.util.Properties
 
 fun Project.loadProperties(): LocalProperties {
 	val properties = Properties()
-	val localProperties = rootProject.file("local.properties")
+	val localProperties = rootProject.file("build-common/local.properties")
 	if (localProperties.exists()) {
 		properties.load(localProperties.inputStream())
 	}
