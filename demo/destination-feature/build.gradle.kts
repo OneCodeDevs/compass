@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.kotlin.android)
@@ -35,9 +34,6 @@ android {
 	}
 	composeOptions {
 		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-	}
-	sourceSets.configureEach {
-		kotlin.srcDir("${layout.buildDirectory}/generated/ksp/$name/kotlin/")
 	}
 }
 

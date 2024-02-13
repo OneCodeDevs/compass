@@ -1,4 +1,4 @@
-import de.onecode.build.MavenPublishExtension
+import de.onecode.build.publish.MavenPublishExtension
 
 plugins {
 	alias(libs.plugins.kotlin.jvm)
@@ -10,7 +10,7 @@ java {
 	targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
 }
 
-extensions.configure<MavenPublishExtension> {
+configure<MavenPublishExtension> {
 	name = "Compose Navigator API"
 	description = "The API part of the compose Navigator"
 	artifactId = "compose-navigator-api"

@@ -1,4 +1,4 @@
-package de.onecode.build
+package de.onecode.build.common
 
 import org.gradle.api.Project
 import java.util.Properties

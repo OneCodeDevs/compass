@@ -49,9 +49,6 @@ android {
 			excludes += "/META-INF/{AL2.0,LGPL2.1}"
 		}
 	}
-	sourceSets.configureEach {
-		kotlin.srcDir("${layout.buildDirectory}/generated/ksp/$name/kotlin/")
-	}
 }
 
 dependencies {

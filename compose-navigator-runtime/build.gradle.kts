@@ -1,4 +1,4 @@
-import de.onecode.build.MavenPublishExtension
+import de.onecode.build.publish.MavenPublishExtension
 
 plugins {
 	alias(libs.plugins.android.library)
@@ -39,7 +39,7 @@ dependencies {
 	implementation(libs.compose.navigation)
 }
 
-extensions.configure<MavenPublishExtension> {
+configure<MavenPublishExtension> {
 	name = "Compose Navigator Runtime"
 	description = "The Runtime part of the compose Navigator"
 	artifactId = "compose-navigator-runtime"

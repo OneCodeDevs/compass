@@ -10,11 +10,11 @@ gradlePlugin {
 	plugins {
 		create("maven-publish-jvm") {
 			id = "de.onecode.publish-jvm"
-			implementationClass = "de.onecode.build.MavenPublishJvmPlugin"
+			implementationClass = "de.onecode.build.publish.MavenPublishJvmPlugin"
 		}
 		create("maven-publish-android") {
 			id = "de.onecode.publish-android"
-			implementationClass = "de.onecode.build.MavenPublishAndroidPlugin"
+			implementationClass = "de.onecode.build.publish.MavenPublishAndroidPlugin"
 		}
 	}
 }

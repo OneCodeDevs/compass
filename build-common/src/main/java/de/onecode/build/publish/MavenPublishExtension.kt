@@ -1,4 +1,4 @@
-package de.onecode.build
+package de.onecode.build.publish
 
 abstract class MavenPublishExtension {
 	var name: String = ""

@@ -1,5 +1,6 @@
-package de.onecode.build
+package de.onecode.build.publish
 
+import de.onecode.build.common.LocalProperties
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication

@@ -1,5 +1,6 @@
-package de.onecode.build
+package de.onecode.build.publish
 
+import de.onecode.build.common.loadProperties
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
