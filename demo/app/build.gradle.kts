@@ -67,6 +67,7 @@ dependencies {
 	implementation(libs.compose.navigation)
 
 	implementation(project(":demo:wizard"))
+	implementation(project(":demo:destination-feature"))
 	implementation(project(":compose-navigator-api"))
 	implementation(project(":compose-navigator-runtime"))
 	ksp(project(":compose-navigator-ksp"))

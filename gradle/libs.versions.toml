@@ -1,4 +1,6 @@
 [versions]
+build-common = "1.0.0"
+
 compose-navigator = "1.0.2-SNAPSHOT"
 android-sdk-min = "21"
 android-sdk-target = "34"
@@ -17,10 +19,15 @@ android-activity-compose = "1.8.2"
 ksp = "1.9.22-1.0.16"
 kotlinpoet = "1.14.2"
 
+junit = "5.10.2"
+
+google-truth = "1.4.0"
+
 [libraries]
 android-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "android-core" }
 android-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "android-lifecycle-runtime" }
 android-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "android-activity-compose" }
+
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -28,9 +35,17 @@ compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
 ksp-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+
 kotlinpoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
 kotlinpoet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoet" }
+
+junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+
+google-truth = { group = "com.google.truth", name = "truth", version.ref = "google-truth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-plugin" }
@@ -38,3 +53,5 @@ android-library = { id = "com.android.library", version.ref = "android-plugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+publish-jvm = { id = "de.onecode.publish-jvm", version.ref = "build-common" }
+publish-android = { id = "de.onecode.publish-android", version.ref = "build-common" }

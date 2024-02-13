@@ -13,6 +13,8 @@ import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.generator.PACKAGE
 import de.onecode.navigator.ksp.generator.composeAnnotation
 import de.onecode.navigator.ksp.generator.contextName
+import de.onecode.navigator.ksp.generator.navGraphBuilderClass
+import de.onecode.navigator.ksp.generator.navigation.addComposableBody
 
 internal fun TypeSpec.Builder.addAbstractDestinationFunctions(destinations: List<DestinationDescription>): TypeSpec.Builder {
 	destinations.forEach { destination ->
@@ -47,6 +49,12 @@ internal fun TypeSpec.Builder.addDestinationPropertiesAndFunctions(destinations:
 	}
 	return this
 }
+
+internal fun createNavHostBuilderComposable(destination: DestinationDescription): FunSpec =
+	createDestinationFunctionBuilder(destination)
+		.receiver(navGraphBuilderClass)
+		.addComposableBody(destination)
+		.build()
 
 private fun createDestinationFunctionBuilder(destination: DestinationDescription): FunSpec.Builder {
 	val destinationScreenName = destination.name.decapitalize()

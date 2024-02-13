@@ -1,20 +1,18 @@
-import de.onecode.build.MavenPublishExtension
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.kotlin.android)
-	alias(libs.plugins.publish.android)
+	alias(libs.plugins.ksp)
 }
 
 android {
-	namespace = "de.oencode.navigator.runtime"
+	namespace = "de.onecode.navigator.demo.destinations"
 	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {
 		minSdk = libs.versions.android.sdk.min.get().toInt()
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 	}
-
 	lint {
 		targetSdk = libs.versions.android.sdk.target.get().toInt()
 	}
@@ -32,16 +30,25 @@ android {
 	kotlinOptions {
 		jvmTarget = libs.versions.java.get()
 	}
-
+	buildFeatures {
+		compose = true
+	}
+	composeOptions {
+		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+	}
+	sourceSets.configureEach {
+		kotlin.srcDir("${layout.buildDirectory}/generated/ksp/$name/kotlin/")
+	}
 }
 
 dependencies {
-	implementation(libs.compose.navigation)
-}
+	implementation(libs.android.core.ktx)
 
-extensions.configure<MavenPublishExtension> {
-	name = "Compose Navigator Runtime"
-	description = "The Runtime part of the compose Navigator"
-	artifactId = "compose-navigator-runtime"
-	version = libs.versions.compose.navigator.get()
+	implementation(platform(libs.compose.bom))
+	implementation(libs.compose.material3)
+	implementation(libs.compose.navigation)
+
+	implementation(project(":compose-navigator-api"))
+	implementation(project(":compose-navigator-runtime"))
+	ksp(project(":compose-navigator-ksp"))
 }

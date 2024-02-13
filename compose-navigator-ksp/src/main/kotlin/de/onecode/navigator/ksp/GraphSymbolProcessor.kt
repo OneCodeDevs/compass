@@ -5,16 +5,16 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
+import com.squareup.kotlinpoet.ksp.writeTo
 import de.onecode.navigator.api.Destination
 import de.onecode.navigator.api.SubGraph
-import de.onecode.navigator.api.Top
-import de.onecode.navigator.ksp.descriptions.DestinationDescription
 import de.onecode.navigator.ksp.discovery.DestinationVisitor
 import de.onecode.navigator.ksp.discovery.GraphVisitor
-import de.onecode.navigator.ksp.generator.generateCode
+import de.onecode.navigator.ksp.generator.generateAddDestinationCode
+import de.onecode.navigator.ksp.generator.generateNavigatorCode
 
 class GraphSymbolProcessor(
-	private val codeGenerator: CodeGenerator
+	private val codeGenerator: CodeGenerator,
 ) : SymbolProcessor {
 	override fun process(resolver: Resolver): List<KSAnnotated> {
 		val destinationSymbols = resolver.getSymbolsWithAnnotation(Destination::class.java.canonicalName)
@@ -37,37 +37,14 @@ class GraphSymbolProcessor(
 		}
 
 		val graph = graphVisitor.graph
-		graph.destinations.assertOneHome()
-		graph.subGraphs.forEach { subGraph ->
-			subGraph.destinations.apply {
-				assertOneHome()
-				assertNoTopDestinationsPresent()
-			}
+		val state = graph.checkGraphState()
+		val fileSpec = when (state) {
+			GraphState.Standard       -> generateNavigatorCode(graph)
+			GraphState.NoHome         -> generateAddDestinationCode(graph)
+			GraphState.NoDestinations -> null
 		}
 
-		codeGenerator.generateCode(
-			graph = graph,
-			dependencies = Dependencies(false, *resolver.getAllFiles().toList().toTypedArray())
-		)
-
+		fileSpec?.writeTo(codeGenerator = codeGenerator, Dependencies(false, *resolver.getAllFiles().toList().toTypedArray()))
 		return emptyList()
-	}
-
-	private fun List<DestinationDescription>.assertOneHome() {
-		val home = filter { it.isHome }
-		val homeAmount = home.size
-		if (homeAmount > 1) {
-			val homeNames = home.joinToString { it.name }
-			error("Only one ${Destination::class.simpleName} is allowed to be marked as home within a graph or sub graph. Found ${home.size}: $homeNames")
-		} else if (homeAmount == 0 && isNotEmpty()) {
-			error("No ${Destination::class.simpleName} was marked as home")
-		}
-	}
-
-	private fun List<DestinationDescription>.assertNoTopDestinationsPresent() {
-		val hasTopDestinations = any { it.isTop }
-		if (hasTopDestinations) {
-			error("${Top::class.simpleName} destinations are not supported in sub graphs")
-		}
 	}
 }
