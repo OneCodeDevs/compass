@@ -1,4 +1,5 @@
 [![Build](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.onecode/compose-navigator-api/badge.svg)](https://mvnrepository.com/search?q=de.onecode)
 
 # Compose Navigator
 
