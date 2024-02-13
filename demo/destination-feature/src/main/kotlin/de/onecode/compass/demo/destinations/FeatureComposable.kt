@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.destinations
+package de.onecode.compass.demo.destinations
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

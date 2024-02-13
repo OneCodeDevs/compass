@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-	namespace = "de.onecode.navigator.demo.destinations"
+	namespace = "de.onecode.compass.demo.destinations"
 	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {

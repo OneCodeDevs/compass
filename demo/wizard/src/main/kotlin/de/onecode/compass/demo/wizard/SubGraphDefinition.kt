@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.wizard
+package de.onecode.compass.demo.wizard
 
 import androidx.navigation.NavGraphBuilder
 import de.onecode.compass.wizardSubGraph

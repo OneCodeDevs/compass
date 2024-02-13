@@ -252,10 +252,10 @@ Compass { navGraphBuilder ->
 }
 ````
 
-You can see an example of this in the [destination-feature](demo/destination-feature/src/main/kotlin/de/onecode/navigator/demo/destinations) module
+You can see an example of this in the [destination-feature](demo/destination-feature/src/main/kotlin/de/onecode/compass/demo/destinations) module
 
 ## Example
 
-A detailed example on how to you a `Compass` can be found in the [demo app](demo/app/src/main/kotlin/de/onecode/navigator/demo),
-the [demo library](demo/wizard/src/main/kotlin/de/onecode/navigator/demo/wizard) contains a configuration for a sub graph and
-[destination-feature](demo/destination-feature) contains an example of the no home usage of destinations.
+A detailed example on how to you a `Compass` can be found in the [demo app](demo/app/src/main/kotlin/de/onecode/compass/demo),
+the [demo library](demo/wizard/src/main/kotlin/de/onecode/compass/demo/wizard) contains a configuration for a sub graph and
+[destination-feature](demo/destination-feature/src/main/kotlin/de/onecode/compass/demo/destinations) contains an example of the no home usage of destinations.

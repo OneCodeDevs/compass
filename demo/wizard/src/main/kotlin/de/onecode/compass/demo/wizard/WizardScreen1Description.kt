@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.wizard
+package de.onecode.compass.demo.wizard
 
 import de.onecode.compass.api.Destination
 import de.onecode.compass.api.Home

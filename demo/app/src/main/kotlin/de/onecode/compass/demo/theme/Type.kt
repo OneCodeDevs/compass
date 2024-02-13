@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.ui.theme
+package de.onecode.compass.demo.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

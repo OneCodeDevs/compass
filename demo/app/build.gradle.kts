@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-	namespace = "de.onecode.navigator.demo"
+	namespace = "de.onecode.compass.demo"
 	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {
-		applicationId = "de.onecode.navigator.demo"
+		applicationId = "de.onecode.compass.demo"
 		minSdk = libs.versions.android.sdk.min.get().toInt()
 		targetSdk = libs.versions.android.sdk.min.get().toInt()
 		versionCode = 1

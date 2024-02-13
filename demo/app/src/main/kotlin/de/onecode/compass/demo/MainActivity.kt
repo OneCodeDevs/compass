@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo
+package de.onecode.compass.demo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.onecode.compass.Compass
 import de.onecode.compass.rememberCompassController
-import de.onecode.navigator.demo.destinations.attachFeatureComposable
-import de.onecode.navigator.demo.details.DetailsScreen
-import de.onecode.navigator.demo.home.HomeScreen
-import de.onecode.navigator.demo.home.SubHomeScreen
-import de.onecode.navigator.demo.ui.theme.NavGraphConfigComposeTheme
-import de.onecode.navigator.demo.wizard.attachWizardSubGraph
+import de.onecode.compass.demo.destinations.attachFeatureComposable
+import de.onecode.compass.demo.details.DetailsScreen
+import de.onecode.compass.demo.home.HomeScreen
+import de.onecode.compass.demo.home.SubHomeScreen
+import de.onecode.compass.demo.theme.NavGraphConfigComposeTheme
+import de.onecode.compass.demo.wizard.attachWizardSubGraph
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {

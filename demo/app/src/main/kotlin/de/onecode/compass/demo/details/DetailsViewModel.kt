@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.details
+package de.onecode.compass.demo.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

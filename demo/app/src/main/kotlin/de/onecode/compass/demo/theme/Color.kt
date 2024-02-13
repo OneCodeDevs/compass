@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.ui.theme
+package de.onecode.compass.demo.theme
 
 import androidx.compose.ui.graphics.Color
 

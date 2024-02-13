@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.details
+package de.onecode.compass.demo.details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

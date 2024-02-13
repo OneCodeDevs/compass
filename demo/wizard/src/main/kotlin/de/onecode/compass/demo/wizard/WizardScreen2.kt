@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.wizard
+package de.onecode.compass.demo.wizard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,12 +7,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun WizardScreen1(wizardInput: String, onToScreen2: () -> Unit) {
+fun WizardScreen2(onLeave: () -> Unit) {
 	Column(verticalArrangement = Arrangement.SpaceEvenly) {
-		Text(text = "Screen 1")
-		Text(text = wizardInput)
-		Button(onClick = { onToScreen2() }) {
-			Text(text = "To screen 2")
+		Text(text = "Screen 2")
+		Button(onClick = { onLeave() }) {
+			Text(text = "Leave")
 		}
 	}
 }

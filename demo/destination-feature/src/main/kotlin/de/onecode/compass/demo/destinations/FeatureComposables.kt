@@ -1,4 +1,4 @@
-package de.onecode.navigator.demo.destinations
+package de.onecode.compass.demo.destinations
 
 import androidx.navigation.NavGraphBuilder
 import de.onecode.compass.featureComposableScreen
