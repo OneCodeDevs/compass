@@ -17,14 +17,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import de.onecode.navigator.Navigator
+import de.onecode.compass.Compass
+import de.onecode.compass.rememberCompassController
 import de.onecode.navigator.demo.destinations.attachFeatureComposable
 import de.onecode.navigator.demo.details.DetailsScreen
 import de.onecode.navigator.demo.home.HomeScreen
 import de.onecode.navigator.demo.home.SubHomeScreen
 import de.onecode.navigator.demo.ui.theme.NavGraphConfigComposeTheme
 import de.onecode.navigator.demo.wizard.attachWizardSubGraph
-import de.onecode.navigator.rememberNavigatorController
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
@@ -40,10 +40,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Main() {
-	val navigatorController = rememberNavigatorController()
+	val compassController = rememberCompassController()
 
-	val isHome by navigatorController.currentDestinationIsHome()
-	val isDetails by navigatorController.currentDestinationIsDetails()
+	val isHome by compassController.currentDestinationIsHome()
+	val isDetails by compassController.currentDestinationIsDetails()
 
 	Scaffold(
 		bottomBar = {
@@ -51,7 +51,7 @@ fun Main() {
 				NavigationBarItem(
 					selected = isHome,
 					label = { Text(text = "Home") },
-					onClick = { navigatorController.navigateToHome() },
+					onClick = { compassController.navigateToHome() },
 					icon = {
 						Icon(imageVector = Icons.Default.Home, contentDescription = "")
 					}
@@ -59,7 +59,7 @@ fun Main() {
 				NavigationBarItem(
 					selected = isDetails,
 					label = { Text(text = "Wizard") },
-					onClick = { navigatorController.navigateToDetails(Random.nextInt()) },
+					onClick = { compassController.navigateToDetails(Random.nextInt()) },
 					icon = {
 						Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "")
 					}
@@ -67,11 +67,11 @@ fun Main() {
 			}
 		}
 	) { scaffoldPadding ->
-		Navigator(
+		Compass(
 			modifier = Modifier
 				.padding(scaffoldPadding)
 				.padding(16.dp),
-			navigatorController = navigatorController
+			compassController = compassController
 		) { navGraphBuilder ->
 			homeScreen {
 				HomeScreen(

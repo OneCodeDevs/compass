@@ -38,15 +38,15 @@ jobs:
       - name: Upload API
         uses: actions/upload-artifact@v1
         with:
-          name: compose-navigator-api
-          path: compose-navigator-api/build/libs/compose-navigator-api.jar
+          name: compass-api
+          path: compass/api/build/libs/compass-api.jar
       - name: Upload Runtime
         uses: actions/upload-artifact@v1
         with:
-          name: compose-navigator-runtime
-          path: compose-navigator-runtime/build/outputs/aar/compose-navigator-runtime-release.aar
+          name: compass-runtime
+          path: compass/runtime/build/outputs/aar/compass-runtime-release.aar
       - name: Upload KSP
         uses: actions/upload-artifact@v1
         with:
-          name: compose-navigator-ksp
-          path: compose-navigator-ksp/build/libs/compose-navigator-ksp.jar
+          name: compass-ksp
+          path: compass/ksp/build/libs/compass-ksp.jar

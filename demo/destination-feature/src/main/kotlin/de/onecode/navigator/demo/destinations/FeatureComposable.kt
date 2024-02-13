@@ -6,8 +6,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import de.onecode.navigator.api.Destination
-import de.onecode.navigator.api.Parameter
+import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Parameter
 
 @Destination("featureComposable")
 @Parameter("fromApp", Float::class)

@@ -1,9 +1,9 @@
 package de.onecode.navigator.demo.wizard
 
-import de.onecode.navigator.api.Destination
-import de.onecode.navigator.api.Home
-import de.onecode.navigator.api.Navigation
-import de.onecode.navigator.api.Parameter
+import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Home
+import de.onecode.compass.api.Navigation
+import de.onecode.compass.api.Parameter
 
 @Destination(name = "WizardScreen1")
 @Home

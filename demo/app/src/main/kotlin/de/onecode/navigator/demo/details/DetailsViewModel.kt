@@ -2,7 +2,7 @@ package de.onecode.navigator.demo.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import de.onecode.navigator.getMyParam
+import de.onecode.compass.getMyParam
 
 class DetailsViewModel(
 	savedStateHandle: SavedStateHandle,

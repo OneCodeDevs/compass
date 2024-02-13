@@ -1,8 +1,8 @@
 package de.onecode.navigator.demo.home
 
-import de.onecode.navigator.api.Destination
-import de.onecode.navigator.api.Home
-import de.onecode.navigator.api.Navigation
+import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Home
+import de.onecode.compass.api.Navigation
 import de.onecode.navigator.demo.destinations.FeatureComposableDestination
 
 @Destination(name = "Home")

@@ -1,6 +1,6 @@
 package de.onecode.navigator.demo.wizard
 
-import de.onecode.navigator.api.SubGraph
+import de.onecode.compass.api.SubGraph
 
 @SubGraph(
 	name = "Wizard",

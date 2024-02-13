@@ -1,9 +1,9 @@
 package de.onecode.navigator.demo.details
 
-import de.onecode.navigator.api.Destination
-import de.onecode.navigator.api.Navigation
-import de.onecode.navigator.api.Parameter
-import de.onecode.navigator.api.Top
+import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Navigation
+import de.onecode.compass.api.Parameter
+import de.onecode.compass.api.Top
 import de.onecode.navigator.demo.wizard.WizardSubGraph
 
 @Top

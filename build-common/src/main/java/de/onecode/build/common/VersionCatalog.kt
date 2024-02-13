@@ -5,15 +5,3 @@ import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 
 internal fun Project.versionCatalog(): VersionCatalog = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
-
-internal val VersionCatalog.androidSdkMin: Int
-	get() = findVersion("android-sdk-min").get().toString().toInt()
-
-internal val VersionCatalog.androidSdkTarget: Int
-	get() = findVersion("android-sdk-target").get().toString().toInt()
-
-internal val VersionCatalog.java: String
-	get() = findVersion("java").get().toString()
-
-internal val VersionCatalog.composeCompiler: String
-	get() = findVersion("compose-compiler").get().toString()

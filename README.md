@@ -1,26 +1,29 @@
 [![Build](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.onecode/compose-navigator-api/badge.svg)](https://mvnrepository.com/search?q=de.onecode)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.onecode/compass-api/badge.svg)](https://mvnrepository.com/search?q=de.onecode)
 
-# Compose Navigator
+# Compass
 
-This navigator library offers a KSP API to generate needed boiler plate code for Jetpack Compose Navigation, when going full Compose with your app.
+This library offers a KSP API to generate boiler plate code for Jetpack Compose Navigation.
+It makes allows for a type safe usage of the navigation between Composables and moves potential errors to the compile time.
+This enables are more robust way of implementing an Android App using Jetpack Compose
 
 ## Setup
 
-You can get the Compose Navigator from Maven Central
+You can get Compass from Maven Central
 
-Latest version: **1.0.1**
+Latest version: **1.1.0**
 
 ```Gradle.kts
-implementation("de.onecode:compose-navigator-api:$compose_navigator_version")
-implementation("de.onecode:compose-navigator-runtime:$compose_navigator_version")
-ksp("de.onecode:compose-navigator-ksp:$compose_navigator_version")
+implementation("de.onecode:compass-api:$compass_version")
+implementation("de.onecode:compass-runtime:$compass_version")
+ksp("de.onecode:compass-ksp:$compass_version")
 ```
 
 Used Kotlin and KSP versions
 
 - 1.0.0: **1.8.21-1.0.11**
 - 1.0.1: **1.8.21-1.0.11**
+- 1.1.0: **1.9.22-1.0.16**
 
 ## Usage
 
