@@ -256,5 +256,6 @@ You can see an example of this in the [destination-feature](demo/destination-fea
 
 ## Example
 
-A detailed example can be found in the [demo app](demo/app/src/main/kotlin/de/onecode/navigator/demo) for putting a `Navigator` together
-and [demo library](demo/wizard/src/main/kotlin/de/onecode/navigator/demo/wizard) for configuring a sub graph
+A detailed example on how to you a `Compass` can be found in the [demo app](demo/app/src/main/kotlin/de/onecode/navigator/demo),
+the [demo library](demo/wizard/src/main/kotlin/de/onecode/navigator/demo/wizard) contains a configuration for a sub graph and
+[destination-feature](demo/destination-feature) contains an example of the no home usage of destinations.
