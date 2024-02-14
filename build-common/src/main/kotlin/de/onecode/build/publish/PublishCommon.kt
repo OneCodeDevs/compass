@@ -4,17 +4,21 @@ import de.onecode.build.common.LocalProperties
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.publish.maven.tasks.PublishToMavenLocal
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.signing.SigningExtension
+import org.gradle.plugins.signing.SigningPlugin
 import java.net.URI
 
 fun Project.applyPlugins() {
-	plugins.apply("maven-publish")
-	plugins.apply("signing")
+	apply<MavenPublishPlugin>()
+	apply<SigningPlugin>()
 }
 
 fun Project.makePublishDependOnBuild() {
@@ -28,7 +32,7 @@ fun Project.makePublishDependOnBuild() {
 
 fun Project.configureSigning() {
 	configure<SigningExtension> {
-		val publishing = extensions.getByName("publishing") as PublishingExtension
+		val publishing = extensions.getByType<PublishingExtension>()
 		sign(publishing.publications.getByName("maven"))
 	}
 }

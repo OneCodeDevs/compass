@@ -1,53 +1,17 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-	alias(libs.plugins.android.application)
-	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.android.app)
+	alias(libs.plugins.android.compose)
 	alias(libs.plugins.ksp)
 }
 
 android {
 	namespace = "de.onecode.compass.demo"
-	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {
 		applicationId = "de.onecode.compass.demo"
-		minSdk = libs.versions.android.sdk.min.get().toInt()
-		targetSdk = libs.versions.android.sdk.target.get().toInt()
 		versionCode = 1
 		versionName = "1.0"
-
-		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-		vectorDrawables {
-			useSupportLibrary = true
-		}
-	}
-	lint {
-		targetSdk = libs.versions.android.sdk.target.get().toInt()
-	}
-
-	buildTypes {
-		release {
-			isMinifyEnabled = false
-			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-		}
-	}
-	compileOptions {
-		sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
-		targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
-	}
-	kotlinOptions {
-		jvmTarget = libs.versions.java.get()
-	}
-	buildFeatures {
-		compose = true
-	}
-	composeOptions {
-		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-	}
-	packaging {
-		resources {
-			excludes += "/META-INF/{AL2.0,LGPL2.1}"
-		}
 	}
 }
 

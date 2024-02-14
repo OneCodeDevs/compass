@@ -8,3 +8,12 @@ internal fun Project.versionCatalog(): VersionCatalog = extensions.getByType(Ver
 
 internal val VersionCatalog.java: String
 	get() = findVersion("java").get().toString()
+
+internal val VersionCatalog.androidMinSdk: Int
+	get() = findVersion("android-sdk-min").get().toString().toInt()
+
+internal val VersionCatalog.androidTargetSdk: Int
+	get() = findVersion("android-sdk-target").get().toString().toInt()
+
+internal val VersionCatalog.composeCompiler: String
+	get() = findVersion("compose-compiler").get().toString()
