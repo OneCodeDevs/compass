@@ -14,11 +14,11 @@ dependencyResolutionManagement {
 		mavenLocal()
 	}
 }
-rootProject.name = "Compose Navigator"
+rootProject.name = "Compass"
 includeBuild("build-common")
 include ':demo:app'
 include ':demo:wizard'
-include ':compose-navigator-api'
-include ':compose-navigator-ksp'
-include ':compose-navigator-runtime'
+include ':compass:api'
+include ':compass:ksp'
+include ':compass:runtime'
 include ':demo:destination-feature'

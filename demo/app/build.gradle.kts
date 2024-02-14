@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-	namespace = "de.onecode.navigator.demo"
+	namespace = "de.onecode.compass.demo"
 	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {
-		applicationId = "de.onecode.navigator.demo"
+		applicationId = "de.onecode.compass.demo"
 		minSdk = libs.versions.android.sdk.min.get().toInt()
-		targetSdk = libs.versions.android.sdk.min.get().toInt()
+		targetSdk = libs.versions.android.sdk.target.get().toInt()
 		versionCode = 1
 		versionName = "1.0"
 
@@ -49,9 +49,6 @@ android {
 			excludes += "/META-INF/{AL2.0,LGPL2.1}"
 		}
 	}
-	sourceSets.configureEach {
-		kotlin.srcDir("${layout.buildDirectory}/generated/ksp/$name/kotlin/")
-	}
 }
 
 dependencies {
@@ -68,9 +65,9 @@ dependencies {
 
 	implementation(project(":demo:wizard"))
 	implementation(project(":demo:destination-feature"))
-	implementation(project(":compose-navigator-api"))
-	implementation(project(":compose-navigator-runtime"))
-	ksp(project(":compose-navigator-ksp"))
+	implementation(project(":compass:api"))
+	implementation(project(":compass:runtime"))
+	ksp(project(":compass:ksp"))
 
 	debugImplementation(libs.compose.ui.tooling)
 	debugImplementation(libs.compose.ui.test.manifest)

@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
 	alias(libs.plugins.android.library)
 	alias(libs.plugins.kotlin.android)
@@ -6,7 +5,7 @@ plugins {
 }
 
 android {
-	namespace = "de.onecode.navigator.demo.destinations"
+	namespace = "de.onecode.compass.demo.destinations"
 	compileSdk = libs.versions.android.sdk.target.get().toInt()
 
 	defaultConfig {
@@ -36,9 +35,6 @@ android {
 	composeOptions {
 		kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
 	}
-	sourceSets.configureEach {
-		kotlin.srcDir("${layout.buildDirectory}/generated/ksp/$name/kotlin/")
-	}
 }
 
 dependencies {
@@ -48,7 +44,7 @@ dependencies {
 	implementation(libs.compose.material3)
 	implementation(libs.compose.navigation)
 
-	implementation(project(":compose-navigator-api"))
-	implementation(project(":compose-navigator-runtime"))
-	ksp(project(":compose-navigator-ksp"))
+	implementation(project(":compass:api"))
+	implementation(project(":compass:runtime"))
+	ksp(project(":compass:ksp"))
 }

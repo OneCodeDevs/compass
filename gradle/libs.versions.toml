@@ -1,7 +1,7 @@
 [versions]
 build-common = "1.0.0"
+compass = "1.1.0-SNAPSHOT"
 
-compose-navigator = "1.0.2-SNAPSHOT"
 android-sdk-min = "21"
 android-sdk-target = "34"
 
