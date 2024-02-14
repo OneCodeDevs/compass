@@ -1,6 +1,6 @@
 [versions]
 build-common = "1.0.0"
-compass = "1.1.0-SNAPSHOT"
+compass = "1.2.0-SNAPSHOT"
 
 android-sdk-min = "21"
 android-sdk-target = "34"

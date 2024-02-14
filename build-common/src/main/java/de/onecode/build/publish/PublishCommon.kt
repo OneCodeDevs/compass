@@ -44,7 +44,7 @@ fun Project.configurePublish(
 				maven.pom { pom ->
 					pom.name.set(name)
 					pom.description.set(description)
-					pom.url.set("https://github.com/OneCodeDevs/navigator")
+					pom.url.set("https://github.com/OneCodeDevs/compass")
 					pom.licenses { licenseSpec ->
 						licenseSpec.license { license ->
 							license.name.set("The Apache License, Version 2.0")
@@ -62,11 +62,16 @@ fun Project.configurePublish(
 							developer.name.set("Sebastian Hecken")
 							developer.email.set("sebastian.hecken@onecode.de")
 						}
+						developerSpec.developer { developer ->
+							developer.id.set("florian-meyer-onecode ")
+							developer.name.set("Florian Meyer")
+							developer.email.set("florian.meyer@onecode.de")
+						}
 					}
 					pom.scm { scm ->
-						scm.connection.set("https://github.com/OneCodeDevs/navigator.git")
-						scm.developerConnection.set("https://github.com/OneCodeDevs/navigator.git")
-						scm.url.set("https://github.com/OneCodeDevs/navigator")
+						scm.connection.set("https://github.com/OneCodeDevs/compass.git")
+						scm.developerConnection.set("https://github.com/OneCodeDevs/compass.git")
+						scm.url.set("https://github.com/OneCodeDevs/compass")
 					}
 				}
 

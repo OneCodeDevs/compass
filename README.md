@@ -1,4 +1,4 @@
-[![Build](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/OneCodeDevs/navigator/actions/workflows/build.yml)
+[![Build](https://github.com/OneCodeDevs/compass/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/OneCodeDevs/compass/actions/workflows/build.yml)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.onecode/compass-api/badge.svg)](https://mvnrepository.com/search?q=de.onecode)
 
 # Compass
@@ -11,7 +11,7 @@ This enables are more robust way of implementing an Android App using Jetpack Co
 
 You can get Compass from Maven Central
 
-Latest version: **1.1.0-SNAPSHOT**
+Latest version: **1.1.0**
 
 ```Gradle.kts
 implementation("de.onecode:compass-api:$compass_version")
@@ -23,7 +23,7 @@ Used Kotlin and KSP versions
 
 - 1.0.0: **1.8.21-1.0.11**
 - 1.0.1: **1.8.21-1.0.11**
-- 1.1.0: **1.9.22-1.0.16** (coming soon)
+- 1.1.0: **1.9.22-1.0.16**
 
 ## Usage
 
