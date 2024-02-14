@@ -5,7 +5,6 @@ dependencyResolutionManagement {
 		google()
 		mavenCentral()
 	}
-	versionCatalogs {
-	}
 }
+
 rootProject.name = "build-common"

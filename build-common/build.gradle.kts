@@ -16,9 +16,13 @@ gradlePlugin {
 			id = "de.onecode.publish-android"
 			implementationClass = "de.onecode.build.publish.MavenPublishAndroidPlugin"
 		}
+		create("koltin-config-jvm") {
+			id = "de.onecode.koltin-config-jvm"
+			implementationClass = "de.onecode.build.jvm.KotlinConfigPlugin"
+		}
 	}
 }
-
 dependencies {
 	implementation(libs.android.library.plugin)
+	implementation(libs.kotlin.jvm.plugin)
 }
