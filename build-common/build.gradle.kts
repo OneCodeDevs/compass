@@ -1,6 +1,6 @@
 plugins {
-	id("java-gradle-plugin")
-	alias(libs.plugins.kotlin.jvm)
+	`java-gradle-plugin`
+	`kotlin-dsl`
 }
 
 group = "de.onecode"
@@ -23,6 +23,7 @@ gradlePlugin {
 	}
 }
 dependencies {
+	implementation(gradleApi())
 	implementation(libs.android.library.plugin)
 	implementation(libs.kotlin.jvm.plugin)
 }

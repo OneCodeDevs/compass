@@ -6,6 +6,7 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 
 class KotlinConfigPlugin : Plugin<Project> {
@@ -18,9 +19,9 @@ class KotlinConfigPlugin : Plugin<Project> {
 			archivesName.set(extension.artifactName)
 			val java = versionCatalog().java
 
-			extensions.configure(JavaPluginExtension::class.java) {
-				it.sourceCompatibility = JavaVersion.valueOf("VERSION_$java")
-				it.targetCompatibility = JavaVersion.valueOf("VERSION_$java")
+			configure<JavaPluginExtension> {
+				sourceCompatibility = JavaVersion.valueOf("VERSION_$java")
+				targetCompatibility = JavaVersion.valueOf("VERSION_$java")
 			}
 		}
 
