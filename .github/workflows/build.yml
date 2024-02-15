@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -54,3 +53,14 @@ jobs:
         with:
           name: compass-ksp
           path: compass/ksp/build/libs/compass-ksp.jar
+      - name: Publish to Maven (on main branch)
+        # if: ${{ github.ref == 'refs/heads/main' }}   // TODO enable be before merging, just for testing now
+        run: |
+          echo SIGNING_KEY_FILE_BASE64 | base64 -d > secring.gpg
+          ./gradlew publish -Psigning.password=$SIGNING_PASSWORD -Psigning.keyId=$SIGNING_KEY_ID -Psigning.secretKeyRingFile=secring.gpg
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          SIGNING_KEY_ID: ${{secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{secrets.SIGNING_PASSWORD }}
+          SIGNING_KEY_FILE_BASE64: ${{ secrets.SINGING_KEY_FILE_BASE64 }}

@@ -5,16 +5,22 @@ import java.util.Properties
 
 fun Project.loadProperties(): LocalProperties {
 	val properties = Properties()
-	val localProperties = rootProject.file("build-common/local.properties")
+	val localProperties = rootProject.file("local.properties")
 	if (localProperties.exists()) {
 		properties.load(localProperties.inputStream())
 	}
 
-	val username = properties["maven.username"] as? String
-	val password = properties["maven.password"] as? String
+	val envUsername = System.getenv("MAVEN_USERNAME")
+	val envPassword = System.getenv("MAVEN_PASSWORD")
+
+	val propUsername = properties["maven.username"] as? String
+	val propPassword = properties["maven.password"] as? String
+
 	return LocalProperties(
-		username = username,
-		password = password,
+		username = envUsername
+			?: propUsername,
+		password = envPassword
+			?: propPassword,
 	)
 }
 
