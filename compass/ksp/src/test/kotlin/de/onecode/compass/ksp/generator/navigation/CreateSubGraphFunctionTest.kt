@@ -1,6 +1,6 @@
 package de.onecode.compass.ksp.generator.navigation
 
-import com.google.common.truth.Truth.assertThat
+import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
 import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
@@ -8,6 +8,7 @@ import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
 import org.junit.jupiter.api.Test
 
+@Suppress("RedundantVisibilityModifier")
 class CreateSubGraphFunctionTest {
 	@Test
 	fun `SuGraph function with two destinations`() {
@@ -20,34 +21,34 @@ class CreateSubGraphFunctionTest {
 			addFunction(createSubGraphFunction(subGraph))
 		}
 
-		assertThat(code)
-			.isEqualTo(
-				"""
-				|import androidx.navigation.NavGraphBuilder
-				|import de.onecode.compass.subScreenBuilder
-				|import javax.`annotation`.processing.Generated
-				|import kotlin.Unit
-				|
-				|@Generated
-				|public fun NavGraphBuilder.subSubGraph(builder: subScreenBuilder.(NavGraphBuilder) -> Unit) {
-				|  navigation(startDestination = "foo", route = "sub") {
-				|    val screenBuilder = subScreenBuilderImpl()
-				|    screenBuilder.builder(this)
-				|    composable(route = "foo", arguments = emptyList()
-				|    ) {
-				|      screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
-				|    }
-				|    composable(route = "bar/{param1}", arguments = listOf(navArgument(name = "param1") {
-				|          type = NavType.IntType
-				|        }
-				|        )
-				|    ) {
-				|      screenBuilder.barComposable?.invoke(barContext(LocalNavHostController.current, it))
-				|    }
-				|  }
-				|}
-				|
-				""".trimMargin()
+		assertGeneratedCode(
+			generated = code,
+			expected =
+			"""
+				import androidx.navigation.NavGraphBuilder
+				import de.onecode.compass.subScreenBuilder
+				import javax.`annotation`.processing.Generated
+				import kotlin.Unit
+				
+				@Generated
+				public fun NavGraphBuilder.subSubGraph(builder: subScreenBuilder.(NavGraphBuilder) -> Unit) {
+				  navigation(startDestination = "foo", route = "sub") {
+				    val screenBuilder = subScreenBuilderImpl()
+				    screenBuilder.builder(this)
+				    composable(route = "foo", arguments = emptyList()
+				    ) {
+				      screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
+				    }
+				    composable(route = "bar/{param1}", arguments = listOf(navArgument(name = "param1") {
+				          type = NavType.IntType
+				        }
+				        )
+				    ) {
+				      screenBuilder.barComposable?.invoke(barContext(LocalNavHostController.current, it))
+				    }
+				  }
+				}
+			"""
 			)
 	}
 
@@ -61,30 +62,30 @@ class CreateSubGraphFunctionTest {
 			addFunction(createSubGraphFunction(subGraph))
 		}
 
-		assertThat(code)
-			.isEqualTo(
-				"""
-				|import androidx.navigation.NavGraphBuilder
-				|import de.onecode.compass.subScreenBuilder
-				|import javax.`annotation`.processing.Generated
-				|import kotlin.Unit
-				|
-				|@Generated
-				|public fun NavGraphBuilder.subSubGraph(builder: subScreenBuilder.(NavGraphBuilder) -> Unit) {
-				|  navigation(startDestination = "foo/{param1}", route = "sub/{param1}") {
-				|    val screenBuilder = subScreenBuilderImpl()
-				|    screenBuilder.builder(this)
-				|    composable(route = "foo/{param1}", arguments = listOf(navArgument(name = "param1") {
-                |          type = NavType.IntType
-                |        }
-                |        )
-				|    ) {
-				|      screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
-				|    }
-				|  }
-				|}
-				|
-				""".trimMargin()
+		assertGeneratedCode(
+			generated = code,
+			expected =
+			"""
+				import androidx.navigation.NavGraphBuilder
+				import de.onecode.compass.subScreenBuilder
+				import javax.`annotation`.processing.Generated
+				import kotlin.Unit
+				
+				@Generated
+				public fun NavGraphBuilder.subSubGraph(builder: subScreenBuilder.(NavGraphBuilder) -> Unit) {
+				  navigation(startDestination = "foo/{param1}", route = "sub/{param1}") {
+				    val screenBuilder = subScreenBuilderImpl()
+				    screenBuilder.builder(this)
+				    composable(route = "foo/{param1}", arguments = listOf(navArgument(name = "param1") {
+								type = NavType.IntType
+							}
+						)
+				    ) {
+				      screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
+				    }
+				  }
+				}
+			"""
 			)
 	}
 }

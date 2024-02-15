@@ -71,7 +71,7 @@ fun Project.configurePublish(
 							email = "sebastian.hecken@onecode.de"
 						}
 						developer {
-							id = "florian-meyer-onecode "
+							id = "florian-meyer-onecode"
 							name = "Florian Meyer"
 							email = "florian.meyer@onecode.de"
 						}
