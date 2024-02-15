@@ -53,8 +53,8 @@ jobs:
         with:
           name: compass-ksp
           path: compass/ksp/build/libs/compass-ksp.jar
-      - name: Publish to Maven (on main branch)
-        # if: ${{ github.ref == 'refs/heads/main' }}   // TODO enable be before merging, just for testing now
+      - name: Publish to Maven
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo -n $SIGNING_KEY_FILE_BASE64 | base64 -d > ${{ github.workspace }}/secring.gpg
           ./gradlew publish -Psigning.password="$SIGNING_PASSWORD" -Psigning.keyId="$SIGNING_KEY_ID" -Psigning.secretKeyRingFile="${{ github.workspace }}/secring.gpg"
