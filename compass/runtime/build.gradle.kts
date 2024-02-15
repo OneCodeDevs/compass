@@ -3,37 +3,12 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 
 plugins {
 	alias(libs.plugins.android.library)
-	alias(libs.plugins.kotlin.android)
 	alias(libs.plugins.publish.android)
 }
 
 android {
+	archivesName.set("compass-runtime")
 	namespace = "de.onecode.compass.runtime"
-	compileSdk = libs.versions.android.sdk.target.get().toInt()
-
-	defaultConfig {
-		minSdk = libs.versions.android.sdk.min.get().toInt()
-		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-		archivesName = "compass-runtime"
-	}
-
-	lint {
-		targetSdk = libs.versions.android.sdk.target.get().toInt()
-	}
-
-	buildTypes {
-		release {
-			isMinifyEnabled = false
-			proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-		}
-	}
-	compileOptions {
-		sourceCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
-		targetCompatibility = JavaVersion.valueOf("VERSION_${libs.versions.java.get()}")
-	}
-	kotlinOptions {
-		jvmTarget = libs.versions.java.get()
-	}
 }
 
 dependencies {

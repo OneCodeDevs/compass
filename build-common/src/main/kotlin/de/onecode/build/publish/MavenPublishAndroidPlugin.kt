@@ -5,10 +5,12 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.jvm.tasks.Jar
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.register
 
 class MavenPublishAndroidPlugin : Plugin<Project> {
 	override fun apply(target: Project): Unit = with(target) {
-		val extension = extensions.create("maven-publish-android", MavenPublishExtension::class.java)
+		val extension = extensions.create<MavenPublishExtension>("maven-publish-android")
 		afterEvaluate {
 			val localProperties = loadProperties()
 
@@ -22,20 +24,20 @@ class MavenPublishAndroidPlugin : Plugin<Project> {
 
 			val android = extensions.getByName("android") as com.android.build.gradle.LibraryExtension
 
-			val sourcesJar = tasks.register("sourcesJar", Jar::class.java) { jar ->
-				jar.from(android.sourceSets.getByName("main").java.getSourceFiles())
-				jar.archiveClassifier.set("sources")
+			val sourcesJar = tasks.register<Jar>("sourcesJar") {
+				from(android.sourceSets.getByName("main").java.getSourceFiles())
+				archiveClassifier.set("sources")
 			}
 
-			val javadoc = tasks.register("javadoc", Javadoc::class.java) { javaDoc ->
-				javaDoc.source = android.sourceSets.getByName("main").java.getSourceFiles()
-				javaDoc.classpath += project.files(android.bootClasspath)
+			val javadoc = tasks.register<Javadoc>("javadoc") {
+				source = android.sourceSets.getByName("main").java.getSourceFiles()
+				classpath += project.files(android.bootClasspath)
 			}
 
-			val javadocJar = tasks.register("javadocJar", Jar::class.java) { jar ->
-				jar.dependsOn(javadoc)
-				jar.from(javadoc)
-				jar.archiveClassifier.set("javadoc")
+			val javadocJar = tasks.register<Jar>("javadocJar") {
+				dependsOn(javadoc)
+				from(javadoc)
+				archiveClassifier.set("javadoc")
 			}
 
 			configurePublish(name, description, artifactId, version, localProperties) {
@@ -46,7 +48,7 @@ class MavenPublishAndroidPlugin : Plugin<Project> {
 
 			configureSigning()
 			tasks.named("signMavenPublication") {
-				it.dependsOn("bundleReleaseAar")
+				dependsOn("bundleReleaseAar")
 			}
 		}
 	}
