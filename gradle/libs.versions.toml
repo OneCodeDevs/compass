@@ -11,8 +11,8 @@ android-sdk-target = "34"
 
 compose-compiler = "1.5.8"
 
-compose-bom = "2024.01.00"
-compose-navigation = "2.7.6"
+compose-bom = "2024.02.00"
+compose-navigation = "2.7.7"
 android-core = "1.12.0"
 android-lifecycle-runtime = "2.7.0"
 android-activity-compose = "1.8.2"
