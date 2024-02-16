@@ -20,6 +20,7 @@ dependencies {
 	testImplementation(platform(libs.junit.bom))
 	testImplementation(libs.junit.jupiter)
 	testImplementation(libs.google.truth)
+	testImplementation(libs.mockk)
 	testRuntimeOnly(libs.junit.platform.launcher)
 }
 
