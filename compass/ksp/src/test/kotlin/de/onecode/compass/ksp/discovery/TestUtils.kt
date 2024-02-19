@@ -9,13 +9,15 @@ import de.onecode.compass.api.Destination
 import de.onecode.compass.api.Home
 import de.onecode.compass.api.Navigation
 import de.onecode.compass.api.Parameter
+import de.onecode.compass.api.SubGraph
 import de.onecode.compass.api.Top
+import de.onecode.compass.ksp.descriptions.DestinationDescription
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.reflect.KClass
 
 internal fun declareDestination(
-	destinationVisitor: DestinationVisitor,
+	destinationVisitor: DestinationVisitor? = null,
 	name: String = "",
 	isHome: Boolean = false,
 	isTop: Boolean = false,
@@ -29,7 +31,7 @@ internal fun declareDestination(
 		every { simpleName } returns ksName(typeName)
 		every { annotations } returns annotationsOnDestination.asSequence()
 		every { accept(any<DestinationVisitor>(), Unit) } answers {
-			destinationVisitor.visitClassDeclaration(this@mockk, Unit)
+			destinationVisitor?.visitClassDeclaration(this@mockk, Unit)
 		}
 	}
 }
@@ -71,6 +73,50 @@ internal fun createParameter(parameterName: String, parameterType: KClass<*>): K
 		ksValueArgument("type", ksType(parameterType))
 	)
 }
+
+internal fun Any.createSubGraphType(graphVisitor: GraphVisitor, name: String, destinations: List<DestinationDescription> = emptyList()): KSClassDeclaration {
+	val subGraphAnnotation = listOf(
+		createAnnotation(SubGraph::class) {
+			listOf(
+				ksValueArgument("name", name),
+				ksValueArgument("destinations", destinations.toType()),
+			)
+		}
+	)
+
+	val clazz = this::class.java
+
+	return mockk<KSClassDeclaration> {
+		every { qualifiedName } returns ksName(clazz.canonicalName)
+		every { simpleName } returns ksName(clazz.simpleName)
+		every { annotations } returns subGraphAnnotation.asSequence()
+		every { accept(any<DestinationVisitor>(), Unit) } answers {
+			graphVisitor.visitClassDeclaration(this@mockk, Unit)
+		}
+	}
+}
+
+private fun List<DestinationDescription>.toType(): List<KSType> =
+	map { destination ->
+		mockk<KSType> {
+			val annotationsForDestination = createAnnotationsForDestination(
+				name = destination.name,
+				isHome = destination.isHome,
+				isTop = destination.isHome,
+				parameters = {
+					destination.parameters.map { parameter ->
+						createParameter(parameter.name, javaClass.classLoader.loadClass(parameter.type).kotlin)
+					}
+				}
+			).asSequence()
+			every { annotations } returns annotationsForDestination
+			every { declaration } returns mockk<KSClassDeclaration> {
+				every { qualifiedName } returns ksName(destination.name)
+				every { simpleName } returns ksName(destination.name)
+				every { annotations } returns annotationsForDestination
+			}
+		}
+	}
 
 private fun createAnnotation(kClass: KClass<*>, block: () -> List<KSValueArgument> = { emptyList() }): KSAnnotation =
 	mockk<KSAnnotation> {
