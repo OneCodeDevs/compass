@@ -1,0 +1,48 @@
+build:
+  excludeCorrectable: false
+  maxIssues: 0
+
+config:
+  validation: true
+  warningsAsErrors: false
+  checkExhaustiveness: false
+
+comments:
+  active: false
+
+complexity:
+  LargeClass:
+    excludes:
+      - "**/test/**"
+  LongMethod:
+    excludes:
+      - "**/test/**"
+
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - 'Composable'
+  FunctionMaxLength:
+    maximumFunctionNameLength: 100
+    excludes:
+      - "**/test/**"
+
+style:
+  MaxLineLength:
+    maxLineLength: 200
+  MagicNumber:
+    ignorePropertyDeclaration: true
+  NoTabs:
+    active: false
+  TrimMultilineRawString:
+    excludes:
+      - "**/test/**"
+  ReturnCount:
+    active: false
+  UnusedPrivateMember:
+    ignoreAnnotated:
+      - 'Preview'
+
+performance:
+  SpreadOperator:
+    active: false

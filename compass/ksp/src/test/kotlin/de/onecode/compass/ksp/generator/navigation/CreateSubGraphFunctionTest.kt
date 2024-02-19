@@ -13,9 +13,24 @@ class CreateSubGraphFunctionTest {
 	@Test
 	fun `SuGraph function with two destinations`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription("foo", parameters = emptyList(), navigationTargets = listOf(NavigationTarget("bar", listOf(param1))), isHome = true, isTop = false)
-		val description2 = DestinationDescription("bar", parameters = listOf(param1), navigationTargets = emptyList(), isHome = false, isTop = false)
-		val subGraph = SubGraphDescription("sub", listOf(description1, description2))
+		val description1 = DestinationDescription(
+			name = "foo",
+			parameters = emptyList(),
+			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
+			isHome = true,
+			isTop = false
+		)
+		val description2 = DestinationDescription(
+			name = "bar",
+			parameters = listOf(param1),
+			navigationTargets = emptyList(),
+			isHome = false,
+			isTop = false
+		)
+		val subGraph = SubGraphDescription(
+			name = "sub",
+			destinations = listOf(description1, description2)
+		)
 
 		val code = buildTestFile {
 			addFunction(createSubGraphFunction(subGraph))
@@ -49,7 +64,7 @@ class CreateSubGraphFunctionTest {
 				  }
 				}
 			"""
-			)
+		)
 	}
 
 	@Test
@@ -86,6 +101,6 @@ class CreateSubGraphFunctionTest {
 				  }
 				}
 			"""
-			)
+		)
 	}
 }

@@ -14,11 +14,18 @@ import org.junit.jupiter.api.Test
 class NavigationFunctionTest {
 	@Test
 	fun `navigation function for Destination without parameters`() {
-		val description = DestinationDescription("foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
 		val navControllerParamName = "navHostController"
 
 		val code = buildTestFile {
-			addFunction(description.toNavigationFunction(PropertySpec.builder(navControllerParamName, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParamName).build()))
+			addFunction(
+				description.toNavigationFunction(
+					PropertySpec
+						.builder(navControllerParamName, navHostControllerClass, KModifier.PRIVATE)
+						.initializer(navControllerParamName)
+						.build()
+				)
+			)
 		}
 
 		assertGeneratedCode(
@@ -63,7 +70,7 @@ class NavigationFunctionTest {
 					}
 				}
 			"""
-			)
+		)
 	}
 
 	@Test
@@ -90,6 +97,6 @@ class NavigationFunctionTest {
 					}
 				}
 			"""
-			)
+		)
 	}
 }

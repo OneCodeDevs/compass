@@ -38,6 +38,8 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build test
+      - name: Detekt
+        run: ./gradlew detekt
       - name: Upload API
         uses: actions/upload-artifact@v1
         with:

@@ -58,7 +58,8 @@ class DestinationVisitor : KSVisitorVoid() {
 
 					NavigationTarget(
 						name = targetName,
-						parameters = targetParameters?.map { it.toParameterDescription(classDeclaration) }?.toList() ?: emptyList()
+						parameters = targetParameters?.map { it.toParameterDescription(classDeclaration) }?.toList()
+							?: emptyList()
 					)
 				} else {
 					error("Navigation target is neither a ${Destination::class.qualifiedName} nor a ${SubGraph::class.qualifiedName}")
@@ -86,8 +87,10 @@ class DestinationVisitor : KSVisitorVoid() {
 		asClassDeclaration().filterAnnotations(SubGraph::class).iterator().hasNext()
 
 	private fun KSType.getDestinationName(): String =
-		filterAnnotations(Destination::class).firstOrNull()?.getDestinationName(asClassDeclaration()) ?: error("Can't get name for destination of type ${toClassName().simpleName}")
+		filterAnnotations(Destination::class).firstOrNull()?.getDestinationName(asClassDeclaration())
+			?: error("Can't get name for destination of type ${toClassName().simpleName}")
 
 	private fun KSType.getSubGraphName(): String =
-		filterAnnotations(SubGraph::class).firstOrNull()?.getSubGraphName(asClassDeclaration()) ?: error("Can't get name for sub graph of type ${toClassName().simpleName}")
+		filterAnnotations(SubGraph::class).firstOrNull()?.getSubGraphName(asClassDeclaration())
+			?: error("Can't get name for sub graph of type ${toClassName().simpleName}")
 }

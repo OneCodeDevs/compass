@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test
 class CreateSubGraphBuilderTest {
 	@Test
 	fun `SubGraphBuilder interface`() {
-		val description1 = DestinationDescription("foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val description2 = DestinationDescription("bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
-		val subGraph = SubGraphDescription("sub", listOf(description1, description2))
+		val description1 = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
+		val description2 = DestinationDescription(name = "bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val subGraph = SubGraphDescription(name = "sub", listOf(description1, description2))
 
 		val code = buildTestFile {
 			addType(createSubGraphBuilderInterface(subGraph))
@@ -40,9 +40,9 @@ class CreateSubGraphBuilderTest {
 
 	@Test
 	fun `ScreenBuilder implementation`() {
-		val description1 = DestinationDescription("foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val description2 = DestinationDescription("bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
-		val subGraph = SubGraphDescription("sub", listOf(description1, description2))
+		val description1 = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
+		val description2 = DestinationDescription(name = "bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val subGraph = SubGraphDescription(name = "sub", listOf(description1, description2))
 
 		val code = buildTestFile {
 			addType(createSubGraphBuilderImplementation(subGraph))

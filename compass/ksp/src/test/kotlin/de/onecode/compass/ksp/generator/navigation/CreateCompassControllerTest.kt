@@ -83,7 +83,7 @@ class CreateCompassControllerTest {
 				  }
 				}
 			"""
-			)
+		)
 	}
 
 	@Test
@@ -168,7 +168,7 @@ class CreateCompassControllerTest {
 				  }
 				}
 			"""
-			)
+		)
 	}
 
 	@Test
@@ -270,6 +270,6 @@ class CreateCompassControllerTest {
 				  }
 				}
 			"""
-			)
+		)
 	}
 }

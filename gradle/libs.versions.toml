@@ -24,6 +24,8 @@ junit = "5.10.2"
 mockk = "1.13.9"
 google-truth = "1.4.0"
 
+detekt = "1.23.3"
+
 [libraries]
 android-library-plugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android-plugin" }
 android-application-plugin = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android-plugin" }
@@ -53,6 +55,8 @@ junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 google-truth = { group = "com.google.truth", name = "truth", version.ref = "google-truth" }
+
+detekt = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-plugin" }

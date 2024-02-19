@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test
 class CreateScreenBuilderTest {
 	@Test
 	fun `ScreenBuilder interface`() {
-		val description1 = DestinationDescription("foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val description2 = DestinationDescription("bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description1 = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
+		val description2 = DestinationDescription(name = "bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
 
 		val code = buildTestFile {
 			addType(createScreenBuilderInterface(listOf(description1, description2)))
@@ -38,8 +38,8 @@ class CreateScreenBuilderTest {
 
 	@Test
 	fun `ScreenBuilder implementation`() {
-		val description1 = DestinationDescription("foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val description2 = DestinationDescription("bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description1 = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
+		val description2 = DestinationDescription(name = "bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
 
 		val code = buildTestFile {
 			addType(createScreenBuilderImplementation(listOf(description1, description2)))

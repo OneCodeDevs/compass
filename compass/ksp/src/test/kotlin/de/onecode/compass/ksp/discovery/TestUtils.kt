@@ -16,6 +16,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlin.reflect.KClass
 
+@Suppress("LongParameterList")
 internal fun declareDestination(
 	destinationVisitor: DestinationVisitor? = null,
 	name: String = "",

@@ -199,7 +199,7 @@ class CodeGeneratorTest {
 				public fun SavedStateHandle.getParam1(): Int = get<Int>("param1") ?:
 				    error("Required parameter param1 not provided")
 			"""
-			)
+		)
 	}
 
 	@Test
@@ -405,7 +405,7 @@ class CodeGeneratorTest {
 				public fun SavedStateHandle.getParam1(): Int = get<Int>("param1") ?:
 				    error("Required parameter param1 not provided")
 			"""
-			)
+		)
 	}
 
 	@Test
@@ -688,7 +688,7 @@ class CodeGeneratorTest {
 				  private val navBackStackEntry: NavBackStackEntry,
 				) : subCommonContext(navHostController)
 			"""
-			)
+		)
 	}
 
 	@Test
@@ -785,6 +785,6 @@ class CodeGeneratorTest {
 				public fun SavedStateHandle.getParam1(): Int = get<Int>("param1") ?:
 				    error("Required parameter param1 not provided")
 			"""
-			)
+		)
 	}
 }

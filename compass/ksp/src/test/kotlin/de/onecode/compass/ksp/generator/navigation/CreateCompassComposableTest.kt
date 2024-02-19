@@ -110,6 +110,6 @@ class CreateCompassComposableTest {
 				  }
 				}
 			"""
-			)
+		)
 	}
 }

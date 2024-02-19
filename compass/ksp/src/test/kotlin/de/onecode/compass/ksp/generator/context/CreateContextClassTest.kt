@@ -109,6 +109,6 @@ class CreateContextClassTest {
 					} 
 				}
 			"""
-			)
+		)
 	}
 }

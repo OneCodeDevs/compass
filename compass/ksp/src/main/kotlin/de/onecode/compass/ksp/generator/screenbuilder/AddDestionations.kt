@@ -32,7 +32,9 @@ internal fun TypeSpec.Builder.addDestinationPropertiesAndFunctions(destinations:
 		val destinationScreenName = destination.name.decapitalize()
 		val composableProperty = "${destinationScreenName}Composable"
 		val destinationContextClass = ClassName(PACKAGE, destination.contextName)
-		val destinationContextLambda = LambdaTypeName.get(receiver = destinationContextClass, returnType = UNIT).copy(annotations = listOf(composeAnnotation))
+		val destinationContextLambda = LambdaTypeName
+			.get(receiver = destinationContextClass, returnType = UNIT)
+			.copy(annotations = listOf(composeAnnotation))
 
 		addProperty(
 			PropertySpec.builder(composableProperty, destinationContextLambda.copy(nullable = true), KModifier.INTERNAL)
