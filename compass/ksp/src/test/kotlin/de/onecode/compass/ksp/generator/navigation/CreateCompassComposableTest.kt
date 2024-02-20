@@ -2,20 +2,17 @@ package de.onecode.compass.ksp.generator.navigation
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.ParameterDescription
+import de.onecode.compass.ksp.generator.common.destinationDescription
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier", "TestFunctionName")
 class CreateCompassComposableTest {
 	@Test
 	fun `Navigator with a destination without parameters`() {
-		val description = DestinationDescription(
+		val description = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
 
 		val code = buildTestFile {
@@ -48,7 +45,8 @@ class CreateCompassComposableTest {
 				    NavHost(modifier = modifier, startDestination = "foo", navController = navController) {
 				      val screenBuilder = ScreenBuilderImpl()
 				      screenBuilder.builder(this)
-				      composable(route = "foo", arguments = emptyList()
+				      composable(route = "foo", arguments = emptyList() 
+						, deepLinks = emptyList()
 				      ) {
 				        screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				      }
@@ -61,12 +59,10 @@ class CreateCompassComposableTest {
 
 	@Test
 	fun `Navigator with a destination with a parameter`() {
-		val description = DestinationDescription(
+		val description = destinationDescription(
 			name = "foo",
 			parameters = listOf(ParameterDescription("param1", "kotlin.Int")),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
 
 		val code = buildTestFile {
@@ -103,6 +99,7 @@ class CreateCompassComposableTest {
 				                        type = NavType.IntType
 				                      }
 				          )
+						  , deepLinks = emptyList()
 				      ) {
 				        screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				      }

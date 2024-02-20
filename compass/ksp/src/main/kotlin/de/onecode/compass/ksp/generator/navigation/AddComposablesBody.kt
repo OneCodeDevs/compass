@@ -5,7 +5,9 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.buildCodeBlock
 import de.onecode.compass.ksp.decapitalize
+import de.onecode.compass.ksp.descriptions.DeepLinkDescription
 import de.onecode.compass.ksp.descriptions.DestinationDescription
+import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.generator.LOCAL_NAV_HOST_CONTROLLER
 import de.onecode.compass.ksp.generator.contextName
 import de.onecode.compass.ksp.route
@@ -44,14 +46,20 @@ private fun DestinationDescription.toNavigationComposableCodeBlock(): CodeBlock 
 
 private fun buildComposableCodeBlock(destination: DestinationDescription, statements: CodeBlock.Builder.() -> Unit): CodeBlock =
 	buildCodeBlock {
-		beginControlFlow("composable(route = %S, arguments = %L)", destination.route, navigationArgumentsCodeBlock(destination))
+		val arguments = navigationArgumentsCodeBlock(destination.parameters)
+		val deepLinks = deepLinksCodeBlock(destination.deepLinks, destination.parameters)
+		beginControlFlow(
+			"composable(route = %S, arguments = %L, deepLinks = %L)",
+			destination.route,
+			arguments,
+			deepLinks
+		)
 		statements()
 		endControlFlow()
 	}
 
-private fun navigationArgumentsCodeBlock(description: DestinationDescription): CodeBlock {
-	val parameters = description.parameters
-	return buildCodeBlock {
+private fun navigationArgumentsCodeBlock(parameters: List<ParameterDescription>): CodeBlock =
+	buildCodeBlock {
 		if (parameters.isEmpty()) {
 			addStatement("emptyList()")
 		} else {
@@ -67,4 +75,36 @@ private fun navigationArgumentsCodeBlock(description: DestinationDescription): C
 			addStatement("listOf(%L)", blocks.joinToString())
 		}
 	}
+
+private fun deepLinksCodeBlock(deepLinks: List<DeepLinkDescription>, parameters: List<ParameterDescription>): CodeBlock =
+	buildCodeBlock {
+		if (deepLinks.isEmpty()) {
+			addStatement("emptyList()")
+		} else {
+			val parametersSuffix = parameters.joinToString(separator = "/") { "{${it.name}}" }
+			val navDeepLink = deepLinks.map { description ->
+				val deepLink = description.toUri(parametersSuffix)
+				buildCodeBlock {
+					addStatement("NavDeepLink(%S)", deepLink)
+				}
+			}
+
+			addStatement("listOf(%L)", navDeepLink.joinToString())
+		}
+	}
+
+private fun DeepLinkDescription.toUri(parametersSuffix: String): String {
+	val uri = "${schema}://${host}"
+	return if (path.isBlank()) {
+		uri
+	} else {
+		"$uri/$path"
+	}.let {
+		if (parametersSuffix.isBlank()) {
+			it
+		} else {
+			"$it/$parametersSuffix"
+		}
+	}
 }
+

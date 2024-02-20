@@ -2,15 +2,20 @@ package de.onecode.compass.ksp.generator.screenbuilder
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
+import de.onecode.compass.ksp.generator.common.destinationDescription
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier")
 class CreateScreenBuilderTest {
 	@Test
 	fun `ScreenBuilder interface`() {
-		val description1 = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val description2 = DestinationDescription(name = "bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description1 = destinationDescription(
+			name = "foo",
+			isHome = true,
+		)
+		val description2 = destinationDescription(
+			name = "bar",
+		)
 
 		val code = buildTestFile {
 			addType(createScreenBuilderInterface(listOf(description1, description2)))
@@ -38,8 +43,13 @@ class CreateScreenBuilderTest {
 
 	@Test
 	fun `ScreenBuilder implementation`() {
-		val description1 = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val description2 = DestinationDescription(name = "bar", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description1 = destinationDescription(
+			name = "foo",
+			isHome = true,
+		)
+		val description2 = destinationDescription(
+			name = "bar",
+		)
 
 		val code = buildTestFile {
 			addType(createScreenBuilderImplementation(listOf(description1, description2)))

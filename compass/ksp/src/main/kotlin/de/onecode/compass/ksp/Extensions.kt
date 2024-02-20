@@ -6,8 +6,11 @@ import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSType
+import de.onecode.compass.api.DeepLink
 import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Parameter
 import de.onecode.compass.api.SubGraph
+import de.onecode.compass.ksp.descriptions.DeepLinkDescription
 import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
@@ -42,13 +45,25 @@ fun KSType.asClassDeclaration(): KSClassDeclaration =
 		?: error("${declaration.simpleName.asString()} has to be a class, an interface or an object")
 
 fun KSAnnotation.toParameterDescription(classDeclaration: KSClassDeclaration): ParameterDescription {
-	val paramName = getParameterValue<String>(ParameterDescription::name.name, classDeclaration)
-	val paramType = getParameterValue<KSType>(ParameterDescription::type.name, classDeclaration)
+	val paramName = getParameterValue<String>(Parameter::name.name, classDeclaration)
+	val paramType = getParameterValue<KSType>(Parameter::type.name, classDeclaration)
 
 	return ParameterDescription(
 		name = paramName,
 		type = paramType.declaration.qualifiedName?.asString()
 			?: error("Can't get qualified name of parameter type")
+	)
+}
+
+fun KSAnnotation.toDeepLinkDescription(classDeclaration: KSClassDeclaration): DeepLinkDescription {
+	val schema = getParameterValue<String>(DeepLink::schema.name, classDeclaration)
+	val host = getParameterValue<String>(DeepLink::host.name, classDeclaration)
+	val path = getParameterValue<String>(DeepLink::path.name, classDeclaration)
+
+	return DeepLinkDescription(
+		schema = schema,
+		host = host,
+		path = path
 	)
 }
 

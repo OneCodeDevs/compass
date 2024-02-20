@@ -79,6 +79,9 @@ private fun createFileSpec(graph: GraphDescription): FileSpec.Builder {
 			if (destinations.containsParameters() || subGraphs.hasParametrizedDestinations()) {
 				addImport("androidx.navigation", *navigationImports)
 			}
+			if (destinations.containsDeepLinks() || subGraphs.hasDestinationsWithDeepLinks()) {
+				addImport("androidx.navigation", "NavDeepLink")
+			}
 		}
 
 	return fileSpec
@@ -106,7 +109,13 @@ private fun FileSpec.Builder.addParameterExtensionsOnSavedStateHandle(destinatio
 }
 
 private fun List<SubGraphDescription>.hasParametrizedDestinations(): Boolean =
-	any { subGraph -> subGraph.destinations.any { it.parameters.isNotEmpty() } }
+	any { it.destinations.containsParameters() }
 
 private fun List<DestinationDescription>.containsParameters(): Boolean =
 	any { it.parameters.isNotEmpty() }
+
+private fun List<SubGraphDescription>.hasDestinationsWithDeepLinks(): Boolean =
+	any { it.destinations.containsDeepLinks() }
+
+private fun List<DestinationDescription>.containsDeepLinks(): Boolean =
+	any { it.deepLinks.isNotEmpty() }

@@ -1,11 +1,11 @@
 package de.onecode.compass.ksp.generator
 
 import de.onecode.compass.ksp.assertGeneratedCode
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.GraphDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
-import de.onecode.compass.ksp.descriptions.SubGraphDescription
+import de.onecode.compass.ksp.generator.common.destinationDescription
+import de.onecode.compass.ksp.generator.common.subGraphDescription
 import de.onecode.compass.ksp.writeToString
 import org.junit.jupiter.api.Test
 
@@ -14,19 +14,14 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations not top and no subgraph`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val graph = GraphDescription(
 			destinations = listOf(description1, description2),
@@ -135,6 +130,7 @@ class CodeGeneratorTest {
 				      val screenBuilder = ScreenBuilderImpl()
 				      screenBuilder.builder(this)
 				      composable(route = "foo", arguments = emptyList()
+					    , deepLinks = emptyList()
 				      ) {
 				        screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				      }
@@ -142,6 +138,7 @@ class CodeGeneratorTest {
 				            type = NavType.IntType
 				          }
 				          )
+						  , deepLinks = emptyList()
 				      ) {
 				        screenBuilder.barComposable?.invoke(barContext(LocalNavHostController.current, it))
 				      }
@@ -205,18 +202,14 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations one top and no subgraph`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
 			isTop = true
 		)
 		val graph = GraphDescription(
@@ -341,6 +334,7 @@ class CodeGeneratorTest {
 				      val screenBuilder = ScreenBuilderImpl()
 				      screenBuilder.builder(this)
 				      composable(route = "foo", arguments = emptyList()
+					    , deepLinks = emptyList()
 				      ) {
 				        screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				      }
@@ -348,6 +342,7 @@ class CodeGeneratorTest {
 				            type = NavType.IntType
 				          }
 				          )
+						  , deepLinks = emptyList()
 				      ) {
 				        screenBuilder.barComposable?.invoke(barContext(LocalNavHostController.current, it))
 				      }
@@ -411,36 +406,25 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations one top and subgraph`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
 			isTop = true
 		)
 
-		val sub1 = DestinationDescription(
+		val sub1 = destinationDescription(
 			name = "sub1",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
-		val sub2 = DestinationDescription(
+		val sub2 = destinationDescription(
 			name = "sub1",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
-		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
+		val sub = subGraphDescription("sub", sub1, sub2)
 		val graph = GraphDescription(
 			destinations = listOf(description1, description2),
 			subGraphs = listOf(sub)
@@ -565,6 +549,7 @@ class CodeGeneratorTest {
 				      val screenBuilder = ScreenBuilderImpl()
 				      screenBuilder.builder(this)
 				      composable(route = "foo", arguments = emptyList()
+					    , deepLinks = emptyList()
 				      ) {
 				        screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				      }
@@ -572,6 +557,7 @@ class CodeGeneratorTest {
 				            type = NavType.IntType
 				          }
 				          )
+						  , deepLinks = emptyList()
 				      ) {
 				        screenBuilder.barComposable?.invoke(barContext(LocalNavHostController.current, it))
 				      }
@@ -635,10 +621,12 @@ class CodeGeneratorTest {
 				    val screenBuilder = subScreenBuilderImpl()
 				    screenBuilder.builder(this)
 				    composable(route = "sub1", arguments = emptyList()
+						, deepLinks = emptyList()
 				    ) {
 				      screenBuilder.sub1Composable?.invoke(sub1Context(LocalNavHostController.current, it))
 				    }
 				    composable(route = "sub1", arguments = emptyList()
+						, deepLinks = emptyList()
 				    ) {
 				      screenBuilder.sub1Composable?.invoke(sub1Context(LocalNavHostController.current, it))
 				    }
@@ -694,19 +682,13 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations no home`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
-			isHome = false,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
@@ -738,6 +720,7 @@ class CodeGeneratorTest {
 				
 				public fun NavGraphBuilder.fooScreen(composable: @Composable fooContext.() -> Unit) {
 				  composable(route = "foo", arguments = emptyList()
+				    , deepLinks = emptyList()
 				  ) {
 				    val current = LocalNavHostController.current
 				    val context = fooContext(current, it)
@@ -764,6 +747,7 @@ class CodeGeneratorTest {
 				        type = NavType.IntType
 				      }
 				      )
+					  , deepLinks = emptyList()
 				  ) {
 				    val current = LocalNavHostController.current
 				    val context = barContext(current, it)

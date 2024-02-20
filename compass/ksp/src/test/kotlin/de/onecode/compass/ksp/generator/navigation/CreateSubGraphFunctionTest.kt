@@ -2,10 +2,11 @@ package de.onecode.compass.ksp.generator.navigation
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
+import de.onecode.compass.ksp.generator.common.destinationDescription
+import de.onecode.compass.ksp.generator.common.subGraphDescription
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier")
@@ -13,19 +14,14 @@ class CreateSubGraphFunctionTest {
 	@Test
 	fun `SuGraph function with two destinations`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val subGraph = SubGraphDescription(
 			name = "sub",
@@ -51,6 +47,7 @@ class CreateSubGraphFunctionTest {
 				    val screenBuilder = subScreenBuilderImpl()
 				    screenBuilder.builder(this)
 				    composable(route = "foo", arguments = emptyList()
+						, deepLinks = emptyList()
 				    ) {
 				      screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				    }
@@ -58,6 +55,7 @@ class CreateSubGraphFunctionTest {
 				          type = NavType.IntType
 				        }
 				        )
+						, deepLinks = emptyList()
 				    ) {
 				      screenBuilder.barComposable?.invoke(barContext(LocalNavHostController.current, it))
 				    }
@@ -70,8 +68,12 @@ class CreateSubGraphFunctionTest {
 	@Test
 	fun `SuGraph function with a home with parameters`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description = DestinationDescription("foo", parameters = listOf(param1), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val subGraph = SubGraphDescription("sub", listOf(description))
+		val description = destinationDescription(
+			name = "foo",
+			parameters = listOf(param1),
+			isHome = true,
+		)
+		val subGraph = subGraphDescription("sub", description)
 
 		val code = buildTestFile {
 			addFunction(createSubGraphFunction(subGraph))
@@ -95,6 +97,7 @@ class CreateSubGraphFunctionTest {
 								type = NavType.IntType
 							}
 						)
+						, deepLinks = emptyList()
 				    ) {
 				      screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				    }
