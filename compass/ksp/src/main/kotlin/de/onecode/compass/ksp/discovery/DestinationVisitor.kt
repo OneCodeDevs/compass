@@ -4,6 +4,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.squareup.kotlinpoet.ksp.toClassName
+import de.onecode.compass.api.DeepLink
 import de.onecode.compass.api.Destination
 import de.onecode.compass.api.Home
 import de.onecode.compass.api.Navigation
@@ -19,6 +20,7 @@ import de.onecode.compass.ksp.getDestinationName
 import de.onecode.compass.ksp.getParameterValue
 import de.onecode.compass.ksp.getSubGraphName
 import de.onecode.compass.ksp.isNavigable
+import de.onecode.compass.ksp.toDeepLinkDescription
 import de.onecode.compass.ksp.toParameterDescription
 
 class DestinationVisitor : KSVisitorVoid() {
@@ -71,10 +73,16 @@ class DestinationVisitor : KSVisitorVoid() {
 				parameterAnnotation.toParameterDescription(classDeclaration)
 			}
 
+		val deeplinks = classDeclaration.filterAnnotations(DeepLink::class)
+			.map { deeplinkAnnotation ->
+				deeplinkAnnotation.toDeepLinkDescription(classDeclaration)
+			}
+
 		_destinations += DestinationDescription(
 			name = destinationName,
 			parameters = parameters.toList(),
 			navigationTargets = navTargets.toList(),
+			deepLinks = deeplinks.toList(),
 			isHome = isHome,
 			isTop = isTop
 		)

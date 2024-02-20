@@ -2,21 +2,18 @@ package de.onecode.compass.ksp.generator.navigation
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
+import de.onecode.compass.ksp.generator.common.destinationDescription
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName", "TestFunctionName")
 class CreateCompassControllerTest {
 	@Test
 	fun `CompassController with one Destination no top`() {
-		val description = DestinationDescription(
+		val description = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
 
 		val code = buildTestFile {
@@ -89,19 +86,14 @@ class CreateCompassControllerTest {
 	@Test
 	fun `CompassController with two Destination no top`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 
 		val code = buildTestFile {
@@ -174,18 +166,14 @@ class CreateCompassControllerTest {
 	@Test
 	fun `CompassController with two Destination and one top`() {
 		val param1 = ParameterDescription("param1", "kotlin.Int")
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
 			isTop = true
 		)
 

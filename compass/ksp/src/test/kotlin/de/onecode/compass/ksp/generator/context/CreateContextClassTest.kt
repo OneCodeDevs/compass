@@ -2,16 +2,18 @@ package de.onecode.compass.ksp.generator.context
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
+import de.onecode.compass.ksp.generator.common.destinationDescription
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName", "CanBeParameter", "ClassName")
 class CreateContextClassTest {
 	@Test
 	fun `Destination Context with no parameters and no navigation`() {
-		val description = DestinationDescription("foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description = destinationDescription(
+			name = "foo",
+		)
 
 		val code = buildTestFile {
 			addType(createContextClass(description, "CommonContext"))
@@ -37,7 +39,10 @@ class CreateContextClassTest {
 
 	@Test
 	fun `Destination Context with one parameter and no navigation`() {
-		val description = DestinationDescription("foo", parameters = listOf(ParameterDescription("param1", "kotlin.String")), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description = destinationDescription(
+			name = "foo",
+			parameters = listOf(ParameterDescription("param1", "kotlin.String")),
+		)
 
 		val code = buildTestFile {
 			addType(createContextClass(description, "CommonContext"))
@@ -67,12 +72,10 @@ class CreateContextClassTest {
 
 	@Test
 	fun `Destination Context with one parameter and one navigation that also has one parameter`() {
-		val description = DestinationDescription(
-			"foo",
+		val description = destinationDescription(
+			name = "foo",
 			parameters = listOf(ParameterDescription("param1", "kotlin.String")),
 			navigationTargets = listOf(NavigationTarget("target", listOf(ParameterDescription("targetParam1", "kotlin.Int")))),
-			isHome = false,
-			isTop = false
 		)
 
 		val code = buildTestFile {

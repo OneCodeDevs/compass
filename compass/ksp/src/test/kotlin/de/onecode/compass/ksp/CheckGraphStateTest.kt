@@ -1,28 +1,22 @@
 package de.onecode.compass.ksp
 
 import com.google.common.truth.Truth.assertThat
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.GraphDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
+import de.onecode.compass.ksp.generator.common.destinationDescription
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class CheckGraphStateTest {
 	@Test
 	fun `Fail because of multiple homes`() {
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
 
@@ -33,19 +27,12 @@ class CheckGraphStateTest {
 
 	@Test
 	fun `Standard graph`() {
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
 
@@ -57,19 +44,11 @@ class CheckGraphStateTest {
 
 	@Test
 	fun `No home graph`() {
-		val description1 = DestinationDescription(
+		val description1 = destinationDescription(
 			name = "foo",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destinationDescription(
 			name = "bar",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
 
@@ -91,19 +70,13 @@ class CheckGraphStateTest {
 
 	@Test
 	fun `Subgraph with multiple homes`() {
-		val sub1 = DestinationDescription(
+		val sub1 = destinationDescription(
 			name = "sub1",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
-		val sub2 = DestinationDescription(
+		val sub2 = destinationDescription(
 			name = "sub2",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
 		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
 		val graph = GraphDescription(emptyList(), listOf(sub))
@@ -115,19 +88,11 @@ class CheckGraphStateTest {
 
 	@Test
 	fun `Subgraph with no home`() {
-		val sub1 = DestinationDescription(
+		val sub1 = destinationDescription(
 			name = "sub1",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
-		val sub2 = DestinationDescription(
+		val sub2 = destinationDescription(
 			name = "sub2",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
 		val graph = GraphDescription(emptyList(), listOf(sub))
@@ -139,18 +104,12 @@ class CheckGraphStateTest {
 
 	@Test
 	fun `Subgraph with unallowed tob destination`() {
-		val sub1 = DestinationDescription(
+		val sub1 = destinationDescription(
 			name = "sub1",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
-		val sub2 = DestinationDescription(
+		val sub2 = destinationDescription(
 			name = "sub2",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
 			isTop = true
 		)
 		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
