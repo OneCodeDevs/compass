@@ -3,6 +3,7 @@ package de.onecode.build.android
 import com.android.build.gradle.LibraryExtension
 import de.onecode.build.common.androidMinSdk
 import de.onecode.build.common.androidTargetSdk
+import de.onecode.build.common.configureDetekt
 import de.onecode.build.common.java
 import de.onecode.build.common.versionCatalog
 import org.gradle.api.JavaVersion
@@ -15,6 +16,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
 	override fun apply(target: Project): Unit = with(target) {
 		plugins.apply("com.android.library")
 		plugins.apply("org.jetbrains.kotlin.android")
+		plugins.apply("io.gitlab.arturbosch.detekt")
 
 		val versionCatalog = versionCatalog()
 
@@ -44,5 +46,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
 				jvmToolchain(versionCatalog.java.toInt())
 			}
 		}
+
+		configureDetekt()
 	}
 }

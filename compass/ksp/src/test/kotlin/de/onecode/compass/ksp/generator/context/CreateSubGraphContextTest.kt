@@ -1,11 +1,12 @@
 package de.onecode.compass.ksp.generator.context
 
-import com.google.common.truth.Truth.assertThat
+import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
 import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
 import org.junit.jupiter.api.Test
 
+@Suppress("RedundantVisibilityModifier", "ClassName")
 class CreateSubGraphContextTest {
 	@Test
 	fun `SubGraph Context`() {
@@ -17,23 +18,23 @@ class CreateSubGraphContextTest {
 			addType(createSubGraphContext(subGraph))
 		}
 
-		assertThat(code)
-			.isEqualTo(
-				"""
-				|import androidx.navigation.NavHostController
-				|import de.onecode.compass.CommonContext
-				|import javax.`annotation`.processing.Generated
-				|
-				|@Generated
-				|public abstract class subCommonContext(
-                |  private val navHostController: NavHostController,
-				|) : CommonContext(navHostController) {
-                |  public fun leaveSubGraph() {
-                |    navHostController.popBackStack(route = "sub", inclusive = true)
-                |  }
-				|}
-				|
-				""".trimMargin()
-			)
+		assertGeneratedCode(
+			generated = code,
+			expected =
+			"""
+				import androidx.navigation.NavHostController
+				import de.onecode.compass.CommonContext
+				import javax.`annotation`.processing.Generated
+				
+				@Generated
+				public abstract class subCommonContext(
+				private val navHostController: NavHostController,
+					) : CommonContext(navHostController) { 
+					public fun leaveSubGraph() {
+						navHostController.popBackStack(route = "sub", inclusive = true)
+					} 
+				}
+			"""
+		)
 	}
 }

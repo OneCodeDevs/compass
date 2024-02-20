@@ -18,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.onecode.compass.Compass
-import de.onecode.compass.rememberCompassController
 import de.onecode.compass.demo.destinations.attachFeatureComposable
 import de.onecode.compass.demo.details.DetailsScreen
 import de.onecode.compass.demo.home.HomeScreen
 import de.onecode.compass.demo.home.SubHomeScreen
 import de.onecode.compass.demo.theme.NavGraphConfigComposeTheme
 import de.onecode.compass.demo.wizard.attachWizardSubGraph
+import de.onecode.compass.rememberCompassController
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {

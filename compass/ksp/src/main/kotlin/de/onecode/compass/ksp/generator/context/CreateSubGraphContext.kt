@@ -32,7 +32,11 @@ fun createSubGraphContext(subGraph: SubGraphDescription): TypeSpec {
 		.addProperty(PropertySpec.builder(navControllerParam, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParam).build())
 		.addFunction(
 			FunSpec.builder("leaveSubGraph")
-				.addStatement("%L.popBackStack(route = %S, inclusive = true)", navControllerParam, subGraph.name + subGraphHome.routeParameterSuffix)
+				.addStatement(
+					"%L.popBackStack(route = %S, inclusive = true)",
+					navControllerParam,
+					subGraph.name + subGraphHome.routeParameterSuffix
+				)
 				.build()
 		)
 		.build()

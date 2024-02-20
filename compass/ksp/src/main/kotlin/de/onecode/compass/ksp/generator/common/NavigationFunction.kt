@@ -15,12 +15,13 @@ fun NamedWithParameters.toNavigationFunction(
 			.beginControlFlow("")
 			.endControlFlow()
 			.build()
-	}
+	},
 ): FunSpec {
 	val paramsRoute = parameters.joinToString(separator = "/") { "\${${it.name}}" }
 	val paramsRouteWithSlash = if (paramsRoute.isNotBlank()) "/$paramsRoute" else ""
 
-	val navOptionsBlock = ParameterSpec.builder("navOptionsBlock", de.onecode.compass.ksp.generator.navOptionsBuilderLambdaName)
+	val navOptionsBlock = ParameterSpec
+		.builder("navOptionsBlock", de.onecode.compass.ksp.generator.navOptionsBuilderLambdaName)
 		.defaultValue(defaultNavOptionsCodeBlock())
 		.build()
 

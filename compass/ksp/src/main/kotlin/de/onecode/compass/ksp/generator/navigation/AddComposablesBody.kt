@@ -11,7 +11,10 @@ import de.onecode.compass.ksp.generator.contextName
 import de.onecode.compass.ksp.route
 import de.onecode.compass.ksp.typeString
 
-internal fun FunSpec.Builder.addComposablesBody(destinations: List<DestinationDescription>, screenBuilderClass: ClassName): FunSpec.Builder {
+internal fun FunSpec.Builder.addComposablesBody(
+	destinations: List<DestinationDescription>,
+	screenBuilderClass: ClassName,
+): FunSpec.Builder {
 	addStatement("val screenBuilder = %L()", screenBuilderClass.simpleName)
 	addStatement("screenBuilder.builder(this)")
 	destinations.forEach { destination ->

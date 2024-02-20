@@ -1,3 +1,5 @@
+@file:Suppress("StringLiteralDuplication")
+
 package de.onecode.compass.ksp.generator
 
 import com.squareup.kotlinpoet.AnnotationSpec

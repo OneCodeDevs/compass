@@ -5,11 +5,11 @@ import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import de.onecode.compass.api.Destination
 import de.onecode.compass.api.SubGraph
+import de.onecode.compass.ksp.asClassDeclaration
+import de.onecode.compass.ksp.className
 import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.GraphDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
-import de.onecode.compass.ksp.asClassDeclaration
-import de.onecode.compass.ksp.className
 import de.onecode.compass.ksp.filterAnnotations
 import de.onecode.compass.ksp.getDestinationName
 import de.onecode.compass.ksp.getParameterValue
@@ -25,7 +25,8 @@ class GraphVisitor(private val destinationDescriptions: List<DestinationDescript
 			)
 
 	override fun visitClassDeclaration(classDeclaration: KSClassDeclaration, data: Unit) {
-		val subGraphAnnotation = classDeclaration.filterAnnotations(SubGraph::class).firstOrNull() ?: error("Couldn't find ${SubGraph::class.simpleName} on ${classDeclaration.className}")
+		val subGraphAnnotation = classDeclaration.filterAnnotations(SubGraph::class).firstOrNull()
+			?: error("Couldn't find ${SubGraph::class.simpleName} on ${classDeclaration.className}")
 		val classesInSubGraph = subGraphAnnotation.getParameterValue<List<KSType>>(SubGraph::destinations.name, classDeclaration)
 		val subGraphName = subGraphAnnotation.getSubGraphName(classDeclaration)
 

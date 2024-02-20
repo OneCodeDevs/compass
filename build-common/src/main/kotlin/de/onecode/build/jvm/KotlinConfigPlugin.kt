@@ -1,5 +1,6 @@
 package de.onecode.build.jvm
 
+import de.onecode.build.common.configureDetekt
 import de.onecode.build.common.java
 import de.onecode.build.common.versionCatalog
 import org.gradle.api.JavaVersion
@@ -12,6 +13,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 class KotlinConfigPlugin : Plugin<Project> {
 	override fun apply(target: Project): Unit = with(target) {
 		plugins.apply("org.jetbrains.kotlin.jvm")
+		plugins.apply("io.gitlab.arturbosch.detekt")
 
 		val extension = extensions.create("kotlin-config", KotlinConfigExtension::class.java)
 
@@ -23,6 +25,8 @@ class KotlinConfigPlugin : Plugin<Project> {
 				sourceCompatibility = JavaVersion.valueOf("VERSION_$java")
 				targetCompatibility = JavaVersion.valueOf("VERSION_$java")
 			}
+
+			configureDetekt()
 		}
 
 	}

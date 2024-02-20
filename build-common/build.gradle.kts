@@ -39,4 +39,5 @@ dependencies {
 	implementation(libs.android.library.plugin)
 	implementation(libs.android.application.plugin)
 	implementation(libs.kotlin.jvm.plugin)
+	implementation(libs.detekt)
 }

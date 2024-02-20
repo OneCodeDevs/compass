@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package de.onecode.compass.ksp
 
 import com.google.devtools.ksp.symbol.KSAnnotation

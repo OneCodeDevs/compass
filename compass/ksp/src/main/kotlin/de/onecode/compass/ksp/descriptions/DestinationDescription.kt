@@ -5,5 +5,5 @@ data class DestinationDescription(
 	override val parameters: List<ParameterDescription>,
 	val navigationTargets: List<NavigationTarget>,
 	val isHome: Boolean,
-	val isTop: Boolean
-): NamedWithParameters
+	val isTop: Boolean,
+) : NamedWithParameters

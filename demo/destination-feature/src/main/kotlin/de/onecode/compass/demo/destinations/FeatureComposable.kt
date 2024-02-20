@@ -9,10 +9,6 @@ import androidx.compose.ui.unit.dp
 import de.onecode.compass.api.Destination
 import de.onecode.compass.api.Parameter
 
-@Destination("featureComposable")
-@Parameter("fromApp", Float::class)
-object FeatureComposableDestination
-
 @Composable
 fun FeatureComposable(fromApp: Float, modifier: Modifier = Modifier) {
 	Column(
@@ -23,3 +19,8 @@ fun FeatureComposable(fromApp: Float, modifier: Modifier = Modifier) {
 		Text(text = "From App = $fromApp")
 	}
 }
+
+@Destination("featureComposable")
+@Parameter("fromApp", Float::class)
+object FeatureComposableDestination
+

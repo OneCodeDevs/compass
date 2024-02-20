@@ -1,6 +1,6 @@
 package de.onecode.compass.ksp.descriptions
 
-class SubGraphDescription(
+data class SubGraphDescription(
 	val name: String,
-	val destinations: List<DestinationDescription>
+	val destinations: List<DestinationDescription>,
 )

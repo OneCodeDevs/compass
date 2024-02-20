@@ -1,3 +1,5 @@
+@file:Suppress("LateinitUsage")
+
 package de.onecode.compass.runtime
 
 import androidx.compose.runtime.ProvidableCompositionLocal

@@ -19,7 +19,7 @@ class GraphSymbolProcessor(
 	override fun process(resolver: Resolver): List<KSAnnotated> {
 		val destinationSymbols = resolver.getSymbolsWithAnnotation(Destination::class.java.canonicalName)
 
-		if (!destinationSymbols.iterator().hasNext()) {
+		if (destinationSymbols.none()) {
 			return emptyList()
 		}
 

@@ -20,7 +20,10 @@ internal fun createContextClass(destination: DestinationDescription, parentName:
 	val navBackStackEntryParamName = "navBackStackEntry"
 
 	val commonContext = ClassName(PACKAGE, parentName)
-	val navController = PropertySpec.builder(navControllerParamName, navHostControllerClass, KModifier.PRIVATE).initializer(navControllerParamName).build()
+	val navController = PropertySpec
+		.builder(navControllerParamName, navHostControllerClass, KModifier.PRIVATE)
+		.initializer(navControllerParamName)
+		.build()
 
 	return TypeSpec.classBuilder(destination.contextName)
 		.addAnnotation(Generated::class)
