@@ -6,6 +6,7 @@ import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
 
+@Suppress("LongParameterList")
 fun destinationDescription(
 	name: String,
 	parameters: List<ParameterDescription> = emptyList(),
