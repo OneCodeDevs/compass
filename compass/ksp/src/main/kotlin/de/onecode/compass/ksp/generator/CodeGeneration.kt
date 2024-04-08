@@ -113,8 +113,9 @@ private fun FileSpec.Builder.addParameterExtensionsOnSavedStateHandle(destinatio
 				existingParameters[parameter.name] = parameter.type
 			}
 
-			existingParameterType != parameter.type ->
+			existingParameterType != parameter.type -> {
 				error("Conflicting definition for parameter ${parameter.name}: Found type $existingParameterType and ${parameter.type}")
+			}
 		}
 	}
 }
