@@ -33,8 +33,8 @@ fun generateNavigatorCode(graph: GraphDescription): FileSpec {
 
 				destinations.forEach { destination ->
 					addType(createContextClass(destination, COMMON_CONTEXT))
-					addParameterExtensionsOnSavedStateHandle(destination)
 				}
+				addParameterExtensionsOnSavedStateHandle(destinations)
 			}
 			createSubGraphs(subGraphs)
 
@@ -50,8 +50,8 @@ fun generateAddDestinationCode(graph: GraphDescription): FileSpec {
 				destinations.forEach { destination ->
 					addFunction(createNavHostBuilderComposable(destination))
 					addType(createContextClass(destination, COMMON_CONTEXT))
-					addParameterExtensionsOnSavedStateHandle(destination)
 				}
+				addParameterExtensionsOnSavedStateHandle(destinations)
 			}
 
 			createSubGraphs(graph.subGraphs)
@@ -92,15 +92,30 @@ private fun FileSpec.Builder.createSubGraphs(subGraphs: List<SubGraphDescription
 		addType(createSubGraphContext(subGraph))
 		subGraph.destinations.forEach { subGraphDestination ->
 			addType(createContextClass(subGraphDestination, "${subGraph.name}$COMMON_CONTEXT"))
-			addParameterExtensionsOnSavedStateHandle(subGraphDestination)
 		}
+		addParameterExtensionsOnSavedStateHandle(subGraph.destinations)
 	}
 }
 
-private fun FileSpec.Builder.addParameterExtensionsOnSavedStateHandle(destination: DestinationDescription) {
-	if (destination.parameters.isNotEmpty()) {
-		destination.parameters.forEach { parameter ->
-			addFunction(createParameterExtensionOnSavedStateHandle(parameter))
+private fun FileSpec.Builder.addParameterExtensionsOnSavedStateHandle(destinations: List<DestinationDescription>) {
+	val allParameters = destinations
+		.map {
+			it.parameters
+		}
+		.flatten()
+
+	val existingParameters = mutableMapOf<String, String>()
+	allParameters.forEach { parameter ->
+		val existingParameterType = existingParameters[parameter.name]
+		when {
+			existingParameterType == null           -> {
+				addFunction(createParameterExtensionOnSavedStateHandle(parameter))
+				existingParameters[parameter.name] = parameter.type
+			}
+
+			existingParameterType != parameter.type -> {
+				error("Conflicting definition for parameter ${parameter.name}: Found type $existingParameterType and ${parameter.type}")
+			}
 		}
 	}
 }

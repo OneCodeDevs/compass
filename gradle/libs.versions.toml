@@ -1,5 +1,5 @@
 [versions]
-compass = "1.2.0-SNAPSHOT"
+compass = "1.1.2-SNAPSHOT"
 build-common = "1.0.0"
 
 kotlin = "1.9.22"
@@ -11,14 +11,14 @@ android-sdk-target = "34"
 
 compose-compiler = "1.5.8"
 
-compose-bom = "2024.02.00"
+compose-bom = "2024.04.00"
 compose-navigation = "2.7.7"
 android-core = "1.12.0"
 android-lifecycle-runtime = "2.7.0"
 android-activity-compose = "1.8.2"
 
 ksp = "1.9.22-1.0.16"
-kotlinpoet = "1.14.2"
+kotlinpoet = "1.15.2"
 
 junit = "5.10.2"
 mockk = "1.13.9"
