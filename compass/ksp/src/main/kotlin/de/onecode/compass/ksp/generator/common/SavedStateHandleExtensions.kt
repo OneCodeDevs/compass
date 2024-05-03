@@ -13,12 +13,13 @@ fun createParameterExtensionOnSavedStateHandle(parameter: ParameterDescription):
 	return FunSpec.builder("get${parameterName.capitalize()}")
 		.addAnnotation(Generated::class)
 		.receiver(savedStateHandleClass)
-		.returns(parameter.type.type())
-		.addStatement(
-			"return get<%L>(%S) ?: error(%S)",
-			parameter.type.typeString(),
-			parameterName,
-			"Required parameter $parameterName not provided"
-		)
+		.returns(parameter.type.type().copy(nullable = !parameter.required))
+		.addStatement("val arg = get<%L>(%S)", parameter.type.typeString(), parameterName)
+		.apply {
+			if (parameter.required) {
+				addStatement("?: error(%S)", "Required parameter $parameterName not provided")
+			}
+		}
+		.addStatement("return arg")
 		.build()
 }

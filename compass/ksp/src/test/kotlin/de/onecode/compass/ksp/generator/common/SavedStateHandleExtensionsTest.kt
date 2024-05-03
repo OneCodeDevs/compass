@@ -10,7 +10,7 @@ class SavedStateHandleExtensionsTest {
 	@Test
 	fun `SavedStateHandle parameter extension`() {
 		val code = buildTestFile {
-			addFunction(createParameterExtensionOnSavedStateHandle(ParameterDescription("foo", "String")))
+			addFunction(createParameterExtensionOnSavedStateHandle(ParameterDescription(name = "foo", type = "String", required = true)))
 		}
 
 		assertGeneratedCode(
@@ -22,8 +22,11 @@ class SavedStateHandleExtensionsTest {
 				import kotlin.String
 				
 				@Generated
-				public fun SavedStateHandle.getFoo(): String = get<String>("foo") ?:
-					error("Required parameter foo not provided")
+				public fun SavedStateHandle.getFoo(): String {
+					 val arg = get<String>("foo")
+					    ?: error("Required parameter foo not provided")
+					return arg 
+				}
 			"""
 		)
 	}

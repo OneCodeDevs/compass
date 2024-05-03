@@ -3,6 +3,7 @@ package de.onecode.compass.demo.home
 import de.onecode.compass.api.Destination
 import de.onecode.compass.api.Home
 import de.onecode.compass.api.Navigation
+import de.onecode.compass.api.Parameter
 import de.onecode.compass.demo.destinations.FeatureComposableDestination
 
 @Destination(name = "Home")
@@ -12,4 +13,5 @@ import de.onecode.compass.demo.destinations.FeatureComposableDestination
 object HomeDescription
 
 @Destination(name = "SubHome")
+@Parameter("optionalParam", type = String::class, required = false)
 object SubHomeDestination

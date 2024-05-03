@@ -75,13 +75,15 @@ fun Main() {
 		) { navGraphBuilder ->
 			homeScreen {
 				HomeScreen(
-					onToSub = ::navigateToSubHome,
+					onToSub = { navigateToSubHome(optionalParam = getOptionalParam()) },
 					onToFeature = { navigateToFeatureComposable(Random.nextFloat()) }
 				)
 			}
 
 			subHomeScreen {
-				SubHomeScreen()
+				SubHomeScreen(
+					optionalValue = optionalParam
+				)
 			}
 
 			detailsScreen {
@@ -99,3 +101,10 @@ fun Main() {
 		}
 	}
 }
+
+private fun getOptionalParam(): String? =
+	if (Random.nextBoolean()) {
+		"I'm optional"
+	} else {
+		null
+	}

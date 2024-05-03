@@ -92,8 +92,8 @@ class DestinationVisitorTest {
 			isTop = true,
 			parameters = {
 				listOf(
-					createParameter("param1", String::class),
-					createParameter("param2", Int::class)
+					createParameter(parameterName = "param1", parameterType = String::class, required = true),
+					createParameter(parameterName = "param2", parameterType = Int::class, required = true)
 				)
 			}
 		)
@@ -127,7 +127,7 @@ class DestinationVisitorTest {
 				listOf(createNavigationTarget {
 					createAnnotationsForDestination(
 						name = "Second",
-						parameters = { listOf(createParameter("nav_param", Int::class)) }
+						parameters = { listOf(createParameter(parameterName = "nav_param", parameterType = Int::class, required = true)) }
 					)
 				})
 			}

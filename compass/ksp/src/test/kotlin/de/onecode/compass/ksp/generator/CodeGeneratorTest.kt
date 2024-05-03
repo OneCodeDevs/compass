@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 class CodeGeneratorTest {
 	@Test
 	fun `Two destinations not top and no subgraph`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -109,7 +109,8 @@ class CodeGeneratorTest {
 				    }
 				  }
 				  ) {
-				    navController.navigate(""${'"'}foo""${'"'}) {
+				    val optionalQueryStatement = "" 
+				    navController.navigate(${'"'}foo${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -142,6 +143,7 @@ class CodeGeneratorTest {
 				      }
 				      composable(route = "bar/{param1}", arguments = listOf(navArgument(name = "param1") {
 				            type = NavType.IntType
+							nullable = false
 				          }
 				          )
 				      ) {
@@ -181,7 +183,8 @@ class CodeGeneratorTest {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
-				    navHostController.navigate(""${'"'}bar/${'$'}{param1}""${'"'}) {
+				  val optionalQueryStatement = "" 
+				    navHostController.navigate(${'"'}bar/${'$'}{param1}${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -192,21 +195,27 @@ class CodeGeneratorTest {
 				  private val navHostController: NavHostController,
 				  private val navBackStackEntry: NavBackStackEntry,
 				) : CommonContext(navHostController) {
-				  public val param1: kotlin.Int
-				    get() = navBackStackEntry.arguments?.getInt("param1") ?:
-				        error("Required parameter param1 not provided")
+				  public val param1: Int
+				    get() { 
+						val arg = navBackStackEntry.arguments?.getInt("param1")
+				            ?: error("Required parameter param1 not provided")
+						return arg
+					}
 				}
 				
 				@Generated
-				public fun SavedStateHandle.getParam1(): Int = get<Int>("param1") ?:
-				    error("Required parameter param1 not provided")
+				public fun SavedStateHandle.getParam1(): Int { 
+					val arg = get<Int>("param1")
+				        ?: error("Required parameter param1 not provided")
+					return arg
+				}   
 			"""
 		)
 	}
 
 	@Test
 	fun `Two destinations one top and no subgraph`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -300,7 +309,8 @@ class CodeGeneratorTest {
 					        }
 						}
 					) {
-					    navController.navigate(""${'"'}foo""${'"'}) { 
+						val optionalQueryStatement = "" 
+					    navController.navigate(${'"'}foo${'$'}optionalQueryStatement${'"'}) { 
 							navOptionsBlock()
 					    } 
 					}
@@ -319,7 +329,8 @@ class CodeGeneratorTest {
 							}
 						}
 					) {
-						navController.navigate(""${'"'}bar/${'$'}{param1}""${'"'}) {
+						val optionalQueryStatement = "" 
+						navController.navigate(${'"'}bar/${'$'}{param1}${'$'}optionalQueryStatement${'"'}) {
 							navOptionsBlock()
 						}
 					}
@@ -352,6 +363,7 @@ class CodeGeneratorTest {
 				      }
 				      composable(route = "bar/{param1}", arguments = listOf(navArgument(name = "param1") {
 				            type = NavType.IntType
+							nullable = false
 				          }
 				          )
 				      ) {
@@ -391,7 +403,8 @@ class CodeGeneratorTest {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
-				    navHostController.navigate(""${'"'}bar/${'$'}{param1}""${'"'}) {
+				    val optionalQueryStatement = "" 
+				    navHostController.navigate(${'"'}bar/${'$'}{param1}${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -402,21 +415,27 @@ class CodeGeneratorTest {
 				  private val navHostController: NavHostController,
 				  private val navBackStackEntry: NavBackStackEntry,
 				) : CommonContext(navHostController) {
-				  public val param1: kotlin.Int
-				    get() = navBackStackEntry.arguments?.getInt("param1") ?:
-				        error("Required parameter param1 not provided")
+				  public val param1: Int
+				    get() { 
+						val arg = navBackStackEntry.arguments?.getInt("param1") 
+				            ?: error("Required parameter param1 not provided")
+						return arg
+					}
 				}
 				
 				@Generated
-				public fun SavedStateHandle.getParam1(): Int = get<Int>("param1") ?:
-				    error("Required parameter param1 not provided")
+				public fun SavedStateHandle.getParam1(): Int {
+				    val arg = get<Int>("param1")
+				     ?: error("Required parameter param1 not provided")
+					return arg
+				}
 			"""
 		)
 	}
 
 	@Test
 	fun `Two destinations one top and subgraph`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -528,7 +547,8 @@ class CodeGeneratorTest {
 				            }
 				        }
 				    ) {
-				        navController.navigate(""${'"'}foo""${'"'}) {
+						val optionalQueryStatement = "" 
+				        navController.navigate(${'"'}foo${'$'}optionalQueryStatement${'"'}) {
 				            navOptionsBlock()
 				        }
 					}
@@ -547,7 +567,8 @@ class CodeGeneratorTest {
 				             }
 				           }
 					) {
-						navController.navigate(""${'"'}bar/${'$'}{param1}""${'"'}) { 
+						val optionalQueryStatement = "" 
+						navController.navigate(${'"'}bar/${'$'}{param1}${'$'}optionalQueryStatement${'"'}) { 
 							navOptionsBlock()
 						}
 					}
@@ -580,6 +601,7 @@ class CodeGeneratorTest {
 				      }
 				      composable(route = "bar/{param1}", arguments = listOf(navArgument(name = "param1") {
 				            type = NavType.IntType
+							nullable = false
 				          }
 				          )
 				      ) {
@@ -619,7 +641,8 @@ class CodeGeneratorTest {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
-				    navHostController.navigate(""${'"'}bar/${'$'}{param1}""${'"'}) {
+				    val optionalQueryStatement = ""
+				    navHostController.navigate(${'"'}bar/${'$'}{param1}${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -630,14 +653,20 @@ class CodeGeneratorTest {
 				  private val navHostController: NavHostController,
 				  private val navBackStackEntry: NavBackStackEntry,
 				) : CommonContext(navHostController) {
-				  public val param1: kotlin.Int
-				    get() = navBackStackEntry.arguments?.getInt("param1") ?:
-				        error("Required parameter param1 not provided")
+				  public val param1: Int
+				    get() { 
+						val arg = navBackStackEntry.arguments?.getInt("param1")
+				            ?: error("Required parameter param1 not provided")
+						return arg
+				    }
 				}
 				
 				@Generated
-				public fun SavedStateHandle.getParam1(): Int = get<Int>("param1") ?:
-				    error("Required parameter param1 not provided")
+				public fun SavedStateHandle.getParam1(): Int { 
+					val arg = get<Int>("param1")
+				        ?: error("Required parameter param1 not provided")
+					return arg
+				}
 				
 				@Generated
 				public fun NavGraphBuilder.subSubGraph(builder: subScreenBuilder.(NavGraphBuilder) -> Unit) {
@@ -703,7 +732,7 @@ class CodeGeneratorTest {
 
 	@Test
 	fun `Two destinations no home`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -763,7 +792,8 @@ class CodeGeneratorTest {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
-				    navHostController.navigate(""${'"'}bar/${'$'}{param1}""${'"'}) {
+				    val optionalQueryStatement = "" 
+				    navHostController.navigate(${'"'}bar/${'$'}{param1}${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -771,7 +801,8 @@ class CodeGeneratorTest {
 				
 				public fun NavGraphBuilder.barScreen(composable: @Composable barContext.() -> Unit) {
 				  composable(route = "bar/{param1}", arguments = listOf(navArgument(name = "param1") {
-				        type = NavType.IntType
+					    type = NavType.IntType
+						nullable = false
 				      }
 				      )
 				  ) {
@@ -786,14 +817,20 @@ class CodeGeneratorTest {
 				  private val navHostController: NavHostController,
 				  private val navBackStackEntry: NavBackStackEntry,
 				) : CommonContext(navHostController) {
-				  public val param1: kotlin.Int
-				    get() = navBackStackEntry.arguments?.getInt("param1") ?:
-				        error("Required parameter param1 not provided")
+				  public val param1: Int
+				    get() {
+						val arg = navBackStackEntry.arguments?.getInt("param1")
+							?: error("Required parameter param1 not provided")
+						return arg
+					}
 				}
 				
 				@Generated
-				public fun SavedStateHandle.getParam1(): Int = get<Int>("param1") ?:
-				    error("Required parameter param1 not provided")
+				public fun SavedStateHandle.getParam1(): Int {
+					val arg = get<Int>("param1") 
+				        ?: error("Required parameter param1 not provided")
+					return arg
+				} 
 			"""
 		)
 	}
