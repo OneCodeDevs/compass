@@ -66,8 +66,10 @@ class CreateCompassControllerTest {
 				
 				  @Composable
 				  public fun currentDestinationIsFoo(): State<Boolean> = remember {
-				    derivedStateOf {
-				      _currentDestinationName.value == "foo"
+				    derivedStateOf { 
+						_currentDestinationName.value == "foo" ||
+						_currentDestinationName.value?.startsWith("foo/") == true ||
+						_currentDestinationName.value?.startsWith("foo?") == true
 				    }
 				  }
 				
@@ -151,8 +153,10 @@ class CreateCompassControllerTest {
 				
 				  @Composable
 				  public fun currentDestinationIsFoo(): State<Boolean> = remember {
-				    derivedStateOf {
-				      _currentDestinationName.value == "foo"
+				    derivedStateOf { 
+						_currentDestinationName.value == "foo" ||
+						_currentDestinationName.value?.startsWith("foo/") == true ||
+						_currentDestinationName.value?.startsWith("foo?") == true
 				    }
 				  }
 				
@@ -236,8 +240,10 @@ class CreateCompassControllerTest {
 				
 				  @Composable
 				  public fun currentDestinationIsFoo(): State<Boolean> = remember {
-				    derivedStateOf {
-				      _currentDestinationName.value == "foo"
+				    derivedStateOf { 
+						_currentDestinationName.value == "foo" ||
+						_currentDestinationName.value?.startsWith("foo/") == true ||
+						_currentDestinationName.value?.startsWith("foo?") == true
 				    }
 				  }
 				
@@ -254,8 +260,10 @@ class CreateCompassControllerTest {
 				
 				  @Composable
 				  public fun currentDestinationIsBar(): State<Boolean> = remember {
-				    derivedStateOf {
-				      _currentDestinationName.value == "bar"
+				    derivedStateOf { 
+						_currentDestinationName.value == "bar" ||
+						_currentDestinationName.value?.startsWith("bar/") == true ||
+						_currentDestinationName.value?.startsWith("bar?") == true
 				    }
 				  }
 				
