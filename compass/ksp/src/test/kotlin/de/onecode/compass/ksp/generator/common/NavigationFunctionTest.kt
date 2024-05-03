@@ -75,7 +75,7 @@ class NavigationFunctionTest {
 
 	@Test
 	fun `navigation function for NavigationTarget with parameters`() {
-		val navigationTarget = NavigationTarget("foo", parameters = listOf(ParameterDescription("param1", "kotlin.String")))
+		val navigationTarget = NavigationTarget("foo", parameters = listOf(ParameterDescription(name = "param1", type = "kotlin.String", required = true)))
 		val navControllerParamName = "navHostController"
 
 		val code = buildTestFile {

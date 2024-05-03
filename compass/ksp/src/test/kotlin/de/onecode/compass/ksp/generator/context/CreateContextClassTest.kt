@@ -37,7 +37,13 @@ class CreateContextClassTest {
 
 	@Test
 	fun `Destination Context with one parameter and no navigation`() {
-		val description = DestinationDescription("foo", parameters = listOf(ParameterDescription("param1", "kotlin.String")), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description = DestinationDescription(
+			name = "foo",
+			parameters = listOf(ParameterDescription(name = "param1", type = "kotlin.String", required = true)),
+			navigationTargets = emptyList(),
+			isHome = false,
+			isTop = false
+		)
 
 		val code = buildTestFile {
 			addType(createContextClass(description, "CommonContext"))
@@ -69,8 +75,8 @@ class CreateContextClassTest {
 	fun `Destination Context with one parameter and one navigation that also has one parameter`() {
 		val description = DestinationDescription(
 			"foo",
-			parameters = listOf(ParameterDescription("param1", "kotlin.String")),
-			navigationTargets = listOf(NavigationTarget("target", listOf(ParameterDescription("targetParam1", "kotlin.Int")))),
+			parameters = listOf(ParameterDescription(name = "param1", type = "kotlin.String", required = true)),
+			navigationTargets = listOf(NavigationTarget("target", listOf(ParameterDescription(name = "targetParam1", type = "kotlin.Int", required = true)))),
 			isHome = false,
 			isTop = false
 		)

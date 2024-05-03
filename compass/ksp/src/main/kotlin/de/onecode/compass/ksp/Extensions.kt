@@ -6,6 +6,8 @@ import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSType
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.asTypeName
 import de.onecode.compass.api.Destination
 import de.onecode.compass.api.SubGraph
 import de.onecode.compass.ksp.descriptions.DestinationDescription
@@ -19,7 +21,7 @@ import kotlin.reflect.KProperty1
 fun String.typeString(): String =
 	substring(lastIndexOf(".") + 1)
 
-fun String.type(): KClass<*> =
+fun String.type(): ClassName =
 	when (this.typeString()) {
 		"String" -> String::class
 		"Byte"   -> Byte::class
@@ -28,7 +30,7 @@ fun String.type(): KClass<*> =
 		"Float"  -> Float::class
 		"Double" -> Double::class
 		else     -> error("Type $this is currently not supported")
-	}
+	}.asTypeName()
 
 val KSType.isNavigable: Boolean
 	get() = declaration.annotations.any {
@@ -44,11 +46,13 @@ fun KSType.asClassDeclaration(): KSClassDeclaration =
 fun KSAnnotation.toParameterDescription(classDeclaration: KSClassDeclaration): ParameterDescription {
 	val paramName = getParameterValue<String>(ParameterDescription::name.name, classDeclaration)
 	val paramType = getParameterValue<KSType>(ParameterDescription::type.name, classDeclaration)
+	val paramRequired = getParameterValue<Boolean>(ParameterDescription::required.name, classDeclaration)
 
 	return ParameterDescription(
 		name = paramName,
 		type = paramType.declaration.qualifiedName?.asString()
-			?: error("Can't get qualified name of parameter type")
+			?: error("Can't get qualified name of parameter type"),
+		required = paramRequired
 	)
 }
 
@@ -109,6 +113,19 @@ val DestinationDescription.route: String
 
 val DestinationDescription.routeParameterSuffix: String
 	get() {
-		val params = parameters.joinToString("/") { "{${it.name}}" }
-		return if (params.isNotBlank()) "/$params" else ""
+		val (required, optional) = parameters.partition { it.required }
+
+		val requiredParamPath = if (required.isNotEmpty()) {
+			required.joinToString(prefix = "/", separator = "/") { "{${it.name}}" }
+		} else {
+			""
+		}
+		val optionalParamQuery = if (optional.isNotEmpty()) {
+			optional.joinToString(prefix = "?", separator = "&") { "${it.name}={${it.name}}" }
+		} else {
+			""
+		}
+
+
+		return requiredParamPath + optionalParamQuery
 	}

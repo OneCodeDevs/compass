@@ -90,7 +90,7 @@ class CreateCompassControllerTest {
 
 	@Test
 	fun `CompassController with two Destination no top`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -177,7 +177,7 @@ class CreateCompassControllerTest {
 
 	@Test
 	fun `CompassController with two Destination and one top`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),

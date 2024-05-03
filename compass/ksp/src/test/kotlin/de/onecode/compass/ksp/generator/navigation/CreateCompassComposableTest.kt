@@ -63,7 +63,7 @@ class CreateCompassComposableTest {
 	fun `Navigator with a destination with a parameter`() {
 		val description = DestinationDescription(
 			name = "foo",
-			parameters = listOf(ParameterDescription("param1", "kotlin.Int")),
+			parameters = listOf(ParameterDescription(name = "param1", type = "kotlin.Int", required = true)),
 			navigationTargets = emptyList(),
 			isHome = true,
 			isTop = false

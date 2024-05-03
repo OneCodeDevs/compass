@@ -12,6 +12,7 @@ import de.onecode.compass.ksp.generator.common.toNavigationFunction
 import de.onecode.compass.ksp.generator.contextName
 import de.onecode.compass.ksp.generator.navBackStackEntryClass
 import de.onecode.compass.ksp.generator.navHostControllerClass
+import de.onecode.compass.ksp.type
 import de.onecode.compass.ksp.typeString
 import javax.annotation.processing.Generated
 
@@ -50,18 +51,19 @@ internal fun createContextClass(destination: DestinationDescription, parentName:
 }
 
 private fun ParameterDescription.toParameterProperty(navBackStackEntryParam: String): PropertySpec {
-	val typeString = type.typeString()
+	val classType = type.type().copy(nullable = !required)
 
-	return PropertySpec.builder(name, ClassName("", type))
+	return PropertySpec.builder(name, classType)
 		.mutable(mutable = false)
 		.getter(
 			FunSpec.getterBuilder()
-				.addStatement(
-					"return %L.arguments?.get${typeString}(%S) ?: error(%S)",
-					navBackStackEntryParam,
-					name,
-					"Required parameter $name not provided"
-				)
+				.addStatement("val arg = %L.arguments?.get%L(%S)", navBackStackEntryParam, type.typeString(), name)
+				.apply {
+					if (required) {
+						addStatement("?: error(%S)", "Required parameter $name not provided")
+					}
+				}
+				.addStatement("return arg")
 				.build()
 		)
 		.build()

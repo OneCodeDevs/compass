@@ -60,6 +60,7 @@ private fun navigationArgumentsCodeBlock(description: DestinationDescription): C
 				buildCodeBlock {
 					beginControlFlow("navArgument(name = %S)", it.name)
 					addStatement("type = NavType.%L", navType)
+					addStatement("nullable = %L", !it.required)
 					endControlFlow()
 				}
 			}

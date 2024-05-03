@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 class CreateSubGraphFunctionTest {
 	@Test
 	fun `SuGraph function with two destinations`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -69,7 +69,7 @@ class CreateSubGraphFunctionTest {
 
 	@Test
 	fun `SuGraph function with a home with parameters`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description = DestinationDescription("foo", parameters = listOf(param1), navigationTargets = emptyList(), isHome = true, isTop = false)
 		val subGraph = SubGraphDescription("sub", listOf(description))
 

@@ -10,7 +10,7 @@ class SavedStateHandleExtensionsTest {
 	@Test
 	fun `SavedStateHandle parameter extension`() {
 		val code = buildTestFile {
-			addFunction(createParameterExtensionOnSavedStateHandle(ParameterDescription("foo", "String")))
+			addFunction(createParameterExtensionOnSavedStateHandle(ParameterDescription(name = "foo", type = "String", required = true)))
 		}
 
 		assertGeneratedCode(

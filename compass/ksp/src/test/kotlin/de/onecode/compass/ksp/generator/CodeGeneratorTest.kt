@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 class CodeGeneratorTest {
 	@Test
 	fun `Two destinations not top and no subgraph`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -206,7 +206,7 @@ class CodeGeneratorTest {
 
 	@Test
 	fun `Two destinations one top and no subgraph`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -416,7 +416,7 @@ class CodeGeneratorTest {
 
 	@Test
 	fun `Two destinations one top and subgraph`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
@@ -703,7 +703,7 @@ class CodeGeneratorTest {
 
 	@Test
 	fun `Two destinations no home`() {
-		val param1 = ParameterDescription("param1", "kotlin.Int")
+		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
 		val description1 = DestinationDescription(
 			name = "foo",
 			parameters = emptyList(),
