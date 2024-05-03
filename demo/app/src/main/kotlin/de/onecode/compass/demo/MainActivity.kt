@@ -74,13 +74,8 @@ fun Main() {
 			compassController = compassController
 		) { navGraphBuilder ->
 			homeScreen {
-				val randomOptional = if (Random.nextBoolean()) {
-					"I'm optional"
-				} else {
-					null
-				}
 				HomeScreen(
-					onToSub = { navigateToSubHome(optionalParam = randomOptional) },
+					onToSub = { navigateToSubHome(optionalParam = getOptionalParam()) },
 					onToFeature = { navigateToFeatureComposable(Random.nextFloat()) }
 				)
 			}
@@ -106,3 +101,10 @@ fun Main() {
 		}
 	}
 }
+
+private fun getOptionalParam(): String? =
+	if (Random.nextBoolean()) {
+		"I'm optional"
+	} else {
+		null
+	}
