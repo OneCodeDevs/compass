@@ -68,10 +68,11 @@ internal fun Any.createNavigationTarget(annotations: () -> List<KSAnnotation>): 
 	)
 }
 
-internal fun createParameter(parameterName: String, parameterType: KClass<*>): KSAnnotation = createAnnotation(Parameter::class) {
+internal fun createParameter(parameterName: String, parameterType: KClass<*>, required: Boolean): KSAnnotation = createAnnotation(Parameter::class) {
 	listOf(
 		ksValueArgument("name", parameterName),
-		ksValueArgument("type", ksType(parameterType))
+		ksValueArgument("type", ksType(parameterType)),
+		ksValueArgument("required", required)
 	)
 }
 
@@ -106,7 +107,7 @@ private fun List<DestinationDescription>.toType(): List<KSType> =
 				isTop = destination.isHome,
 				parameters = {
 					destination.parameters.map { parameter ->
-						createParameter(parameter.name, javaClass.classLoader.loadClass(parameter.type).kotlin)
+						createParameter(parameter.name, javaClass.classLoader.loadClass(parameter.type).kotlin, parameter.required)
 					}
 				}
 			).asSequence()

@@ -55,7 +55,7 @@ class CreateCompassControllerTest {
 				  public fun RegisterCurrentDestinationListener() {
 				    DisposableEffect(key1 = navController) {
 				      val listener = OnDestinationChangedListener { _, destination, _ ->
-				      	_currentDestinationName.value = destination.route
+				        _currentDestinationName.value = destination.route
 				      }
 				      navController.addOnDestinationChangedListener(listener)
 				      onDispose {
@@ -66,10 +66,10 @@ class CreateCompassControllerTest {
 				
 				  @Composable
 				  public fun currentDestinationIsFoo(): State<Boolean> = remember {
-				    derivedStateOf { 
-						_currentDestinationName.value == "foo" ||
-						_currentDestinationName.value?.startsWith("foo/") == true ||
-						_currentDestinationName.value?.startsWith("foo?") == true
+				    derivedStateOf {
+				      _currentDestinationName.value == "foo" || 
+				      _currentDestinationName.value?.startsWith("foo/") == true ||
+				      _currentDestinationName.value?.startsWith("foo?") == true
 				    }
 				  }
 				
@@ -79,7 +79,8 @@ class CreateCompassControllerTest {
 				    }
 				  }
 				  ) {
-				    navController.navigate(""${'"'}foo""${'"'}) {
+				    val optionalQueryStatement = "" 
+				    navController.navigate(${'"'}foo${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -142,7 +143,7 @@ class CreateCompassControllerTest {
 				  public fun RegisterCurrentDestinationListener() {
 				    DisposableEffect(key1 = navController) {
 				      val listener = OnDestinationChangedListener { _, destination, _ ->
-				      	_currentDestinationName.value = destination.route
+				        _currentDestinationName.value = destination.route
 				      }
 				      navController.addOnDestinationChangedListener(listener)
 				      onDispose {
@@ -153,10 +154,10 @@ class CreateCompassControllerTest {
 				
 				  @Composable
 				  public fun currentDestinationIsFoo(): State<Boolean> = remember {
-				    derivedStateOf { 
-						_currentDestinationName.value == "foo" ||
-						_currentDestinationName.value?.startsWith("foo/") == true ||
-						_currentDestinationName.value?.startsWith("foo?") == true
+				    derivedStateOf {
+				      _currentDestinationName.value == "foo" || 
+				      _currentDestinationName.value?.startsWith("foo/") == true ||
+				      _currentDestinationName.value?.startsWith("foo?") == true
 				    }
 				  }
 				
@@ -166,7 +167,8 @@ class CreateCompassControllerTest {
 				    }
 				  }
 				  ) {
-				    navController.navigate(""${'"'}foo""${'"'}) {
+				    val optionalQueryStatement = "" 
+				    navController.navigate(${'"'}foo${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -253,7 +255,8 @@ class CreateCompassControllerTest {
 				    }
 				  }
 				  ) {
-				    navController.navigate(""${'"'}foo""${'"'}) {
+				    val optionalQueryStatement = "" 
+				    navController.navigate(${'"'}foo${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }
@@ -272,7 +275,8 @@ class CreateCompassControllerTest {
 				        }
 				      }
 				  ) {
-				    navController.navigate(""${'"'}bar/${'$'}{param1}""${'"'}) {
+				    val optionalQueryStatement = "" 
+				    navController.navigate(${'"'}bar/${'$'}{param1}${'$'}optionalQueryStatement${'"'}) {
 				      navOptionsBlock()
 				    }
 				  }

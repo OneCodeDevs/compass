@@ -55,7 +55,8 @@ class CreateSubGraphFunctionTest {
 				      screenBuilder.fooComposable?.invoke(fooContext(LocalNavHostController.current, it))
 				    }
 				    composable(route = "bar/{param1}", arguments = listOf(navArgument(name = "param1") {
-				          type = NavType.IntType
+				            type = NavType.IntType
+							nullable = false
 				        }
 				        )
 				    ) {
@@ -93,6 +94,7 @@ class CreateSubGraphFunctionTest {
 				    screenBuilder.builder(this)
 				    composable(route = "foo/{param1}", arguments = listOf(navArgument(name = "param1") {
 								type = NavType.IntType
+								nullable = false
 							}
 						)
 				    ) {

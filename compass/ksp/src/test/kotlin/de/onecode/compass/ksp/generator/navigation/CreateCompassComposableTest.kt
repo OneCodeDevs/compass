@@ -101,6 +101,7 @@ class CreateCompassComposableTest {
 				      screenBuilder.builder(this)
 				      composable(route = "foo/{param1}", arguments = listOf(navArgument(name = "param1") {
 				                        type = NavType.IntType
+										nullable = false
 				                      }
 				          )
 				      ) {

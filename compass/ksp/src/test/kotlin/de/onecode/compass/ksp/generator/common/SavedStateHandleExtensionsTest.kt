@@ -22,8 +22,11 @@ class SavedStateHandleExtensionsTest {
 				import kotlin.String
 				
 				@Generated
-				public fun SavedStateHandle.getFoo(): String = get<String>("foo") ?:
-					error("Required parameter foo not provided")
+				public fun SavedStateHandle.getFoo(): String {
+					 val arg = get<String>("foo")
+					    ?: error("Required parameter foo not provided")
+					return arg 
+				}
 			"""
 		)
 	}
