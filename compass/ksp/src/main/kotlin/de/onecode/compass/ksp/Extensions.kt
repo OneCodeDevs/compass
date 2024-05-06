@@ -32,6 +32,12 @@ fun String.type(): ClassName =
 		else     -> error("Type $this is currently not supported")
 	}.asTypeName()
 
+fun ClassName.optionalAllowed(): Boolean =
+	when(this) {
+		String::class.asTypeName() -> true
+		else -> false
+	}
+
 val KSType.isNavigable: Boolean
 	get() = declaration.annotations.any {
 		val shortName = it.shortName.asString()

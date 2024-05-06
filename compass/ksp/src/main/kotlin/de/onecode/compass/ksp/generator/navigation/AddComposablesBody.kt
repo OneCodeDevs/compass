@@ -8,7 +8,9 @@ import de.onecode.compass.ksp.decapitalize
 import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.generator.LOCAL_NAV_HOST_CONTROLLER
 import de.onecode.compass.ksp.generator.contextName
+import de.onecode.compass.ksp.optionalAllowed
 import de.onecode.compass.ksp.route
+import de.onecode.compass.ksp.type
 import de.onecode.compass.ksp.typeString
 
 internal fun FunSpec.Builder.addComposablesBody(
@@ -56,11 +58,17 @@ private fun navigationArgumentsCodeBlock(description: DestinationDescription): C
 			addStatement("emptyList()")
 		} else {
 			val blocks = parameters.map {
+				val optionalParameter = !it.required
+				val type = it.type.type()
+				if (optionalParameter && !type.optionalAllowed()) {
+					error("${it.name} with type ${it.type.typeString()} marked as optional. At the moment optional parameters are only allowed for ${String::class.java.canonicalName}")
+				}
+
 				val navType = "${it.type.typeString()}Type"
 				buildCodeBlock {
 					beginControlFlow("navArgument(name = %S)", it.name)
 					addStatement("type = NavType.%L", navType)
-					addStatement("nullable = %L", !it.required)
+					addStatement("nullable = %L", optionalParameter)
 					endControlFlow()
 				}
 			}
