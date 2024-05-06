@@ -42,6 +42,8 @@ style:
   UnusedPrivateMember:
     ignoreAnnotated:
       - 'Preview'
+  UseIfInsteadOfWhen:
+    active: false
 
 performance:
   SpreadOperator:
