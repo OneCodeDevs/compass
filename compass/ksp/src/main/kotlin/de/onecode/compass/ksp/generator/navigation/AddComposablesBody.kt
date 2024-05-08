@@ -8,6 +8,7 @@ import de.onecode.compass.ksp.decapitalize
 import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.generator.LOCAL_NAV_HOST_CONTROLLER
 import de.onecode.compass.ksp.generator.contextName
+import de.onecode.compass.ksp.getNavTypeName
 import de.onecode.compass.ksp.optionalAllowed
 import de.onecode.compass.ksp.route
 import de.onecode.compass.ksp.type
@@ -60,11 +61,13 @@ private fun navigationArgumentsCodeBlock(description: DestinationDescription): C
 			val blocks = parameters.map {
 				val optionalParameter = !it.required
 				val type = it.type.type()
+				val typeString = it.type.typeString()
+
 				if (optionalParameter && !type.optionalAllowed()) {
-					error("${it.name} with type ${it.type.typeString()} marked as optional. At the moment optional parameters are only allowed for ${String::class.java.canonicalName}")
+					error("${it.name} with type $typeString marked as optional. At the moment optional parameters are only allowed for ${String::class.java.canonicalName}")
 				}
 
-				val navType = "${it.type.typeString()}Type"
+				val navType = "${typeString.getNavTypeName()}Type"
 				buildCodeBlock {
 					beginControlFlow("navArgument(name = %S)", it.name)
 					addStatement("type = NavType.%L", navType)

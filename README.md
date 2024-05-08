@@ -137,6 +137,7 @@ Supported parameter types are:
 
 - Numbers, like `Int`, `Long`, `Double`, `Float`, etc.
 - `String`
+- `Boolean`
 
 **Definition**
 
