@@ -2,29 +2,29 @@
 compass = "1.1.2-SNAPSHOT"
 build-common = "1.0.0"
 
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 java = "17"
 
-android-plugin = "8.2.2"
+android-plugin = "8.4.0"
 android-sdk-min = "21"
 android-sdk-target = "34"
 
-compose-compiler = "1.5.8"
+compose-compiler = "1.5.13"
 
-compose-bom = "2024.04.00"
+compose-bom = "2024.05.00"
 compose-navigation = "2.7.7"
-android-core = "1.12.0"
+android-core = "1.13.1"
 android-lifecycle-runtime = "2.7.0"
-android-activity-compose = "1.8.2"
+android-activity-compose = "1.9.0"
 
-ksp = "1.9.22-1.0.16"
-kotlinpoet = "1.15.2"
+ksp = "1.9.23-1.0.20"
+kotlinpoet = "1.16.0"
 
 junit = "5.10.2"
-mockk = "1.13.9"
-google-truth = "1.4.0"
+mockk = "1.13.10"
+google-truth = "1.4.2"
 
-detekt = "1.23.3"
+detekt = "1.23.6"
 
 [libraries]
 android-library-plugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android-plugin" }
