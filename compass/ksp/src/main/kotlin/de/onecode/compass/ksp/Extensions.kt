@@ -21,21 +21,29 @@ import kotlin.reflect.KProperty1
 fun String.typeString(): String =
 	substring(lastIndexOf(".") + 1)
 
+fun String.getNavTypeName(): String =
+	if (this == "Boolean") {
+		"Bool"
+	} else {
+		this
+	}
+
 fun String.type(): ClassName =
 	when (this.typeString()) {
-		"String" -> String::class
-		"Byte"   -> Byte::class
-		"Int"    -> Int::class
-		"Long"   -> Long::class
-		"Float"  -> Float::class
-		"Double" -> Double::class
-		else     -> error("Type $this is currently not supported")
+		"String"  -> String::class
+		"Byte"    -> Byte::class
+		"Int"     -> Int::class
+		"Long"    -> Long::class
+		"Float"   -> Float::class
+		"Double"  -> Double::class
+		"Boolean" -> Boolean::class
+		else      -> error("Type $this is currently not supported")
 	}.asTypeName()
 
 fun ClassName.optionalAllowed(): Boolean =
-	when(this) {
+	when (this) {
 		String::class.asTypeName() -> true
-		else -> false
+		else                       -> false
 	}
 
 val KSType.isNavigable: Boolean
