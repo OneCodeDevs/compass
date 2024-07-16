@@ -21,9 +21,15 @@ fun generateNavigatorCode(graph: GraphDescription): FileSpec {
 	val destinations = graph.destinations
 	val subGraphs = graph.subGraphs
 
+	val hasDialog = graph.destinations.any { it.isDialog } || subGraphs.fold(true) {acc, destination -> acc && destination.destinations.any { it.isDialog }}
+
 	return createFileSpec(graph)
 		.addImport("androidx.compose.runtime", "CompositionLocalProvider", "compositionLocalOf")
 		.apply {
+			if(hasDialog) {
+				addImport("androidx.navigation.compose", "dialog")
+			}
+
 			if (destinations.isNotEmpty()) {
 				addType(createCompassController(destinations))
 				addFunction(createRememberCompassController())

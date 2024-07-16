@@ -6,4 +6,5 @@ data class DestinationDescription(
 	val navigationTargets: List<NavigationTarget>,
 	val isHome: Boolean,
 	val isTop: Boolean,
+	val isDialog: Boolean,
 ) : NamedWithParameters

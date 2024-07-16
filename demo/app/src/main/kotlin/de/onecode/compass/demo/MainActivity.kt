@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import de.onecode.compass.Compass
 import de.onecode.compass.demo.destinations.attachFeatureComposable
 import de.onecode.compass.demo.details.DetailsScreen
+import de.onecode.compass.demo.dialog.MyDialogScreen
 import de.onecode.compass.demo.home.HomeScreen
 import de.onecode.compass.demo.home.SubHomeScreen
 import de.onecode.compass.demo.theme.NavGraphConfigComposeTheme
@@ -76,8 +77,13 @@ fun Main() {
 			homeScreen {
 				HomeScreen(
 					onToSub = { navigateToSubHome(optionalParam = getOptionalParam()) },
-					onToFeature = { navigateToFeatureComposable(Random.nextFloat()) }
+					onToFeature = { navigateToFeatureComposable(Random.nextFloat()) },
+					onToDialog = ::navigateToMyDialog
 				)
+			}
+
+			myDialogScreen {
+				MyDialogScreen(onClose = ::popBackStack)
 			}
 
 			subHomeScreen {
