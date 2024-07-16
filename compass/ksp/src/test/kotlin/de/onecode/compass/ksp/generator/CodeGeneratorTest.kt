@@ -9,7 +9,7 @@ import de.onecode.compass.ksp.descriptions.SubGraphDescription
 import de.onecode.compass.ksp.writeToString
 import org.junit.jupiter.api.Test
 
-@Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName", "CanBeParameter", "UnusedReceiverParameter", "TestFunctionName", "ClassName")
+@Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName", "UnusedReceiverParameter", "TestFunctionName", "ClassName")
 class CodeGeneratorTest {
 	@Test
 	fun `Two destinations not top and no subgraph`() {
@@ -177,9 +177,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class fooContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
@@ -192,9 +192,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class barContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public val param1: Int
 				    get() { 
 						val arg = navBackStackEntry.arguments?.getInt("param1")
@@ -397,9 +397,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class fooContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
@@ -412,9 +412,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class barContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public val param1: Int
 				    get() { 
 						val arg = navBackStackEntry.arguments?.getInt("param1") 
@@ -635,9 +635,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class fooContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
@@ -650,9 +650,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class barContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public val param1: Int
 				    get() { 
 						val arg = navBackStackEntry.arguments?.getInt("param1")
@@ -708,8 +708,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public abstract class subCommonContext(
-				  private val navHostController: NavHostController,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public fun leaveSubGraph() {
 				    navHostController.popBackStack(route = "sub", inclusive = true)
 				  }
@@ -717,15 +718,15 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class sub1Context(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : subCommonContext(navHostController)
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : subCommonContext(navHostController, navBackStackEntry)
 				
 				@Generated
 				public class sub1Context(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : subCommonContext(navHostController)
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : subCommonContext(navHostController, navBackStackEntry)
 			"""
 		)
 	}
@@ -786,9 +787,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class fooContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public fun navigateToBar(param1: kotlin.Int, navOptionsBlock: NavOptionsBuilder.() -> Unit =  {
 				      }
 				  ) {
@@ -814,9 +815,9 @@ class CodeGeneratorTest {
 				
 				@Generated
 				public class barContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public val param1: Int
 				    get() {
 						val arg = navBackStackEntry.arguments?.getInt("param1")

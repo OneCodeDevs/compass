@@ -7,7 +7,7 @@ import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
 import org.junit.jupiter.api.Test
 
-@Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName", "CanBeParameter", "ClassName")
+@Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName", "ClassName")
 class CreateContextClassTest {
 	@Test
 	fun `Destination Context with no parameters and no navigation`() {
@@ -28,9 +28,9 @@ class CreateContextClassTest {
 			
 			@Generated
 			public class fooContext(
-				private val navHostController: NavHostController,
-			    private val navBackStackEntry: NavBackStackEntry,
-			) : CommonContext(navHostController)
+				navHostController: NavHostController,
+			    navBackStackEntry: NavBackStackEntry,
+			) : CommonContext(navHostController, navBackStackEntry)
 			"""
 		)
 	}
@@ -61,9 +61,9 @@ class CreateContextClassTest {
 				
 				@Generated
 				public class fooContext(
-				private val navHostController: NavHostController,
-				private val navBackStackEntry: NavBackStackEntry,
-					) : CommonContext(navHostController) { 
+					navHostController: NavHostController,
+					navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) { 
 					public val param1: String
 						get() {
 							val arg = navBackStackEntry.arguments?.getString("param1") 
@@ -103,9 +103,9 @@ class CreateContextClassTest {
 				
 				@Generated
 				public class fooContext(
-				  private val navHostController: NavHostController,
-				  private val navBackStackEntry: NavBackStackEntry,
-				) : CommonContext(navHostController) {
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) {
 				  public val param1: String
 				    get() {
 				      val arg = navBackStackEntry.arguments?.getString("param1")

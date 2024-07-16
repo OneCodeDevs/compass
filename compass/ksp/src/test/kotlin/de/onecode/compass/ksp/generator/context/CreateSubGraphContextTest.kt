@@ -22,14 +22,16 @@ class CreateSubGraphContextTest {
 			generated = code,
 			expected =
 			"""
+				import androidx.navigation.NavBackStackEntry
 				import androidx.navigation.NavHostController
 				import de.onecode.compass.CommonContext
 				import javax.`annotation`.processing.Generated
 				
 				@Generated
 				public abstract class subCommonContext(
-				private val navHostController: NavHostController,
-					) : CommonContext(navHostController) { 
+					navHostController: NavHostController,
+					navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry) { 
 					public fun leaveSubGraph() {
 						navHostController.popBackStack(route = "sub", inclusive = true)
 					} 

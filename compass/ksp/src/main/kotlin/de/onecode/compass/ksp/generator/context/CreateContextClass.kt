@@ -30,14 +30,13 @@ internal fun createContextClass(destination: DestinationDescription, parentName:
 		.addAnnotation(Generated::class)
 		.superclass(commonContext)
 		.addSuperclassConstructorParameter(navControllerParamName)
+		.addSuperclassConstructorParameter(navBackStackEntryParamName)
 		.primaryConstructor(
 			FunSpec.constructorBuilder()
 				.addParameter(navControllerParamName, navHostControllerClass)
 				.addParameter(navBackStackEntryParamName, navBackStackEntryClass)
 				.build()
 		)
-		.addProperty(navController)
-		.addProperty(PropertySpec.builder(navBackStackEntryParamName, navBackStackEntryClass, KModifier.PRIVATE).initializer(navBackStackEntryParamName).build())
 		.apply {
 			destination.parameters.forEach { parameter ->
 				addProperty(parameter.toParameterProperty(navBackStackEntryParamName))
