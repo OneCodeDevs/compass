@@ -21,12 +21,12 @@ fun generateNavigatorCode(graph: GraphDescription): FileSpec {
 	val destinations = graph.destinations
 	val subGraphs = graph.subGraphs
 
-	val hasDialog = graph.destinations.any { it.isDialog } || subGraphs.fold(true) {acc, destination -> acc && destination.destinations.any { it.isDialog }}
+	val hasDialog = graph.destinations.any { it.isDialog } || (subGraphs.isNotEmpty() && subGraphs.fold(true) { acc, destination -> acc && destination.destinations.any { it.isDialog } })
 
 	return createFileSpec(graph)
 		.addImport("androidx.compose.runtime", "CompositionLocalProvider", "compositionLocalOf")
 		.apply {
-			if(hasDialog) {
+			if (hasDialog) {
 				addImport("androidx.navigation.compose", "dialog")
 			}
 
@@ -114,7 +114,7 @@ private fun FileSpec.Builder.addParameterExtensionsOnSavedStateHandle(destinatio
 	allParameters.forEach { parameter ->
 		val existingParameterType = existingParameters[parameter.name]
 		when {
-			existingParameterType == null           -> {
+			existingParameterType == null -> {
 				addFunction(createParameterExtensionOnSavedStateHandle(parameter))
 				existingParameters[parameter.name] = parameter.type
 			}
