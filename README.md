@@ -176,6 +176,12 @@ Navigation methods for `@Top` destinations are generated in the `CompoassControl
 `@Top` annotations are only supported in the main graph, they are disallowed in a sub graph.
 **Important**: Don't forget to pass it to the `Compass` again, to make sure the same instance is used by you and the `Compass`
 
+### @Dialog
+
+`@Dialog` marks a destination to be dialog composable in the NavGraph.
+Annotating a destination that way leads to the usage of the `dialog` function instead of the `composable` function under the hood.
+The destination won't be displayed fullscreen anymore.
+
 ### @SubGraph
 
 In addition to a main graph which will generate the `Compass`, destinations can also be grouped together into a subgraph. The subgraph can be defined independently and later included into an
