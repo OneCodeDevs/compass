@@ -2,22 +2,22 @@
 compass = "1.1.2-SNAPSHOT"
 build-common = "1.0.0"
 
-kotlin = "1.9.23"
+kotlin = "1.9.24"
 java = "17"
 
-android-plugin = "8.4.0"
+android-plugin = "8.5.1"
 android-sdk-min = "21"
 android-sdk-target = "34"
 
-compose-compiler = "1.5.13"
+compose-compiler = "1.5.14"
 
-compose-bom = "2024.05.00"
+compose-bom = "2024.06.00"
 compose-navigation = "2.7.7"
 android-core = "1.13.1"
-android-lifecycle-runtime = "2.7.0"
+android-lifecycle-runtime = "2.8.3"
 android-activity-compose = "1.9.0"
 
-ksp = "1.9.23-1.0.20"
+ksp = "1.9.24-1.0.20"
 kotlinpoet = "1.16.0"
 
 junit = "5.10.2"
