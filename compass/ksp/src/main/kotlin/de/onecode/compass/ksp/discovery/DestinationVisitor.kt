@@ -5,6 +5,7 @@ import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSVisitorVoid
 import com.squareup.kotlinpoet.ksp.toClassName
 import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Dialog
 import de.onecode.compass.api.Home
 import de.onecode.compass.api.Navigation
 import de.onecode.compass.api.Parameter
@@ -32,7 +33,16 @@ class DestinationVisitor : KSVisitorVoid() {
 			?: error("Could not find annotation ${Destination::name} on ${classDeclaration.className}")
 		val isHome = classDeclaration.filterAnnotations(Home::class).iterator().hasNext()
 		val isTop = classDeclaration.filterAnnotations(Top::class).iterator().hasNext()
+		val isDialog = classDeclaration.filterAnnotations(Dialog::class).iterator().hasNext()
 		val destinationName = destination.getDestinationName(classDeclaration)
+
+		if (isDialog && isTop) {
+			error("Destination $destinationName is marked as ${Dialog::class.qualifiedName} and ${Top::class.qualifiedName}. A Dialog can't also be Top")
+		}
+
+		if (isDialog && isHome) {
+			error("Destination $destinationName is marked as ${Dialog::class.qualifiedName} and ${Home::class.qualifiedName}. A Dialog can't also be Home")
+		}
 
 		val navTargets = classDeclaration.filterAnnotations(Navigation::class)
 			.map { navigationAnnotation ->
@@ -76,7 +86,8 @@ class DestinationVisitor : KSVisitorVoid() {
 			parameters = parameters.toList(),
 			navigationTargets = navTargets.toList(),
 			isHome = isHome,
-			isTop = isTop
+			isTop = isTop,
+			isDialog = isDialog,
 		)
 	}
 

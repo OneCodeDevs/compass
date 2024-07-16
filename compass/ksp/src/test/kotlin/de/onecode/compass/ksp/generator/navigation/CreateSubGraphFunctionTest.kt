@@ -2,10 +2,10 @@ package de.onecode.compass.ksp.generator.navigation
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
+import de.onecode.compass.ksp.util.destination
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier")
@@ -13,19 +13,14 @@ class CreateSubGraphFunctionTest {
 	@Test
 	fun `SuGraph function with two destinations`() {
 		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
-		val description1 = DestinationDescription(
+		val description1 = destination(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destination(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val subGraph = SubGraphDescription(
 			name = "sub",
@@ -71,7 +66,11 @@ class CreateSubGraphFunctionTest {
 	@Test
 	fun `SuGraph function with a home with parameters`() {
 		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
-		val description = DestinationDescription("foo", parameters = listOf(param1), navigationTargets = emptyList(), isHome = true, isTop = false)
+		val description = destination(
+			name = "foo",
+			parameters = listOf(param1),
+			isHome = true,
+		)
 		val subGraph = SubGraphDescription("sub", listOf(description))
 
 		val code = buildTestFile {

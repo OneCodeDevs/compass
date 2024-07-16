@@ -2,16 +2,16 @@ package de.onecode.compass.ksp.generator.context
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
+import de.onecode.compass.ksp.util.destination
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName", "ClassName")
 class CreateContextClassTest {
 	@Test
 	fun `Destination Context with no parameters and no navigation`() {
-		val description = DestinationDescription("foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description = destination("foo")
 
 		val code = buildTestFile {
 			addType(createContextClass(description, "CommonContext"))
@@ -37,12 +37,9 @@ class CreateContextClassTest {
 
 	@Test
 	fun `Destination Context with one parameter and no navigation`() {
-		val description = DestinationDescription(
+		val description = destination(
 			name = "foo",
 			parameters = listOf(ParameterDescription(name = "param1", type = "kotlin.String", required = true)),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 
 		val code = buildTestFile {
@@ -77,12 +74,10 @@ class CreateContextClassTest {
 
 	@Test
 	fun `Destination Context with one parameter and one navigation that also has one parameter`() {
-		val description = DestinationDescription(
+		val description = destination(
 			"foo",
 			parameters = listOf(ParameterDescription(name = "param1", type = "kotlin.String", required = true)),
 			navigationTargets = listOf(NavigationTarget("target", listOf(ParameterDescription(name = "targetParam1", type = "kotlin.Int", required = true)))),
-			isHome = false,
-			isTop = false
 		)
 
 		val code = buildTestFile {

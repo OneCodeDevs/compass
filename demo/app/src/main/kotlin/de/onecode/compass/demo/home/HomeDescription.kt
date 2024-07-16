@@ -1,6 +1,7 @@
 package de.onecode.compass.demo.home
 
 import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Dialog
 import de.onecode.compass.api.Home
 import de.onecode.compass.api.Navigation
 import de.onecode.compass.api.Parameter
@@ -10,8 +11,13 @@ import de.onecode.compass.demo.destinations.FeatureComposableDestination
 @Home
 @Navigation(to = SubHomeDestination::class)
 @Navigation(to = FeatureComposableDestination::class)
+@Navigation(to = MyDialogDestination::class)
 object HomeDescription
 
 @Destination(name = "SubHome")
 @Parameter("optionalParam", type = String::class, required = false)
 object SubHomeDestination
+
+@Dialog
+@Destination(name = "MyDialog")
+object MyDialogDestination

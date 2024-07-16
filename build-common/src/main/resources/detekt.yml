@@ -17,6 +17,8 @@ complexity:
   LongMethod:
     excludes:
       - "**/test/**"
+  LongParameterList:
+    functionThreshold: 7
 
 naming:
   FunctionNaming:

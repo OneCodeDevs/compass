@@ -15,14 +15,16 @@ class CheckGraphStateTest {
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val description2 = DestinationDescription(
 			name = "bar",
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
 
@@ -38,14 +40,16 @@ class CheckGraphStateTest {
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val description2 = DestinationDescription(
 			name = "bar",
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = false,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
 
@@ -62,14 +66,16 @@ class CheckGraphStateTest {
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = false,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val description2 = DestinationDescription(
 			name = "bar",
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = false,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
 
@@ -96,14 +102,16 @@ class CheckGraphStateTest {
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val sub2 = DestinationDescription(
 			name = "sub2",
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
 		val graph = GraphDescription(emptyList(), listOf(sub))
@@ -120,14 +128,16 @@ class CheckGraphStateTest {
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = false,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val sub2 = DestinationDescription(
 			name = "sub2",
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = false,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
 		val graph = GraphDescription(emptyList(), listOf(sub))
@@ -144,14 +154,16 @@ class CheckGraphStateTest {
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
+			isTop = false,
+			isDialog = false,
 		)
 		val sub2 = DestinationDescription(
 			name = "sub2",
 			parameters = emptyList(),
 			navigationTargets = emptyList(),
 			isHome = false,
-			isTop = true
+			isTop = true,
+			isDialog = false,
 		)
 		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
 		val graph = GraphDescription(emptyList(), listOf(sub))

@@ -4,17 +4,17 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.generator.navHostControllerClass
+import de.onecode.compass.ksp.util.destination
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier", "RemoveRedundantQualifierName")
 class NavigationFunctionTest {
 	@Test
 	fun `navigation function for Destination without parameters`() {
-		val description = DestinationDescription(name = "foo", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val description = destination(name = "foo")
 		val navControllerParamName = "navHostController"
 
 		val code = buildTestFile {

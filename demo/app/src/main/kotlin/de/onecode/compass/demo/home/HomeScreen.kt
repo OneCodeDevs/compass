@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 fun HomeScreen(
 	onToSub: () -> Unit,
 	onToFeature: () -> Unit,
+	onToDialog: () -> Unit,
 ) {
 	Column(verticalArrangement = Arrangement.SpaceBetween) {
 		Button(
@@ -28,6 +29,12 @@ fun HomeScreen(
 			onClick = onToFeature
 		) {
 			Text(text = "GoTo Feature")
+		}
+
+		Spacer(modifier = Modifier.size(16.dp))
+
+		Button(onClick = onToDialog) {
+			Text(text = "GoTo Dialog")
 		}
 	}
 }

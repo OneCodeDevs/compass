@@ -20,6 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import de.onecode.compass.Compass
 import de.onecode.compass.demo.destinations.attachFeatureComposable
 import de.onecode.compass.demo.details.DetailsScreen
+import de.onecode.compass.demo.dialog.MyDialogScreen
 import de.onecode.compass.demo.home.HomeScreen
 import de.onecode.compass.demo.home.SubHomeScreen
 import de.onecode.compass.demo.theme.NavGraphConfigComposeTheme
@@ -41,7 +42,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Main() {
 	val compassController = rememberCompassController()
-
 	val isHome by compassController.currentDestinationIsHome()
 	val isDetails by compassController.currentDestinationIsDetails()
 
@@ -52,17 +52,13 @@ fun Main() {
 					selected = isHome,
 					label = { Text(text = "Home") },
 					onClick = { compassController.navigateToHome() },
-					icon = {
-						Icon(imageVector = Icons.Default.Home, contentDescription = "")
-					}
+					icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "") }
 				)
 				NavigationBarItem(
 					selected = isDetails,
 					label = { Text(text = "Wizard") },
 					onClick = { compassController.navigateToDetails(Random.nextInt()) },
-					icon = {
-						Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "")
-					}
+					icon = { Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "") }
 				)
 			}
 		}
@@ -76,8 +72,13 @@ fun Main() {
 			homeScreen {
 				HomeScreen(
 					onToSub = { navigateToSubHome(optionalParam = getOptionalParam()) },
-					onToFeature = { navigateToFeatureComposable(Random.nextFloat()) }
+					onToFeature = { navigateToFeatureComposable(Random.nextFloat()) },
+					onToDialog = ::navigateToMyDialog
 				)
+			}
+
+			myDialogScreen {
+				MyDialogScreen(onClose = ::popBackStack)
 			}
 
 			subHomeScreen {
@@ -96,7 +97,6 @@ fun Main() {
 			}
 
 			navGraphBuilder.attachWizardSubGraph()
-
 			navGraphBuilder.attachFeatureComposable()
 		}
 	}

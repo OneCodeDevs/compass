@@ -47,7 +47,7 @@ private fun DestinationDescription.toNavigationComposableCodeBlock(): CodeBlock 
 
 private fun buildComposableCodeBlock(destination: DestinationDescription, statements: CodeBlock.Builder.() -> Unit): CodeBlock =
 	buildCodeBlock {
-		beginControlFlow("composable(route = %S, arguments = %L)", destination.route, navigationArgumentsCodeBlock(destination))
+		beginControlFlow("%L(route = %S, arguments = %L)", destination.toGraphFunctionName(), destination.route, navigationArgumentsCodeBlock(destination))
 		statements()
 		endControlFlow()
 	}
@@ -80,3 +80,9 @@ private fun navigationArgumentsCodeBlock(description: DestinationDescription): C
 		}
 	}
 }
+
+private fun DestinationDescription.toGraphFunctionName(): String =
+	when(isDialog) {
+		true -> "dialog"
+		false -> "composable"
+	}

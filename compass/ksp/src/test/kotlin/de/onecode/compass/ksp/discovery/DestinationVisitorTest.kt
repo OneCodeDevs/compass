@@ -2,6 +2,7 @@ package de.onecode.compass.ksp.discovery
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class DestinationVisitorTest {
 	@Test
@@ -180,5 +181,15 @@ class DestinationVisitorTest {
 		assertThat(destinationDescription3.name).isEqualTo("Destination3")
 		assertThat(destinationDescription3.isHome).isFalse()
 		assertThat(destinationDescription3.isTop).isTrue()
+	}
+
+	@Test
+	fun `Dialog can't be also Home`() {
+		val destinationVisitor = DestinationVisitor()
+		val destination1 = declareDestination(destinationVisitor, name = "Destination1", isHome = true, isDialog = true)
+
+		assertThrows<IllegalStateException> {
+			destination1.accept(destinationVisitor, Unit)
+		}
 	}
 }
