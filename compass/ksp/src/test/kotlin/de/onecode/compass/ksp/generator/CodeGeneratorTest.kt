@@ -1,11 +1,11 @@
 package de.onecode.compass.ksp.generator
 
 import de.onecode.compass.ksp.assertGeneratedCode
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.GraphDescription
 import de.onecode.compass.ksp.descriptions.NavigationTarget
 import de.onecode.compass.ksp.descriptions.ParameterDescription
 import de.onecode.compass.ksp.descriptions.SubGraphDescription
+import de.onecode.compass.ksp.util.destination
 import de.onecode.compass.ksp.writeToString
 import org.junit.jupiter.api.Test
 
@@ -14,19 +14,14 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations not top and no subgraph`() {
 		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
-		val description1 = DestinationDescription(
+		val description1 = destination(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destination(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val graph = GraphDescription(
 			destinations = listOf(description1, description2),
@@ -216,19 +211,15 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations one top and no subgraph`() {
 		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
-		val description1 = DestinationDescription(
+		val description1 = destination(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destination(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = true
+			isTop = true,
 		)
 		val graph = GraphDescription(
 			destinations = listOf(description1, description2),
@@ -436,34 +427,23 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations one top and subgraph`() {
 		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
-		val description1 = DestinationDescription(
+		val description1 = destination(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
 			isHome = true,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destination(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = true
+			isTop = true,
 		)
 
-		val sub1 = DestinationDescription(
+		val sub1 = destination(
 			name = "sub1",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
-		val sub2 = DestinationDescription(
+		val sub2 = destination(
 			name = "sub1",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 		val sub = SubGraphDescription("sub", listOf(sub1, sub2))
 		val graph = GraphDescription(
@@ -734,19 +714,13 @@ class CodeGeneratorTest {
 	@Test
 	fun `Two destinations no home`() {
 		val param1 = ParameterDescription(name = "param1", type = "kotlin.Int", required = true)
-		val description1 = DestinationDescription(
+		val description1 = destination(
 			name = "foo",
-			parameters = emptyList(),
 			navigationTargets = listOf(NavigationTarget("bar", listOf(param1))),
-			isHome = false,
-			isTop = false
 		)
-		val description2 = DestinationDescription(
+		val description2 = destination(
 			name = "bar",
 			parameters = listOf(param1),
-			navigationTargets = emptyList(),
-			isHome = false,
-			isTop = false
 		)
 
 		val graph = GraphDescription(listOf(description1, description2), emptyList())
@@ -832,6 +806,73 @@ class CodeGeneratorTest {
 				        ?: error("Required parameter param1 not provided")
 					return arg
 				} 
+			"""
+		)
+	}
+
+	@Test
+	fun `Destination as dialog`() {
+		val description1 = destination(
+			name = "foo",
+			isHome = true,
+		)
+		val description2 = destination(
+			name = "bar",
+			isDialog = true,
+		)
+
+		val graph = GraphDescription(listOf(description1, description2), emptyList())
+
+		val code = writeToString {
+			generateAddDestinationCode(graph)
+		}
+
+		assertGeneratedCode(
+			generated = code,
+			expected =
+			"""
+				package de.onecode.compass
+				
+				import androidx.compose.runtime.Composable
+				import androidx.navigation.NavBackStackEntry
+				import androidx.navigation.NavGraphBuilder
+				import androidx.navigation.NavHostController
+				import androidx.navigation.compose.NavHost
+				import androidx.navigation.compose.composable
+				import de.onecode.compass.runtime.CommonContext
+				import de.onecode.compass.runtime.LocalNavHostController
+				import javax.`annotation`.processing.Generated
+				import kotlin.Unit
+				
+				public fun NavGraphBuilder.fooScreen(composable: @Composable fooContext.() -> Unit) {
+				  composable(route = "foo", arguments = emptyList()
+				  ) {
+				    val current = LocalNavHostController.current
+				    val context = fooContext(current, it)
+				    composable(context)
+				  }
+				}
+				
+				@Generated
+				public class fooContext(
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry)
+				
+				public fun NavGraphBuilder.barScreen(composable: @Composable barContext.() -> Unit) {
+				  dialog(route = "bar", arguments = emptyList()
+				  ) {
+				    val current = LocalNavHostController.current
+				    val context = barContext(current, it)
+				    composable(context)
+				  }
+				}
+				
+				@Generated
+				public class barContext(
+				  navHostController: NavHostController,
+				  navBackStackEntry: NavBackStackEntry,
+				) : CommonContext(navHostController, navBackStackEntry)
 			"""
 		)
 	}

@@ -1,15 +1,15 @@
 package de.onecode.compass.ksp.discovery
 
 import com.google.common.truth.Truth.assertThat
-import de.onecode.compass.ksp.descriptions.DestinationDescription
+import de.onecode.compass.ksp.util.destination
 import org.junit.jupiter.api.Test
 
 class GraphVisitorTest {
 	@Test
 	fun `create graph description without sub graph`() {
 		val destinations = listOf(
-			DestinationDescription(name = "D1", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false),
-			DestinationDescription(name = "D2", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+			destination(name = "D1", isHome = true),
+			destination(name = "D2")
 		)
 		val graphVisitor = GraphVisitor(destinations)
 
@@ -23,11 +23,11 @@ class GraphVisitorTest {
 	@Test
 	fun `create graph description with sub graph`() {
 
-		val s1 = DestinationDescription(name = "S1", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false)
-		val s2 = DestinationDescription(name = "S2", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false)
+		val s1 = destination(name = "S1", isHome = true)
+		val s2 = destination(name = "S2")
 		val destinations = listOf(
-			DestinationDescription(name = "D1", parameters = emptyList(), navigationTargets = emptyList(), isHome = true, isTop = false),
-			DestinationDescription(name = "D2", parameters = emptyList(), navigationTargets = emptyList(), isHome = false, isTop = false),
+			destination(name = "D1", isHome = true),
+			destination(name = "D2"),
 			s1,
 			s2
 		)

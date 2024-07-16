@@ -2,20 +2,17 @@ package de.onecode.compass.ksp.generator.navigation
 
 import de.onecode.compass.ksp.assertGeneratedCode
 import de.onecode.compass.ksp.buildTestFile
-import de.onecode.compass.ksp.descriptions.DestinationDescription
 import de.onecode.compass.ksp.descriptions.ParameterDescription
+import de.onecode.compass.ksp.util.destination
 import org.junit.jupiter.api.Test
 
 @Suppress("RedundantVisibilityModifier", "TestFunctionName")
 class CreateCompassComposableTest {
 	@Test
 	fun `Navigator with a destination without parameters`() {
-		val description = DestinationDescription(
+		val description = destination(
 			name = "foo",
-			parameters = emptyList(),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
 
 		val code = buildTestFile {
@@ -61,12 +58,10 @@ class CreateCompassComposableTest {
 
 	@Test
 	fun `Navigator with a destination with a parameter`() {
-		val description = DestinationDescription(
+		val description = destination(
 			name = "foo",
 			parameters = listOf(ParameterDescription(name = "param1", type = "kotlin.Int", required = true)),
-			navigationTargets = emptyList(),
 			isHome = true,
-			isTop = false
 		)
 
 		val code = buildTestFile {

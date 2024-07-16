@@ -6,6 +6,7 @@ import com.google.devtools.ksp.symbol.KSName
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.symbol.KSValueArgument
 import de.onecode.compass.api.Destination
+import de.onecode.compass.api.Dialog
 import de.onecode.compass.api.Home
 import de.onecode.compass.api.Navigation
 import de.onecode.compass.api.Parameter
@@ -22,11 +23,19 @@ internal fun declareDestination(
 	name: String = "",
 	isHome: Boolean = false,
 	isTop: Boolean = false,
+	isDialog: Boolean = false,
 	typeName: String = "TestDestination",
 	parameters: () -> List<KSAnnotation> = { emptyList() },
 	navigationTargets: () -> List<KSAnnotation> = { emptyList() },
 ): KSClassDeclaration {
-	val annotationsOnDestination = createAnnotationsForDestination(name, isHome, isTop, parameters, navigationTargets)
+	val annotationsOnDestination = createAnnotationsForDestination(
+		name = name,
+		isHome = isHome,
+		isTop = isTop,
+		isDialog = isDialog,
+		parameters = parameters,
+		navigationTargets = navigationTargets
+	)
 
 	return mockk<KSClassDeclaration> {
 		every { simpleName } returns ksName(typeName)
@@ -41,6 +50,7 @@ internal fun createAnnotationsForDestination(
 	name: String = "",
 	isHome: Boolean = false,
 	isTop: Boolean = false,
+	isDialog: Boolean = false,
 	parameters: () -> List<KSAnnotation> = { emptyList() },
 	navigationTargets: () -> List<KSAnnotation> = { emptyList() },
 ): List<KSAnnotation> {
@@ -52,7 +62,10 @@ internal fun createAnnotationsForDestination(
 	val top = isTop
 		.ifTrue { createAnnotation(Top::class) }
 
-	return listOfNotNull(destination, home, top, *parameters().toTypedArray(), *navigationTargets().toTypedArray())
+	val dialog = isDialog
+		.ifTrue { createAnnotation(Dialog::class) }
+
+	return listOfNotNull(destination, home, top, dialog, *parameters().toTypedArray(), *navigationTargets().toTypedArray())
 }
 
 internal fun createDestination(destinationName: String? = null): KSAnnotation = createAnnotation(Destination::class) {
