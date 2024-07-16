@@ -13,7 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import de.onecode.compass.demo.R
 
 @Composable
 fun MyDialogScreen(
@@ -26,7 +28,7 @@ fun MyDialogScreen(
 			.background(MaterialTheme.colorScheme.background)
 			.padding(16.dp),
 	) {
-		Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+		Text(text = stringResource(R.string.lorem_ipsum))
 		Spacer(modifier = Modifier.size(8.dp))
 		TextButton(
 			onClick = onClose,

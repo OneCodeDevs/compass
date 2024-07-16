@@ -42,7 +42,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Main() {
 	val compassController = rememberCompassController()
-
 	val isHome by compassController.currentDestinationIsHome()
 	val isDetails by compassController.currentDestinationIsDetails()
 
@@ -53,17 +52,13 @@ fun Main() {
 					selected = isHome,
 					label = { Text(text = "Home") },
 					onClick = { compassController.navigateToHome() },
-					icon = {
-						Icon(imageVector = Icons.Default.Home, contentDescription = "")
-					}
+					icon = { Icon(imageVector = Icons.Default.Home, contentDescription = "") }
 				)
 				NavigationBarItem(
 					selected = isDetails,
 					label = { Text(text = "Wizard") },
 					onClick = { compassController.navigateToDetails(Random.nextInt()) },
-					icon = {
-						Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "")
-					}
+					icon = { Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "") }
 				)
 			}
 		}
@@ -102,7 +97,6 @@ fun Main() {
 			}
 
 			navGraphBuilder.attachWizardSubGraph()
-
 			navGraphBuilder.attachFeatureComposable()
 		}
 	}
